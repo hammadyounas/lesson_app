@@ -20,7 +20,7 @@ const AssignmentsSection = ({ assignments }) => {
                   {assignment.dueSoon ? "Submit Today" : "Submit Tomorrow"}
                 </span>
               </div>
-              <p className="text-sm text-gray-500 mt-1">{assignment.dueDate}</p>
+              <p className="text-sm  text-gray-500 mt-1">{assignment.dueDate}</p>
             </li>
           ))}
         </ul>

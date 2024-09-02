@@ -125,7 +125,7 @@ const DashboardPage = () => {
               <CoursesSection onSelectCourse={setSelectedCourse} user={user} />
 
               {/* Main content divided into two sections */}
-              <div className="flex flex-1 space-x-4">
+              <div className="flex flex-1 flex-col md:flex-row space-x-4">
                 {/* Left Div: Course Details */}
                 <div className="flex-1 flex flex-col space-y-4 bg-white p-4 ml-5 rounded-lg shadow-lg">
                   {/* Top Section: Course Title and Description */}
@@ -209,9 +209,14 @@ const DashboardPage = () => {
                 </div>
 
                 {/* Right Div: Updates and Assignments */}
-                <div className="flex-1 flex flex-col max-w-[400px] space-y-3">
-                  <UpdatesSection updates={sampleUpdates} />
-                  <AssignmentsSection assignments={sampleAssignments} />
+                <div className="flex-1  flex-col lg:flex-row lg:space-x-0 space-y-4 lg:space-y-3 max-w-[350px]">
+                  {/* Updates and Assignments stacked vertically on large screens */}
+                  <div className="flex-1">
+                    <UpdatesSection updates={sampleUpdates} />
+                  </div>
+                  <div className="flex-1">
+                    <AssignmentsSection assignments={sampleAssignments} />
+                  </div>
                 </div>
               </div>
             </div>
