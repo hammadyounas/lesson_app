@@ -43,7 +43,7 @@ export default function LoginPage() {
     <div className="flex min-h-screen">
       {/* Left Column - Graphic */}
       <div className="w-1/2 flex items-center justify-center bg-purple-600">
-        <img src="/login-graphic.jfif" alt="Graphic" className="max-w-full h-auto" />
+        {/* <img src="/login-graphic.jfif" alt="Graphic" className="max-w-full h-auto" /> */}
       </div>
 
       {/* Right Column - Login Form */}

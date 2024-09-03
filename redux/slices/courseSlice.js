@@ -40,7 +40,6 @@ export const updateCourse = createAsyncThunk('courses/updateCourse', async ({ id
 // Delete a course and all related content
 export const deleteCourse = createAsyncThunk('courses/deleteCourse', async (courseId) => {
   try {
-    // Step 1: Fetch all related entries from course_outline and course_resource
     const { data: outlineData, error: outlineError } = await supabase
       .from('course_outlines')
       .select('url')
@@ -55,7 +54,6 @@ export const deleteCourse = createAsyncThunk('courses/deleteCourse', async (cour
 
     if (resourceError) throw resourceError;
 
-    // Step 2: Delete files from Supabase storage
     const deleteFiles = async (bucketName, files) => {
       if (files.length > 0) {
         const { error } = await supabase.storage
@@ -72,7 +70,6 @@ export const deleteCourse = createAsyncThunk('courses/deleteCourse', async (cour
     // Delete files from resources bucket
     await deleteFiles('resources', resourceData || []);
 
-    // Step 3: Delete entries from course_outline and course_resource tables
     const { error: deleteOutlineError } = await supabase
       .from('course_outlines')
       .delete()
@@ -87,7 +84,6 @@ export const deleteCourse = createAsyncThunk('courses/deleteCourse', async (cour
 
     if (deleteResourceError) throw deleteResourceError;
 
-    // Step 4: Finally, delete the course from the courses table
     const { error: deleteCourseError } = await supabase
       .from('courses')
       .delete()
@@ -95,7 +91,7 @@ export const deleteCourse = createAsyncThunk('courses/deleteCourse', async (cour
 
     if (deleteCourseError) throw deleteCourseError;
 
-    return courseId; // Return courseId to update state in Redux
+    return courseId; 
   } catch (error) {
     throw error;
   }

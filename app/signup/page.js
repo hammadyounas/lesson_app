@@ -69,7 +69,7 @@ export default function SignupPage() {
     <div className="flex min-h-screen">
       {/* Left Column - Graphic */}
       <div className="w-1/2 flex items-center justify-center bg-purple-600">
-        <img src="/path/to/your/graphic.png" alt="Graphic" className="max-w-full h-auto" />
+        {/* <img src="/path/to/your/graphic.png" alt="Graphic" className="max-w-full h-auto" /> */}
       </div>
 
       {/* Right Column - Signup Form */}

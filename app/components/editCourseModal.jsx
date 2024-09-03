@@ -2,16 +2,16 @@
 
 import { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { updateCourse, deleteCourse } from '../../redux/slices/courseSlice'; // Import update and delete actions
-import { TrashIcon } from '@heroicons/react/24/outline'; // Import TrashIcon from Heroicons
+import { updateCourse, deleteCourse } from '../../redux/slices/courseSlice'; 
+import { TrashIcon } from '@heroicons/react/24/outline'; 
 
 const EditCourseModal = ({ isOpen, onClose, course, user }) => {
   const [courseName, setCourseName] = useState('');
   const [courseCode, setCourseCode] = useState('');
   const [courseCategory, setCourseCategory] = useState('Core');
   const [courseDescription, setCourseDescription] = useState('');
-  const [isSubmitting, setIsSubmitting] = useState(false); // State to manage submission state
-  const [error, setError] = useState(null); // State to handle errors
+  const [isSubmitting, setIsSubmitting] = useState(false); 
+  const [error, setError] = useState(null); 
 
   const dispatch = useDispatch();
 
@@ -22,7 +22,7 @@ const EditCourseModal = ({ isOpen, onClose, course, user }) => {
       setCourseCategory(course.category || 'Core');
       setCourseDescription(course.description || '');
     }
-  }, [course]); // Run this effect when course changes
+  }, [course]); 
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -31,7 +31,7 @@ const EditCourseModal = ({ isOpen, onClose, course, user }) => {
 
     try {
       await dispatch(updateCourse({
-        id: course.id, // Ensure this is not undefined
+        id: course.id, 
         name: courseName,
         code: courseCode,
         category: courseCategory,
@@ -50,8 +50,8 @@ const EditCourseModal = ({ isOpen, onClose, course, user }) => {
   const handleDelete = async () => {
     if (confirm('Are you sure you want to delete this course?')) {
       try {
-        await dispatch(deleteCourse(course.id)).unwrap(); // Dispatch action to delete the course
-        onClose(); // Close the modal after deleting the course
+        await dispatch(deleteCourse(course.id)).unwrap(); 
+        onClose(); 
       } catch (err) {
         console.error('Error deleting course:', err.message);
         setError('Failed to delete the course. Please try again.');

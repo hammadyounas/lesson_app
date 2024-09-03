@@ -24,7 +24,6 @@ export const uploadOutline = createAsyncThunk(
   'outlines/uploadOutline',
   async ({ file, courseId }, { rejectWithValue }) => {
     try {
-      // Upload the file to Supabase storage
       const { data: uploadData, error: uploadError } = await supabase.storage
         .from('outlines')
         .upload(`${courseId}/${file.name}`, file, {
@@ -41,14 +40,13 @@ export const uploadOutline = createAsyncThunk(
 
       if (urlError) throw urlError;
       console.log(publicURL);
-      // Insert the outline record into the database
       const { error: insertError } = await supabase
         .from('course_outlines')
         .insert([{ course_id: courseId, url: publicURL }]);
 
       if (insertError) throw insertError;
 
-      return { url: publicURL, course_id: courseId }; // Return data to be added to state
+      return { url: publicURL, course_id: courseId }; 
     } catch (error) {
       return rejectWithValue(error.message);
     }

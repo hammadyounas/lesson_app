@@ -24,10 +24,9 @@ const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 const store = configureStore({
   reducer: persistedReducer,
-  // You don't need to add `redux-thunk` if you're using `createAsyncThunk`
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
-      serializableCheck: false, // Disable serializable checks if needed
+      serializableCheck: false,
     }),
 });
 

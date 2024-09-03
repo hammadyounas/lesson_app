@@ -1,6 +1,7 @@
+
 const AssignmentsSection = ({ assignments }) => {
     return (
-      <div className="bg-white  p-4 rounded-xl shadow-md">
+      <div className="bg-white p-4 rounded-xl shadow-md overflow-y-auto md:max-h-[500px]">
         <h3 className="text-xl font-bold mb-4 text-gray-800">Assignments</h3>
         <ul className="space-y-3">
           {assignments.map((assignment, index) => (

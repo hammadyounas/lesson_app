@@ -4,15 +4,15 @@
 
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { addCourse } from '../../redux/slices/courseSlice'; // Import the action from the courses slice
+import { addCourse } from '../../redux/slices/courseSlice';
 
 const CourseModal = ({ isOpen, onClose, user }) => {
   const [courseName, setCourseName] = useState('');
   const [courseCode, setCourseCode] = useState('');
   const [courseCategory, setCourseCategory] = useState('Core');
   const [courseDescription, setCourseDescription] = useState('');
-  const [isSubmitting, setIsSubmitting] = useState(false); // State to manage submission state
-  const [error, setError] = useState(null); // State to handle errors
+  const [isSubmitting, setIsSubmitting] = useState(false); 
+  const [error, setError] = useState(null); 
 
   const userID = user.id;
   const dispatch = useDispatch();
@@ -23,7 +23,6 @@ const CourseModal = ({ isOpen, onClose, user }) => {
     setError(null);
 
     try {
-      // Dispatch action to add course to the Redux store
       await dispatch(addCourse({ 
         user_id: userID,
         name: courseName,
@@ -32,7 +31,6 @@ const CourseModal = ({ isOpen, onClose, user }) => {
         description: courseDescription,
       })).unwrap();
 
-      // Call onClose to close the modal after adding the course
       onClose();
     } catch (err) {
       console.error('Error adding course:', err.message);

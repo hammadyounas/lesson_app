@@ -2,22 +2,21 @@
 "use client";
 
 import { useState } from 'react';
-import { Dialog } from '@headlessui/react';
+import { Dialog, DialogPanel, DialogTitle } from '@headlessui/react';
 import { useDispatch, useSelector } from 'react-redux';
-import { uploadResource } from '../../redux/slices/resourceSlice'; // Adjust the import path as needed
-
+import { uploadResource } from '../../redux/slices/resourceSlice'; 
 const ResourceModal = ({ isOpen, onClose, courseId }) => {
   const [name, setName] = useState('');
   const [type, setType] = useState('pdf');
   const [file, setFile] = useState(null);
   const dispatch = useDispatch();
-  const { loading, error } = useSelector((state) => state.resources); // Get loading and error from Redux store
+  const { loading, error } = useSelector((state) => state.resources);
 
   const handleSubmit = async () => {
     if (file) {
       try {
-        await dispatch(uploadResource(file, name, type, courseId)); // Dispatch the uploadResource action
-        onClose(); // Close the modal after successful upload
+        await dispatch(uploadResource(file, name, type, courseId)); 
+        onClose(); 
       } catch (err) {
         console.error('Error handling resource:', err.message);
       }
@@ -30,8 +29,8 @@ const ResourceModal = ({ isOpen, onClose, courseId }) => {
     <Dialog open={isOpen} onClose={onClose}>
       <div className="fixed inset-0 bg-black/30" aria-hidden="true" />
       <div className="fixed inset-0 flex items-center justify-center p-4">
-        <Dialog.Panel className="max-w-sm bg-white p-6 rounded-lg shadow-md">
-          <Dialog.Title className="text-lg font-bold mb-4">Add Resource</Dialog.Title>
+        <DialogPanel className="max-w-sm bg-white p-6 rounded-lg shadow-md">
+          <DialogTitle className="text-lg font-bold mb-4">Add Resource</DialogTitle>
           <form onSubmit={(e) => e.preventDefault()}>
             <div className="mb-4">
               <label htmlFor="resource-name" className="block text-sm font-medium text-gray-700">Name</label>
@@ -75,7 +74,7 @@ const ResourceModal = ({ isOpen, onClose, courseId }) => {
                 type="button"
                 onClick={onClose}
                 className="mr-4 px-4 py-2 bg-gray-500 text-white rounded-md"
-                disabled={loading} // Disable button when loading
+                disabled={loading} 
               >
                 Cancel
               </button>
@@ -83,13 +82,13 @@ const ResourceModal = ({ isOpen, onClose, courseId }) => {
                 type="button"
                 onClick={handleSubmit}
                 className="px-4 py-2 bg-blue-500 text-white rounded-md"
-                disabled={loading} // Disable button when loading
+                disabled={loading}
               >
                 {loading ? 'Adding...' : 'Add Resource'}
               </button>
             </div>
           </form>
-        </Dialog.Panel>
+        </DialogPanel>
       </div>
     </Dialog>
   );
