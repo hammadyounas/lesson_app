@@ -2,20 +2,31 @@
 
 "use client";
 
-import { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { addCourse } from '../../redux/slices/courseSlice';
+import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { addCourse } from "../../redux/slices/courseSlice";
 
-const CourseModal = ({ isOpen, onClose, user }) => {
-  const [courseName, setCourseName] = useState('');
-  const [courseCode, setCourseCode] = useState('');
-  const [courseCategory, setCourseCategory] = useState('Core');
-  const [courseDescription, setCourseDescription] = useState('');
-  const [isSubmitting, setIsSubmitting] = useState(false); 
-  const [error, setError] = useState(null); 
+const CourseModal = ({ isOpen, onClose }) => {
+  const { user } = useSelector((state) => state.user);
 
-  const userID = user.id;
+  const [courseData, setCourseData] = useState({
+    name: "",
+    code: "",
+    category: "Core",
+    description: "",
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState(null);
+
   const dispatch = useDispatch();
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setCourseData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -23,26 +34,23 @@ const CourseModal = ({ isOpen, onClose, user }) => {
     setError(null);
 
     try {
-      await dispatch(addCourse({ 
-        user_id: userID,
-        name: courseName,
-        code: courseCode,
-        category: courseCategory,
-        description: courseDescription,
-      })).unwrap();
+      await dispatch(
+        addCourse({
+          user_id: user?.id,
+          ...courseData,
+        })
+      ).unwrap();
 
       onClose();
     } catch (err) {
-      console.error('Error adding course:', err.message);
-      setError('Failed to add the course. Please try again.');
+      console.error("Error adding course:", err.message);
+      setError("Failed to add the course. Please try again.");
     } finally {
       setIsSubmitting(false);
     }
   };
 
   if (!isOpen) return null;
-
-
 
   return (
     <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center z-50">
@@ -54,8 +62,9 @@ const CourseModal = ({ isOpen, onClose, user }) => {
             <label className="block text-gray-700 mb-2">Course Name</label>
             <input
               type="text"
-              value={courseName}
-              onChange={(e) => setCourseName(e.target.value)}
+              name="name"
+              value={courseData.name}
+              onChange={handleChange}
               className="w-full p-2 border rounded-lg"
               required
             />
@@ -64,8 +73,9 @@ const CourseModal = ({ isOpen, onClose, user }) => {
             <label className="block text-gray-700 mb-2">Course Code</label>
             <input
               type="text"
-              value={courseCode}
-              onChange={(e) => setCourseCode(e.target.value)}
+              name="code"
+              value={courseData.code}
+              onChange={handleChange}
               className="w-full p-2 border rounded-lg"
               required
             />
@@ -73,20 +83,21 @@ const CourseModal = ({ isOpen, onClose, user }) => {
           <div className="mb-4">
             <label className="block text-gray-700 mb-2">Category</label>
             <select
-              value={courseCategory}
-              onChange={(e) => setCourseCategory(e.target.value)}
+              name="category"
+              value={courseData.category}
+              onChange={handleChange}
               className="w-full p-2 border rounded-lg"
             >
               <option>Core</option>
-              <option>Mandatory</option>
               <option>Elective</option>
             </select>
           </div>
           <div className="mb-4">
             <label className="block text-gray-700 mb-2">Description</label>
             <textarea
-              value={courseDescription}
-              onChange={(e) => setCourseDescription(e.target.value)}
+              name="description"
+              value={courseData.description}
+              onChange={handleChange}
               className="w-full p-2 border rounded-lg"
               required
             ></textarea>
@@ -105,7 +116,7 @@ const CourseModal = ({ isOpen, onClose, user }) => {
               className="bg-purple-500 text-white p-2 rounded-lg"
               disabled={isSubmitting}
             >
-              {isSubmitting ? 'Adding...' : 'Add Course'}
+              {isSubmitting ? "Adding..." : "Add Course"}
             </button>
           </div>
         </form>

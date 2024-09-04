@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { updateUser, deleteUser } from "../../redux/slices/userSlice";
-import Sidebar from "../components/sidebar";
+import Sidebar from "../components/Sidebar";
 import { useRouter } from "next/navigation";
 import { PencilIcon, TrashIcon } from "@heroicons/react/24/outline"; 
 import { updateAuthUser } from "../../lib/auth";  // Import the new function

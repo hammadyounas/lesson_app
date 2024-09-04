@@ -10,7 +10,6 @@ export default function SignupPage() {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
-  const [role, setRole] = useState('user');
   const [error, setError] = useState('');
   const [message, setMessage] = useState('');
   const [loading, setLoading] = useState(false);
@@ -34,7 +33,7 @@ export default function SignupPage() {
     setMessage('');
 
     try {
-      const { user, error: signupError } = await registerUser(email, password, firstName, lastName, role);
+      const { user, error: signupError } = await registerUser(email, password, firstName, lastName);
 
       if (signupError) throw signupError;
 

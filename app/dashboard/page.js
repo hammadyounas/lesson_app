@@ -7,11 +7,10 @@ import {
   fetchCourses,
   addCourse,
   updateCourse,
-  deleteCourse,
 } from "../../redux/slices/courseSlice";
-import Sidebar from "../components/sidebar";
-import CoursesSection from "../components/courseSection";
-import CourseModal from '../components/courseModal';
+import Sidebar from "../components/Sidebar";
+import CoursesSection from "../components/CourseSection";
+import CourseModal from '../components/CourseModal';
 import UpdatesSection from "../components/UpdatesSection";
 import AssignmentsSection from "../components/AssignmentsSection";
 import { PaperAirplaneIcon } from "@heroicons/react/24/solid";
@@ -41,6 +40,13 @@ const sampleAssignments = [
 ];
 
 const DashboardPage = () => {
+  const {
+    user,
+    loading: userLoading,
+    error: userError,
+  } = useSelector((state) => state.user);
+
+  const { courses } = useSelector((state) => state.courses);
   const [selectedCourse, setSelectedCourse] = useState(null);
   const [isCourseModalOpen, setIsCourseModalOpen] = useState(false);
   const [messages, setMessages] = useState([]);
@@ -48,28 +54,13 @@ const DashboardPage = () => {
   const dispatch = useDispatch();
   const router = useRouter();
 
-  const {
-    user,
-    loading: userLoading,
-    error: userError,
-  } = useSelector((state) => state.user);
-  const {
-    courses,
-    status: coursesStatus,
-    error: coursesError,
-  } = useSelector((state) => state.courses);
+  useEffect(() => {
+    if (user?.id) dispatch(fetchCourses(user?.id));
+  }, [user]);
 
   useEffect(() => {
-    if (user) {
-      dispatch(fetchCourses(user.id));
-    }
-  }, [dispatch, user]);
-
-  useEffect(() => {
-    if (!userLoading && userError) {
-      router.push("/login");
-    }
-  }, [userLoading, userError, router]);
+    if (!userLoading && userError) router.push("/login");
+  }, [userLoading, userError]);
 
   const handleAddCourse = useCallback(() => {
     setIsCourseModalOpen(true);
@@ -82,7 +73,7 @@ const DashboardPage = () => {
       }
       setIsCourseModalOpen(false);
     },
-    [dispatch, user]
+    [user]
   );
 
   const handleUpdateCourse = useCallback(
@@ -91,15 +82,8 @@ const DashboardPage = () => {
         dispatch(updateCourse({ id: selectedCourse.id, ...updatedCourse }));
       }
     },
-    [dispatch, selectedCourse]
+    [selectedCourse]
   );
-
-  const handleDeleteCourse = useCallback(() => {
-    if (selectedCourse) {
-      dispatch(deleteCourse(selectedCourse.id));
-      setSelectedCourse(null);
-    }
-  }, [dispatch, selectedCourse]);
 
   const handleSendMessage = (message) => {
     setMessages([...messages, { text: message, sender: "user" }]);
@@ -117,7 +101,7 @@ const DashboardPage = () => {
     <div className="w-full flex flex-col md:flex-row min-h-screen bg-gray-100">
       <Sidebar className="md:w-1/4" />
 
-      <div className="flex-1 flex flex-col md:flex-row bg-gray-100">
+      <div className="flex-1 flex flex-col md:flex-row bg-gray-100 z-10">
         <div className="flex-1 p-4 text-black md:p-6 bg-gray-100">
           {/* Conditional Rendering for Courses */}
           {courses.length > 0 ? (
@@ -157,7 +141,7 @@ const DashboardPage = () => {
 
                   {/* Chat Section: Conditionally Rendered */}
                   {selectedCourse && (
-                    <div className="flex-1 flex flex-col h-full max-h-[700px] bg-blue-100 rounded-lg p-4 shadow-inner overflow-y-auto mb-4 md:mb-0">
+                    <div className="flex-1 flex flex-col max-h-full bg-blue-100 rounded-lg p-4 shadow-inner overflow-y-auto mb-4 md:mb-0">
                       {/* Chat Messages */}
                       <div className="flex-1 overflow-y-auto mb-4">
                         {messages.map((msg, index) => (

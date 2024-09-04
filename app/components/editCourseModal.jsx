@@ -5,7 +5,7 @@ import { useDispatch } from 'react-redux';
 import { updateCourse, deleteCourse } from '../../redux/slices/courseSlice'; 
 import { TrashIcon } from '@heroicons/react/24/outline'; 
 
-const EditCourseModal = ({ isOpen, onClose, course, user }) => {
+const EditCourseModal = ({ isOpen, onClose, course }) => {
   const [courseName, setCourseName] = useState('');
   const [courseCode, setCourseCode] = useState('');
   const [courseCategory, setCourseCategory] = useState('Core');
