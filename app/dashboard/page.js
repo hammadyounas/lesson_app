@@ -11,7 +11,7 @@ import {
 } from "../../redux/slices/courseSlice";
 import Sidebar from "../components/sidebar";
 import CoursesSection from "../components/courseSection";
-import CourseModal from '../components/CourseModal';
+import CourseModal from '../components/courseModal';
 import UpdatesSection from "../components/UpdatesSection";
 import AssignmentsSection from "../components/AssignmentsSection";
 import { PaperAirplaneIcon } from "@heroicons/react/24/solid";
