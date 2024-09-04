@@ -8,7 +8,7 @@ import {
   addCourse,
   updateCourse,
 } from "../../redux/slices/courseSlice";
-import Sidebar from "../components/Sidebar";
+import Sidebar from "../components/sidebar";
 import CoursesSection from "../components/courseSection";
 import CourseModal from '../components/courseModal';
 import UpdatesSection from "../components/UpdatesSection";
