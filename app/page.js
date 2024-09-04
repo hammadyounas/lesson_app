@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { supabase } from '../lib/supabase';
-import Sidebar from './components/Sidebar'; // Adjust path if necessary
+import Sidebar from './components/sidebar'; // Adjust path if necessary
 import { PaperAirplaneIcon } from '@heroicons/react/24/solid'; 
 
 const HomePage = () => {

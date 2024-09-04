@@ -1,8 +1,8 @@
 "use client";
 
 import { useState, useEffect, useMemo } from 'react';
-import CourseModal from './CourseModal'; 
-import EditCourseModal from './EditCourseModal'; 
+import CourseModal from './courseModal'; 
+import EditCourseModal from './editCourseModal'; 
 import { PlusIcon, PencilIcon } from '@heroicons/react/24/outline'; 
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchCourses, addCourse, updateCourse } from '../../redux/slices/courseSlice'; 
