@@ -1,6 +1,8 @@
 // slices/userSlice.js
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { supabase } from "../../lib/supabase";
+import { supabase, adminSupabase } from "../../lib/supabase";
+import bcrypt from 'bcryptjs';
+
 
 // Async thunk to fetch user data
 export const fetchUser = createAsyncThunk(
@@ -31,27 +33,57 @@ export const fetchUser = createAsyncThunk(
   }
 );
 
+
 // Async thunk to update user profile
 export const updateUser = createAsyncThunk(
   "user/updateUser",
-  async ({ firstName, lastName, email, password }, { rejectWithValue }) => {
+  async ({ firstName, lastName, email, password }, { getState, rejectWithValue }) => {
     try {
-      const {
-        data: { user },
-        error: updateError,
-      } = await supabase.auth.updateUser({
-        data: { name, email, password },
-      });
-      if (updateError) throw updateError;
+      const { user: currentUser } = getState().user;
 
-      // Assuming user_profiles has name and email columns
+      const { data: userProfile, error: fetchError } = await supabase
+        .from("user_profiles")
+        .select("password")
+        .eq("id", currentUser.id)
+        .single();
+
+      if (fetchError) throw fetchError;
+
+      if (password) {
+        const isSamePassword = await bcrypt.compare(password, userProfile.password);
+        if (isSamePassword) {
+          throw new Error("New password cannot be the same as the current password.");
+        }
+      }
+
+      const authUpdates = {};
+      if (email && email !== currentUser.email) authUpdates.email = email;
+      if (password) authUpdates.password = password;
+
+      if (Object.keys(authUpdates).length > 0) {
+        const { error: authUpdateError } = await supabase.auth.updateUser(authUpdates);
+        if (authUpdateError) throw authUpdateError;
+      }
+
+      let hashedPassword;
+      if (password) {
+        hashedPassword = await bcrypt.hash(password, 10); 
+      }
+
+
       const { error: profileError } = await supabase
         .from("user_profiles")
-        .update({ first_name: firstName, last_name: lastName, email })
-        .eq("id", user.id);
+        .update({
+          first_name: firstName,
+          last_name: lastName,
+          email, 
+          password: hashedPassword || undefined, 
+        })
+        .eq("id", currentUser.id);
 
       if (profileError) throw profileError;
 
+ 
       return { user: { firstName, lastName, email }, email };
     } catch (error) {
       return rejectWithValue(error.message);
@@ -59,26 +91,24 @@ export const updateUser = createAsyncThunk(
   }
 );
 
-// Async thunk to delete user
 export const deleteUser = createAsyncThunk(
   "user/deleteUser",
-  async (_, { rejectWithValue }) => {
+  async (_, { getState, rejectWithValue }) => {
     try {
-      const {
-        data: { user },
-        error: deleteError,
-      } = await supabase.auth.signOut();
-      if (deleteError) throw deleteError;
+      const { user: currentUser } = getState().user;
 
-      // Optionally delete user profile from user_profiles table
+      const { error: authDeleteError } = await adminSupabase.auth.admin.deleteUser(currentUser.id);
+
+      if(authDeleteError) throw ("Profile not deleted:", authDeleteError);
+
       const { error: profileError } = await supabase
         .from("user_profiles")
         .delete()
-        .eq("id", user.id);
+        .eq("id", currentUser.id);
 
       if (profileError) throw profileError;
 
-      return user;
+      return currentUser; 
     } catch (error) {
       return rejectWithValue(error.message);
     }

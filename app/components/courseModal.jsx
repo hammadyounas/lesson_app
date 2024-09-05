@@ -65,7 +65,7 @@ const CourseModal = ({ isOpen, onClose }) => {
               name="name"
               value={courseData.name}
               onChange={handleChange}
-              className="w-full p-2 border rounded-lg"
+              className="w-full p-2 border text-black rounded-lg"
               required
             />
           </div>
@@ -76,7 +76,7 @@ const CourseModal = ({ isOpen, onClose }) => {
               name="code"
               value={courseData.code}
               onChange={handleChange}
-              className="w-full p-2 border rounded-lg"
+              className="w-full p-2 border text-black rounded-lg"
               required
             />
           </div>
@@ -86,7 +86,7 @@ const CourseModal = ({ isOpen, onClose }) => {
               name="category"
               value={courseData.category}
               onChange={handleChange}
-              className="w-full p-2 border rounded-lg"
+              className="w-full p-2 border text-black rounded-lg"
             >
               <option>Core</option>
               <option>Elective</option>
@@ -98,7 +98,7 @@ const CourseModal = ({ isOpen, onClose }) => {
               name="description"
               value={courseData.description}
               onChange={handleChange}
-              className="w-full p-2 border rounded-lg"
+              className="w-full p-2 border text-black rounded-lg"
               required
             ></textarea>
           </div>
