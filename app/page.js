@@ -2,37 +2,41 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { supabase } from '../lib/supabase';
-import Sidebar from './components/sidebar'; // Adjust path if necessary
-import { PaperAirplaneIcon } from '@heroicons/react/24/solid'; 
+import Sidebar from './components/Sidebar'; 
+import { Send } from 'lucide-react';
+import { useSelector } from 'react-redux';
 
 const HomePage = () => {
   const [loading, setLoading] = useState(true);
   const [message, setMessage] = useState('');
   const router = useRouter();
+  const { user } = useSelector((state) => state.user );
 
-  useEffect(() => {
-    const checkAuth = async () => {
-      try {
-        const { data: { session }, error } = await supabase.auth.getSession();
-        if (error) throw error;
+  // useEffect(() => {
+  //   const checkAuth = async () => {
+  //     try {
+  //       // const { data: { session }, error } = await supabase.auth.getSession();
+  //       // if (error) throw error;
 
-        if (!session) {
-          setLoading(false); 
-        } else {
-          router.push('/dashboard'); 
-        }
-      } catch (error) {
-        console.error('Error checking session:', error.message);
-        router.push('/login'); 
-      } finally {
-        setLoading(false);
-      }
-    };
+  //       if (!user) {
+  //         setLoading(false); 
+  //       } else {
+  //         router.push('/dashboard'); 
+  //       }
+  //     } catch (error) {
+  //       console.error('Error checking user:', error.message);
+  //       router.push('/login'); 
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   };
 
-    checkAuth();
-  }, [router]);
+  //   checkAuth();
+  // }, [router]);
 
+  useEffect(()=> {
+    router.push('/login')
+  })
   const handleSendMessage = () => {
     if (message.trim()) {
       console.log('Sending message:', message);
@@ -64,7 +68,7 @@ const HomePage = () => {
               onClick={handleSendMessage}
               className="p-2 text-black bg-white rounded-full hover:bg-gray-200 focus:outline-black"
             >
-              <PaperAirplaneIcon className="w-5 h-5" />
+              <Send className="w-5 h-5" />
             </button>
           </div>
         </div>

@@ -1,231 +1,453 @@
 "use client";
 
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  fetchCourses,
-  addCourse,
-  updateCourse,
-} from "../../redux/slices/courseSlice";
+import { useSelector } from "react-redux";
 import Sidebar from "../components/sidebar";
-import CoursesSection from "../components/courseSection";
-import CourseModal from '../components/courseModal';
-import UpdatesSection from "../components/UpdatesSection";
-import AssignmentsSection from "../components/AssignmentsSection";
-import { PaperAirplaneIcon } from "@heroicons/react/24/solid";
-
-const sampleUpdates = [
-  { title: "New material added to this course", time: "12 Mins ago" },
-  { title: "Class date has been adjusted", time: "Yesterday" },
-  { title: "Course outline item deleted", time: "January 2, 2019" },
-];
-
-const sampleAssignments = [
-  {
-    title: "The standards of Technology in Education",
-    dueDate: "Submit today",
-    dueSoon: true,
-  },
-  {
-    title: "The standards of Technology in Education",
-    dueDate: "Submit Tomorrow",
-    dueSoon: true,
-  },
-  {
-    title: "The standards of Technology in Education",
-    dueDate: "Next Week",
-    dueSoon: false,
-  },
-];
+import Form from "../components/Form";
+import SkeletonLoader from "../components/Skeleton";
+import { ChevronRight, ChevronLeft } from "lucide-react";
+import { Document, Packer, Paragraph, TextRun, HeadingLevel } from "docx";
+import { saveAs } from "file-saver";
+import { PDFDocument, StandardFonts } from "pdf-lib";
+import PptxGenJS from "pptxgenjs";
+import MDEditor from "@uiw/react-md-editor";
 
 const DashboardPage = () => {
-  const {
-    user,
-    loading: userLoading,
-    error: userError,
-  } = useSelector((state) => state.user);
+  const { user } = useSelector((state) => state.user);
 
-  const { courses } = useSelector((state) => state.courses);
-  const [selectedCourse, setSelectedCourse] = useState(null);
-  const [isCourseModalOpen, setIsCourseModalOpen] = useState(false);
-  const [messages, setMessages] = useState([]);
-
-  const dispatch = useDispatch();
+  const [response, setResponse] = useState({
+    response1: "",
+    response2: "",
+  });
+  const [isloading, setIsLoading] = useState(false);
   const router = useRouter();
 
-  useEffect(() => {
-    if (user?.id) dispatch(fetchCourses(user?.id));
-  }, [user]);
+  const [activeTab, setActiveTab] = useState("preview");
 
-  useEffect(() => {
-    if (!userLoading && userError) router.push("/login");
-  }, [userLoading, userError]);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const hasResponses = response.response1 || response.response2;
 
-  const handleAddCourse = useCallback(() => {
-    setIsCourseModalOpen(true);
-  }, []);
-
-  const handleSaveCourse = useCallback(
-    (newCourse) => {
-      if (user) {
-        dispatch(addCourse({ ...newCourse, user_id: user.id }));
-      }
-      setIsCourseModalOpen(false);
-    },
-    [user]
-  );
-
-  const handleUpdateCourse = useCallback(
-    (updatedCourse) => {
-      if (selectedCourse) {
-        dispatch(updateCourse({ id: selectedCourse.id, ...updatedCourse }));
-      }
-    },
-    [selectedCourse]
-  );
-
-  const handleSendMessage = (message) => {
-    setMessages([...messages, { text: message, sender: "user" }]);
-
-    setTimeout(() => {
-      setMessages([
-        ...messages,
-        { text: message, sender: "user" },
-        { text: `Response to: ${message}`, sender: "chatgpt" },
-      ]);
-    }, 1000);
+  const handleTabChange = (tab) => {
+    setActiveTab(tab);
   };
 
+  useEffect(() => {
+    if (!user) router.push("/login");
+  }, [user]);
+
+  const handleFormSubmit = (res1, res2) => {
+    setResponse({ response1: res1, response2: res2 });
+    setIsLoading(false);
+  };
+
+  const parseResponse = (response) => {
+    const sections = [];
+    const lines = response.split("\n");
+
+    lines.forEach((line) => {
+      // Handle different types of lines based on the Gemini response format
+      if (line.startsWith("# ")) {
+        sections.push({ type: "heading1", text: line.replace(/^#\s*/, "") });
+      } else if (line.startsWith("## ")) {
+        sections.push({ type: "heading2", text: line.replace(/^##\s*/, "") });
+      } else if (line.startsWith("### ")) {
+        sections.push({ type: "heading3", text: line.replace(/^###\s*/, "") });
+      } else if (line.startsWith("* ")) {
+        const lastSection = sections[sections.length - 1];
+        if (lastSection && lastSection.type === "list") {
+          lastSection.items.push(line.replace(/^\*\s*/, ""));
+        } else {
+          sections.push({ type: "list", items: [line.replace(/^\*\s*/, "")] });
+        }
+      } else if (line.trim() === "") {
+        // Skip empty lines
+      } else {
+        // For regular paragraphs, we also handle **bold** markers
+        const formattedText = line.split(/(\*\*.*?\*\*)/).map((text) => {
+          if (text.startsWith("**") && text.endsWith("**")) {
+            return { text: text.replace(/\*\*/g, ""), bold: true };
+          }
+          return { text, bold: false };
+        });
+        sections.push({ type: "paragraph", text: formattedText });
+      }
+    });
+
+    return sections;
+  };
+  const createPdfFromResponse = async (responseContent) => {
+    const pdfDoc = await PDFDocument.create();
+    let page = pdfDoc.addPage([600, 800]); // Add an initial page
+    const { height: pageHeight } = page.getSize();
+    const margin = 50;
+    const maxWidth = 500; // Adjust based on margins and page size
+    let yPosition = pageHeight - margin; // Start from the top of the page
+
+    // Define font options
+    const fontSize = 12;
+    const heading1Size = 18;
+    const heading2Size = 16;
+    const heading3Size = 14;
+    const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
+    const boldFont = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
+    const italicFont = await pdfDoc.embedFont(StandardFonts.HelveticaOblique);
+
+    // Function to draw text with wrapping and styling
+    const drawText = (text, font, size) => {
+      const words = text.split(" ");
+      let line = "";
+      const lines = [];
+
+      for (const word of words) {
+        const testLine = `${line}${word} `;
+        const testWidth = font.widthOfTextAtSize(testLine, size);
+
+        if (testWidth > maxWidth && line !== "") {
+          lines.push(line.trim());
+          line = `${word} `;
+        } else {
+          line = testLine;
+        }
+      }
+
+      lines.push(line.trim());
+      return lines;
+    };
+
+    // Function to add a line to the page with proper formatting
+    const addLineToPage = (line, font, size) => {
+      if (yPosition < margin + size) {
+        page = pdfDoc.addPage([600, 800]);
+        yPosition = pageHeight - margin;
+      }
+
+      page.drawText(line, {
+        x: margin,
+        y: yPosition,
+        size,
+        font,
+      });
+
+      yPosition -= size + 4;
+    };
+
+    // Parse the response content and add it to the PDF
+    const sections = parseResponse(responseContent);
+
+    sections.forEach((section) => {
+      let lines;
+      switch (section.type) {
+        case "paragraph":
+          section.text.forEach((part) => {
+            const fontToUse = part.bold ? boldFont : font;
+            const size = part.bold ? fontSize : fontSize;
+            lines = drawText(part.text, fontToUse, size);
+            lines.forEach((line) => addLineToPage(line, fontToUse, size));
+          });
+          break;
+        case "list":
+          section.items.forEach((item) => {
+            lines = drawText(`• ${item}`, font, fontSize);
+            lines.forEach((line) => addLineToPage(line, font, fontSize));
+          });
+          break;
+        case "heading1":
+          lines = drawText(section.text, boldFont, heading1Size);
+          lines.forEach((line) => addLineToPage(line, boldFont, heading1Size));
+          yPosition -= 10; // Extra spacing for headings
+          break;
+        case "heading2":
+          lines = drawText(section.text, boldFont, heading2Size);
+          lines.forEach((line) => addLineToPage(line, boldFont, heading2Size));
+          yPosition -= 8; // Extra spacing for headings
+          break;
+        case "heading3":
+          lines = drawText(section.text, boldFont, heading3Size);
+          lines.forEach((line) => addLineToPage(line, boldFont, heading3Size));
+          yPosition -= 6; // Extra spacing for headings
+          break;
+        default:
+          // Handle unknown types or fallback
+          lines = drawText(section.text, font, fontSize);
+          lines.forEach((line) => addLineToPage(line, font, fontSize));
+          break;
+      }
+    });
+
+    // Save and download the PDF
+    const pdfBytes = await pdfDoc.save();
+    saveAs(
+      new Blob([pdfBytes], { type: "application/pdf" }),
+      "lesson-plan.pdf"
+    );
+  };
+
+  const createDocxFromResponse = async (responseContent) => {
+    const doc = new Document({
+      sections: [],
+    });
+    const sections = parseResponse(responseContent);
+
+    const formattedContent = sections.map((section) => {
+      switch (section.type) {
+        case "heading1":
+          return new Paragraph({
+            text: section.text,
+            heading: HeadingLevel.HEADING_1,
+          });
+        case "heading2":
+          return new Paragraph({
+            text: section.text,
+            heading: HeadingLevel.HEADING_2,
+          });
+        case "heading3":
+          return new Paragraph({
+            text: section.text,
+            heading: HeadingLevel.HEADING_3,
+          });
+        case "list":
+          return new Paragraph({
+            children: section.items.map(
+              (item) => new TextRun({ text: item, bullet: { level: 0 } })
+            ),
+          });
+        case "paragraph":
+          return new Paragraph({
+            children: section.text.map(
+              (part) =>
+                new TextRun({
+                  text: part.text,
+                  bold: part.bold,
+                })
+            ),
+          });
+        default:
+          return new Paragraph({
+            text: section.text,
+          });
+      }
+    });
+
+    doc.addSection({ children: formattedContent });
+
+    // Save the document
+    Packer.toBlob(doc).then((blob) => {
+      saveAs(blob, "lesson-plan.docx");
+    });
+  };
+
+  const MAX_CHARS_PER_SLIDE = 500;
+
+  const handleSaveAsPPT = () => {
+    const activeResponse =
+      currentIndex === 0 ? response.response1 : response.response2;
+
+    const textChunks = splitTextIntoChunks(activeResponse, MAX_CHARS_PER_SLIDE);
+    const ppt = new PptxGenJS();
+
+    textChunks.forEach((chunk) => {
+      const slide = ppt.addSlide();
+      slide.addText(chunk, {
+        x: 0.5,
+        y: 0.5,
+        w: "80%", // Adjust width as needed
+        h: "80%", // Adjust height as needed
+        fontSize: 18,
+        align: "left", // Align text to the left
+        valign: "top", // Align text to the top
+        wrap: true, // Enable text wrapping
+      });
+    });
+
+    ppt.writeFile({ fileName: "lesson-plan.pptx" });
+  };
+
+  // Function to split text into chunks of specified size
+  const splitTextIntoChunks = (text, maxChars) => {
+    const chunks = [];
+    let currentIndex = 0;
+
+    while (currentIndex < text.length) {
+      let endIndex = currentIndex + maxChars;
+      if (endIndex > text.length) endIndex = text.length;
+
+      // Ensure the chunk does not cut off in the middle of a word
+      if (endIndex < text.length) {
+        const lastSpaceIndex = text.lastIndexOf(" ", endIndex);
+        if (lastSpaceIndex > currentIndex) endIndex = lastSpaceIndex;
+      }
+
+      chunks.push(text.substring(currentIndex, endIndex).trim());
+      currentIndex = endIndex + 1; // Skip past the space
+    }
+
+    return chunks;
+  };
+
+  const handleSaveAsWord = () => {
+    const activeResponse =
+      currentIndex === 0 ? response.response1 : response.response2;
+    createDocxFromResponse(activeResponse);
+  };
+
+  const handleSaveAsPdf = () => {
+    const activeResponse =
+      currentIndex === 0 ? response.response1 : response.response2;
+    createPdfFromResponse(activeResponse);
+  };
+  const clearResponse = () => {
+    setResponse({
+      response1: "",
+      response2: "",
+    });
+  };
+
+  const handleSwitch = (direction) => {
+    if (direction === "right" && currentIndex < 1) {
+      setCurrentIndex((prevIndex) => prevIndex + 1); // Go to response 2
+    } else if (direction === "left" && currentIndex > 0) {
+      setCurrentIndex((prevIndex) => prevIndex - 1); // Go to response 1
+    }
+  };
   return (
-    <div className="w-full flex flex-col md:flex-row min-h-screen bg-gray-100">
-      <Sidebar className="md:w-1/4" />
+    <div className="min-w-screen flex flex-col md:flex-row min-h-screen bg-gray-100">
+      <Sidebar className="md:w-1/4 w-full " />
 
-      <div className="flex-1 flex flex-col md:flex-row bg-gray-100 z-10">
-        <div className="flex-1 p-4 text-black md:p-6 bg-gray-100">
-          {/* Conditional Rendering for Courses */}
-          {courses.length > 0 ? (
-            <div className="flex flex-col md:flex-row space-y-4 md:space-y-0">
-              <CoursesSection onSelectCourse={setSelectedCourse} user={user} />
+      <div className="max-w-full md:w-full h-auto m-4 bg-gray-100 rounded-xl flex flex-col md:flex-row ">
+        <div className="flex items-center  animate-fade-up justify-center shadow-lg rounded-xl m-2 max-w-full md:w-2/3">
+          <Form
+            onSubmit={handleFormSubmit}
+            setIsLoading={setIsLoading}
+            isloading={isloading}
+          />
+        </div>
 
-              {/* Main content divided into two sections */}
-              <div className="flex flex-1 flex-col md:flex-row md:space-x-5 md:space-y-0 max-sm:space-y-5">
-                {/* Left Div: Course Details */}
-                <div className="flex-1 flex flex-col space-y-4 bg-white p-4 md:ml-5 rounded-lg shadow-lg">
-                  {/* Top Section: Course Title and Description */}
-                  <div className="flex flex-col mb-4">
-                    {selectedCourse ? (
-                      <div>
-                        <div className="flex flex-col md:flex-row items-center">
-                          <div className="flex-1 p-4">
-                            <h2 className="text-3xl md:text-4xl font-bold mb-4">
-                              {selectedCourse.name}
-                            </h2>
-                            <div className="flex items-center space-x-6 mb-4">
-                              <p className="text-lg text-gray-400">
-                                {selectedCourse.code}
-                              </p>
-                              <p className="text-lg text-gray-400">
-                                {selectedCourse.category}
-                              </p>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    ) : (
-                      <p className="text-center text-gray-400">
-                        Select a course to view its details.
-                      </p>
-                    )}
-                  </div>
+        <div className="rounded-xl max-h-full animate-fade-up m-2 md:w-full max-w-full flex flex-col">
+          {/* start of response Content */}
+          {hasResponses && (
+            <div className="flex flex-row-reverse justify-between items-center">
+              <button
+                className={`p-2 bg-red-600 rounded-xl font-bold text-white hover:bg-white hover:text-black ${
+                  !hasResponses ? "opacity-50 cursor-not-allowed" : ""
+                }`}
+                onClick={clearResponse}
+                disabled={!hasResponses} // Disable if no responses
+              >
+                Clear Response
+              </button>
+              <div className="flex items-center me-4 space-x-2">
+                <button
+                  type="button"
+                  className="flex justify-center font-mono items-center w-[52px] h-[52px] text-gray-500 hover:text-white bg-white rounded-full border border-gray-200 shadow-sm hover:bg-red-500"
+                  onClick={handleSaveAsPdf}
+                  disabled={!hasResponses || isloading}
+                >
+                  PDF
+                </button>
+                <button
+                  type="button"
+                  className="flex justify-center font-mono items-center w-[52px] h-[52px] text-gray-500 hover:text-white bg-white rounded-full border border-gray-200 shadow-sm hover:bg-blue-500"
+                  onClick={handleSaveAsWord}
+                  disabled={!hasResponses || isloading}
+                >
+                  WORD
+                </button>
+                <button
+                  type="button"
+                  className="flex justify-center font-mono items-center w-[52px] h-[52px] text-gray-500 hover:text-white bg-white rounded-full border border-gray-200 shadow-sm hover:bg-orange-500"
+                  onClick={handleSaveAsPPT}
+                  disabled={!hasResponses || isloading}
+                >
+                  PPT
+                </button>
+              </div>
+              <button
+                className={`bg-black rounded-full p-1 ${
+                  !hasResponses || currentIndex === 1
+                    ? "opacity-50 cursor-not-allowed"
+                    : ""
+                }`}
+                onClick={() => handleSwitch("right")}
+                disabled={!hasResponses || currentIndex === 1}
+              >
+                <ChevronRight />
+              </button>
+              <span className="text-black">{currentIndex + 1}/2</span>
+              <button
+                className={`bg-black rounded-full p-1 ${
+                  !hasResponses || currentIndex === 0
+                    ? "opacity-50 cursor-not-allowed"
+                    : ""
+                }`}
+                onClick={() => handleSwitch("left")}
+                disabled={!hasResponses || currentIndex === 0}
+              >
+                <ChevronLeft />
+              </button>
 
-                  {/* Chat Section: Conditionally Rendered */}
-                  {selectedCourse && (
-                    <div className="flex-1 flex flex-col max-h-full bg-blue-100 rounded-lg p-4 shadow-inner overflow-y-auto mb-4 md:mb-0">
-                      {/* Chat Messages */}
-                      <div className="flex-1 overflow-y-auto mb-4">
-                        {messages.map((msg, index) => (
-                          <div
-                            key={index}
-                            className={`mb-2 ${
-                              msg.sender === "user" ? "text-right" : ""
-                            }`}
-                          >
-                            <div
-                              className={`p-2 rounded-lg ${
-                                msg.sender === "user"
-                                  ? "bg-blue-500 text-white"
-                                  : "bg-gray-200"
-                              }`}
-                            >
-                              {msg.text}
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-
-                      {/* Chat Input */}
-                      <div className="flex items-center mt-auto">
-                        <input
-                          type="text"
-                          placeholder="Type your message..."
-                          className="flex-1 p-2 border rounded-full p-3"
-                          onKeyDown={(e) => {
-                            if (e.key === "Enter") {
-                              handleSendMessage(e.target.value);
-                              e.target.value = "";
-                            }
-                          }}
-                        />
-                        <button
-                          className="ml-2 bg-blue-500 text-white p-2 rounded-full"
-                          onClick={() => {
-                            const input = document.querySelector("input");
-                            handleSendMessage(input.value);
-                            input.value = "";
-                          }}
-                        >
-                          <PaperAirplaneIcon className="w-5 h-5" />
-                        </button>
-                      </div>
-                    </div>
-                  )}
-                </div>
-
-                {/* Right Div: Updates and Assignments */}
-                <div className="flex-1 flex-col lg:flex-row space-x-0 space-y-4 lg:space-y-3 md:max-w-[350px] ">
-                  {/* Updates and Assignments stacked vertically on large screens */}
-                  <div className="flex-1">
-                    <UpdatesSection updates={sampleUpdates} />
-                  </div>
-                  <div className="flex-1">
-                    <AssignmentsSection assignments={sampleAssignments} />
-                  </div>
-                </div>
+              {/* Tab Navigation */}
+              <div className="flex text-black border-b">
+                <button
+                  className={`p-2 ${
+                    activeTab === "preview" ? "border-b-2 border-blue-600" : ""
+                  } ${!hasResponses ? "opacity-50 cursor-not-allowed" : ""}`}
+                  onClick={() => handleTabChange("preview")}
+                  disabled={!hasResponses} // Disable if no responses
+                >
+                  Preview
+                </button>
+                <button
+                  className={`p-2 ${
+                    activeTab === "edit" ? "border-b-2 border-blue-600" : ""
+                  } ${!hasResponses ? "opacity-50 cursor-not-allowed" : ""}`}
+                  onClick={() => handleTabChange("edit")}
+                  disabled={!hasResponses} // Disable if no responses
+                >
+                  Edit
+                </button>
               </div>
             </div>
-          ) : (
-            <div className="flex justify-center mt-8">
-              <button
-                className="bg-blue-500 text-white rounded-md px-6 py-3 text-lg font-bold"
-                onClick={handleAddCourse}
-              >
-                Add Course
-              </button>
-            </div>
           )}
+          <div className="max-w-full h-full rounded-xl m-1 flex flex-col justify-between overflow-auto">
+            {/* Tab Content */}
+            <div
+              className={`p-4 bg-gray-200 w-full ${
+                hasResponses ? "md:h-[800px]" : "md:h-full"
+              } my-2 rounded-xl shadow-lg text-black text-xl md:text-md overflow-y-auto`}
+            >
+              {isloading ? (
+                <SkeletonLoader />
+              ) : activeTab === "edit" ? (
+                <MDEditor
+                  value={
+                    currentIndex === 0 ? response.response1 : response.response2
+                  }
+                  onChange={(value) => {
+                    setResponse((prev) => ({
+                      ...prev,
+                      [currentIndex === 0 ? "response1" : "response2"]: value,
+                    }));
+                  }}
+                  height="100%"
+                />
+              ) : (
+                <MDEditor.Markdown
+                  source={
+                    currentIndex === 0 ? response.response1 : response.response2
+                  }
+                  style={{
+                    backgroundColor: "#E5E7EB",
+                    color: "black",
+                    padding: "5px",
+                  }}
+                />
+              )}
+            </div>
+          </div>
+          {/* End of response Content */}
         </div>
       </div>
-
-      {/* Course Modal */}
-      <CourseModal
-        isOpen={isCourseModalOpen}
-        onClose={() => setIsCourseModalOpen(false)}
-        onSave={handleSaveCourse}
-        onUpdate={handleUpdateCourse}
-        selectedCourse={selectedCourse}
-        user={user}
-      />
     </div>
   );
 };

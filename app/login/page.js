@@ -1,37 +1,75 @@
 "use client";
-
-import { useState } from 'react';
-import { useRouter } from 'next/navigation'; 
-import { loginUser } from '../../lib/auth';
-import { useDispatch } from 'react-redux'; // Import useDispatch
-import { fetchUser } from '../../redux/slices/userSlice'; // Import fetchUser action
-import Link from 'next/link';
-
+import { useState, useEffect, useRef } from "react";
+import { useRouter } from "next/navigation";
+import { loginUser, fetchUser } from "../../redux/slices/userSlice";
+import { useDispatch } from "react-redux";
+import { Eye, EyeOff } from "lucide-react";
+import Link from "next/link";
+import Typed from "typed.js";
 
 export default function LoginPage() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
-  const [message, setMessage] = useState('');
+  const [formData, setFormData] = useState({ email: "", password: "" });
+  const [error, setError] = useState("");
+  const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const [passwordVisible, setPasswordVisible] = useState(false);
 
   const router = useRouter();
-  const dispatch = useDispatch(); // Initialize useDispatch
+  const dispatch = useDispatch();
+
+  const typedRef = useRef(null);
+  useEffect(() => {
+    const options = {
+      strings: [
+        "Generate Lessons Through AI",
+        "Create Interactive Lessons with AI",
+        "Make Learning Fun with AI",
+      ], // You can add more variations if you'd like
+      typeSpeed: 50,
+      backSpeed: 50,
+      loop: true,
+      showCursor: true,
+      cursorChar: "_",
+    };
+
+    // Initialize Typed.js
+    const typed = new Typed(typedRef.current, options);
+
+    // Destroy Typed.js instance on cleanup
+    return () => {
+      typed.destroy();
+    };
+  }, []);
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({ ...prevData, [name]: value }));
+  };
 
   const handleLogin = async (e) => {
     e.preventDefault();
     setLoading(true);
-    const { user, error } = await loginUser(email, password);
-    setLoading(false);
-    if (error) {
-      setError(error.message);
-      setMessage('');
-    } else {
-      setMessage('Login successful!');
-      setError('');
-      await dispatch(fetchUser());
-      router.push('/dashboard');
+    setError("");
+    setMessage("");
+
+    try {
+      const resultAction = await dispatch(loginUser(formData));
+
+      if (loginUser.rejected.match(resultAction)) {
+        setError(resultAction.payload || "Login failed");
+        setMessage("");
+      } else {
+        setMessage("Login successful!");
+        setError("");
+
+        await dispatch(fetchUser());
+        router.push("/dashboard");
+      }
+    } catch (error) {
+      setError("An unexpected error occurred");
+      setMessage("");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -40,57 +78,112 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="flex min-h-screen">
+    <div className="flex flex-col md:flex-row min-h-screen">
+      {/* Background Animation */}
+      <div className="area absolute inset-0 z-[-1]">
+        <ul className="circles">
+          <li></li>
+          <li></li>
+          <li></li>
+          <li></li>
+          <li></li>
+          <li></li>
+          <li></li>
+          <li></li>
+          <li></li>
+          <li></li>
+        </ul>
+      </div>
+      {/* End Background Animation */}
       {/* Left Column - Graphic */}
-      <div className="w-1/2 flex items-center justify-center bg-purple-600">
-        {/* <img src="/login-graphic.jfif" alt="Graphic" className="max-w-full h-auto" /> */}
+      <div className="hidden md:flex  animate-fade-up flex-col w-1/2 items-center justify-center bg-transparent">
+        <h1 className="w-full font-mono px-6 text-white text-4xl mb-8">
+          <span ref={typedRef}></span>
+        </h1>
+        <img src="/login.svg" alt="Graphic" className="max-w-full  h-3/4" />
       </div>
 
       {/* Right Column - Login Form */}
-      <div className="w-1/2 flex items-center justify-center">
-        <form onSubmit={handleLogin} className="p-8 bg-white shadow-md rounded w-full max-w-md">
-          <h1 className="text-2xl font-bold mb-6 text-black">Login</h1>
+      <div className="w-full h-screen md:w-1/2 flex flex-col animate-fade-up gap-7 items-center justify-center bg-transparent p-6">
+        <h1 className="text-4xl font-bold text-white">Sign In</h1>
+        <form
+          onSubmit={handleLogin}
+          className="p-8 bg-white w-full rounded-lg max-w-md"
+        >
+          <label htmlFor="email" className="text-gray-600">
+            Email
+          </label>
           <input
+            id="email"
+            name="email" // Use name attribute
             type="email"
-            placeholder="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className="block w-full mb-4 p-3 border rounded text-black"
+            placeholder="Type your email"
+            value={formData.email}
+            onChange={handleInputChange}
+            className="block w-full my-4 p-3 border rounded text-black transition duration-300 ease-in-out focus:border-black focus:outline-none focus:ring-1 focus:ring-black"
           />
 
           {/* Password Field with Toggle Visibility */}
           <div className="relative mb-4">
+            <label htmlFor="pwd" className="text-gray-600">
+              Password
+            </label>
             <input
+              id="pwd"
+              name="password" // Use name attribute
               type={passwordVisible ? "text" : "password"}
-              placeholder="Password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="block w-full p-3 border rounded text-black"
+              placeholder="8+ characters, 1 capital letter"
+              value={formData.password}
+              onChange={handleInputChange}
+              className="block w-full my-4 p-3 border rounded text-black transition duration-200 ease-in-out focus:border-black focus:outline-none focus:ring-1 focus:ring-black"
             />
             <button
               type="button"
               onClick={togglePasswordVisibility}
-              className="absolute inset-y-0 right-0 flex items-center px-3 text-gray-600"
+              className="absolute inset-y-0 right-0 h-[50px] mt-[40px] flex items-center px-3 text-gray-600"
             >
-              <img
-                src={passwordVisible ? "/hide.png" : "/show.png"}
-                alt={passwordVisible ? "Hide Password" : "Show Password"}
-                className="h-6 w-6"
-              />
+              {passwordVisible ? (
+                <Eye className="h-6 w-6" />
+              ) : (
+                <EyeOff className="h-6 w-6" />
+              )}
             </button>
           </div>
+          <div className="hover:underline text-black text-right p-2">
+            <Link href="/forget-password">Forgot Password?</Link>
+          </div>
 
-          <button type="submit" className="w-full p-3 bg-blue-500 text-white rounded">
+          <button
+            type="submit"
+            className="w-full p-3 bg-black text-white rounded-lg transition duration-300 ease-in-out transform hover:bg-black hover:shadow-lg hover:ring-2 hover:ring-offset-2 hover:ring-black"
+            disabled={loading}
+          >
             {loading ? (
               <span className="flex justify-center items-center">
-                <svg className="animate-spin h-5 w-5 mr-3 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v3a5 5 0 000 10v3a8 8 0 01-8-8z"></path>
+                <svg
+                  className="animate-spin h-5 w-5 mr-3 text-white"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <circle
+                    className="opacity-25"
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    stroke="currentColor"
+                    strokeWidth="4"
+                  ></circle>
+                  <path
+                    className="opacity-75"
+                    fill="currentColor"
+                    d="M4 12a8 8 0 018-8v3a5 5 0 000 10v3a8 8 0 01-8-8z"
+                  ></path>
                 </svg>
-                Logging In...
+                Signing In...
               </span>
             ) : (
-              'Log In'
+              "Sign In"
             )}
           </button>
           <div className="mt-6 text-center">
