@@ -1,45 +1,30 @@
-"use client";
-
-import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
-import { useSelector } from "react-redux";
-import Sidebar from "../components/sidebar";
-import Form from "../components/Form";
-import SkeletonLoader from "../components/Skeleton";
-import { ChevronRight, ChevronLeft } from "lucide-react";
+// components/ResponseSection.js
+import { useEffect } from "react";
+import MDEditor from "@uiw/react-md-editor";
+import SkeletonLoader from "./Skeleton";
+import { Download, Trash2 } from "lucide-react";
+import { useDispatch, useSelector } from "react-redux";
+import { setResponse, clearResponse } from "../redux/slices/responseSlice";
 import { Document, Packer, Paragraph, TextRun, HeadingLevel } from "docx";
 import { saveAs } from "file-saver";
 import { PDFDocument, StandardFonts } from "pdf-lib";
 import PptxGenJS from "pptxgenjs";
-import MDEditor from "@uiw/react-md-editor";
 
-const DashboardPage = () => {
-  const { user } = useSelector((state) => state.user);
-
-  const [response, setResponse] = useState({
-    response1: "",
-    response2: "",
-  });
-  const [isloading, setIsLoading] = useState(false);
-  const router = useRouter();
-
-  const [activeTab, setActiveTab] = useState("preview");
-
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const hasResponses = response.response1 || response.response2;
-
-  const handleTabChange = (tab) => {
-    setActiveTab(tab);
-  };
+const ResponseSection = ({
+  handleEditToggle,
+  isEditing,
+  setIsEditing,
+  isLoading,
+  disableEdit,
+  disableGenerate,
+}) => {
+  const dispatch = useDispatch();
+  const { response } = useSelector((state) => state.response);
+  const hasResponse = response !== "";
 
   useEffect(() => {
-    if (!user) router.push("/login");
-  }, [user]);
-
-  const handleFormSubmit = (res1, res2) => {
-    setResponse({ response1: res1, response2: res2 });
-    setIsLoading(false);
-  };
+    if (hasResponse) setIsEditing(false);
+  }, [hasResponse]);
 
   const parseResponse = (response) => {
     const sections = [];
@@ -240,10 +225,7 @@ const DashboardPage = () => {
   const MAX_CHARS_PER_SLIDE = 500;
 
   const handleSaveAsPPT = () => {
-    const activeResponse =
-      currentIndex === 0 ? response.response1 : response.response2;
-
-    const textChunks = splitTextIntoChunks(activeResponse, MAX_CHARS_PER_SLIDE);
+    const textChunks = splitTextIntoChunks(response, MAX_CHARS_PER_SLIDE);
     const ppt = new PptxGenJS();
 
     textChunks.forEach((chunk) => {
@@ -286,170 +268,113 @@ const DashboardPage = () => {
   };
 
   const handleSaveAsWord = () => {
-    const activeResponse =
-      currentIndex === 0 ? response.response1 : response.response2;
-    createDocxFromResponse(activeResponse);
+    createDocxFromResponse(response);
   };
 
   const handleSaveAsPdf = () => {
-    const activeResponse =
-      currentIndex === 0 ? response.response1 : response.response2;
-    createPdfFromResponse(activeResponse);
-  };
-  const clearResponse = () => {
-    setResponse({
-      response1: "",
-      response2: "",
-    });
+    createPdfFromResponse(response);
   };
 
-  const handleSwitch = (direction) => {
-    if (direction === "right" && currentIndex < 1) {
-      setCurrentIndex((prevIndex) => prevIndex + 1); // Go to response 2
-    } else if (direction === "left" && currentIndex > 0) {
-      setCurrentIndex((prevIndex) => prevIndex - 1); // Go to response 1
-    }
-  };
   return (
-    <div className="min-w-screen flex flex-col md:flex-row min-h-screen bg-gray-100">
-      <Sidebar className="md:w-1/4 w-full " />
+    <>
+      {hasResponse && (
+        <div className="flex flex-row-reverse justify-between items-center">
+          <button
+            className={`${
+              disableEdit ? "opacity-50 cursor-not-allowed" : ""
+            } p-2 bg-red-600 rounded-xl font-bold text-white hover:bg-white hover:text-black`}
+            onClick={handleEditToggle}
+            disabled={disableEdit}
+          >
+            {isEditing ? "Preview" : "Edit Response"}
+          </button>
 
-      <div className="max-w-full md:w-full h-auto m-4 bg-gray-100 rounded-xl flex flex-col md:flex-row ">
-        <div className="flex items-center  animate-fade-up justify-center shadow-lg rounded-xl m-2 max-w-full md:w-2/3">
-          <Form
-            onSubmit={handleFormSubmit}
-            setIsLoading={setIsLoading}
-            isloading={isloading}
-          />
+          <button
+            className="w-12 h-12 flex items-center justify-center bg-gray-200 rounded-full"
+            onClick={() => {
+              setResponse("");
+              dispatch(clearResponse());
+              setIsEditing(true);
+            }}
+          >
+            <Trash2 color="black" />
+          </button>
+
+          <div className="flex items-center me-4 text-black space-x-2">
+            <Download />
+            <button
+              type="button"
+              className="flex justify-center items-center w-[52px] h-[52px] rounded-full"
+              onClick={handleSaveAsPdf}
+              disabled={isLoading}
+            >
+              <img
+                src="pdf.png"
+                className="h-9 w-9 transition-transform duration-300 ease-in-out transform hover:scale-125"
+              />
+            </button>
+            <button
+              type="button"
+              className="flex justify-center font-mono items-center w-[52px] h-[52px] rounded-full"
+              onClick={handleSaveAsWord}
+              disabled={isLoading}
+            >
+              <img
+                src="doc.png"
+                className="h-9 w-9 transition-transform duration-300 ease-in-out transform hover:scale-125"
+              />
+            </button>
+            <button
+              type="button"
+              className="flex justify-center font-mono items-center w-[52px] h-[52px] rounded-full"
+              onClick={handleSaveAsPPT}
+              disabled={isLoading}
+            >
+              <img
+                src="ppt.png"
+                className="h-9 w-9 transition-transform duration-300 ease-in-out transform hover:scale-125"
+              />
+            </button>
+          </div>
         </div>
-
-        <div className="rounded-xl max-h-full animate-fade-up m-2 md:w-full max-w-full flex flex-col">
-          {/* start of response Content */}
-          {hasResponses && (
-            <div className="flex flex-row-reverse justify-between items-center">
-              <button
-                className={`p-2 bg-red-600 rounded-xl font-bold text-white hover:bg-white hover:text-black ${
-                  !hasResponses ? "opacity-50 cursor-not-allowed" : ""
-                }`}
-                onClick={clearResponse}
-                disabled={!hasResponses} // Disable if no responses
-              >
-                Clear Response
-              </button>
-              <div className="flex items-center me-4 space-x-2">
-                <button
-                  type="button"
-                  className="flex justify-center font-mono items-center w-[52px] h-[52px] text-gray-500 hover:text-white bg-white rounded-full border border-gray-200 shadow-sm hover:bg-red-500"
-                  onClick={handleSaveAsPdf}
-                  disabled={!hasResponses || isloading}
-                >
-                  PDF
-                </button>
-                <button
-                  type="button"
-                  className="flex justify-center font-mono items-center w-[52px] h-[52px] text-gray-500 hover:text-white bg-white rounded-full border border-gray-200 shadow-sm hover:bg-blue-500"
-                  onClick={handleSaveAsWord}
-                  disabled={!hasResponses || isloading}
-                >
-                  WORD
-                </button>
-                <button
-                  type="button"
-                  className="flex justify-center font-mono items-center w-[52px] h-[52px] text-gray-500 hover:text-white bg-white rounded-full border border-gray-200 shadow-sm hover:bg-orange-500"
-                  onClick={handleSaveAsPPT}
-                  disabled={!hasResponses || isloading}
-                >
-                  PPT
-                </button>
-              </div>
-              <button
-                className={`bg-black rounded-full p-1 ${
-                  !hasResponses || currentIndex === 1
-                    ? "opacity-50 cursor-not-allowed"
-                    : ""
-                }`}
-                onClick={() => handleSwitch("right")}
-                disabled={!hasResponses || currentIndex === 1}
-              >
-                <ChevronRight />
-              </button>
-              <span className="text-black">{currentIndex + 1}/2</span>
-              <button
-                className={`bg-black rounded-full p-1 ${
-                  !hasResponses || currentIndex === 0
-                    ? "opacity-50 cursor-not-allowed"
-                    : ""
-                }`}
-                onClick={() => handleSwitch("left")}
-                disabled={!hasResponses || currentIndex === 0}
-              >
-                <ChevronLeft />
-              </button>
-
-              {/* Tab Navigation */}
-              <div className="flex text-black border-b">
-                <button
-                  className={`p-2 ${
-                    activeTab === "preview" ? "border-b-2 border-blue-600" : ""
-                  } ${!hasResponses ? "opacity-50 cursor-not-allowed" : ""}`}
-                  onClick={() => handleTabChange("preview")}
-                  disabled={!hasResponses} // Disable if no responses
-                >
-                  Preview
-                </button>
-                <button
-                  className={`p-2 ${
-                    activeTab === "edit" ? "border-b-2 border-blue-600" : ""
-                  } ${!hasResponses ? "opacity-50 cursor-not-allowed" : ""}`}
-                  onClick={() => handleTabChange("edit")}
-                  disabled={!hasResponses} // Disable if no responses
-                >
-                  Edit
-                </button>
-              </div>
+      )}
+      <div className="max-w-full h-full rounded-xl m-1 flex flex-col justify-between overflow-auto">
+        <div
+          className={`p-4 bg-gray-200 w-full ${
+            hasResponse ? "md:h-[800px]" : "md:h-full"
+          } my-2 rounded-xl shadow-lg text-black text-xl md:text-md overflow-y-auto`}
+        >
+          {isLoading ? (
+            <SkeletonLoader />
+          ) : hasResponse ? (
+            isEditing ? (
+              <MDEditor
+                value={response}
+                onChange={(value) => setResponse(value)}
+                height="100%"
+              />
+            ) : (
+              <MDEditor.Markdown
+                source={response}
+                style={{
+                  backgroundColor: "#E5E7EB",
+                  color: "black",
+                  padding: "5px",
+                }}
+              />
+            )
+          ) : (
+            <div class="flex space-x-2 justify-center items-center bg-gray-200 h-full">
+              <span class="sr-only">Loading...</span>
+              <div class="h-8 w-8 bg-black rounded-full animate-bounce [animation-delay:-0.3s]"></div>
+              <div class="h-8 w-8 bg-black rounded-full animate-bounce [animation-delay:-0.15s]"></div>
+              <div class="h-8 w-8 bg-black rounded-full animate-bounce"></div>
             </div>
           )}
-          <div className="max-w-full h-full rounded-xl m-1 flex flex-col justify-between overflow-auto">
-            {/* Tab Content */}
-            <div
-              className={`p-4 bg-gray-200 w-full ${
-                hasResponses ? "md:h-[800px]" : "md:h-full"
-              } my-2 rounded-xl shadow-lg text-black text-xl md:text-md overflow-y-auto`}
-            >
-              {isloading ? (
-                <SkeletonLoader />
-              ) : activeTab === "edit" ? (
-                <MDEditor
-                  value={
-                    currentIndex === 0 ? response.response1 : response.response2
-                  }
-                  onChange={(value) => {
-                    setResponse((prev) => ({
-                      ...prev,
-                      [currentIndex === 0 ? "response1" : "response2"]: value,
-                    }));
-                  }}
-                  height="100%"
-                />
-              ) : (
-                <MDEditor.Markdown
-                  source={
-                    currentIndex === 0 ? response.response1 : response.response2
-                  }
-                  style={{
-                    backgroundColor: "#E5E7EB",
-                    color: "black",
-                    padding: "5px",
-                  }}
-                />
-              )}
-            </div>
-          </div>
-          {/* End of response Content */}
         </div>
       </div>
-    </div>
+    </>
   );
 };
 
-export default DashboardPage;
+export default ResponseSection;

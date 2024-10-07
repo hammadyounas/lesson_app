@@ -5,6 +5,8 @@ import outlinesReducer from '../redux/slices/outlineSlice';
 import resourcesReducer from '../redux/slices/resourceSlice';
 import userReducer from '../redux/slices/userSlice';
 import coursesReducer from '../redux/slices/courseSlice';
+import responseReducer from '../redux/slices/responseSlice';
+import formReducer from '../redux/slices/formSlice';
 
 // Redux Persist configuration
 const persistConfig = {
@@ -18,6 +20,8 @@ const rootReducer = combineReducers({
   outlines: outlinesReducer,
   resources: resourcesReducer,
   user: userReducer,
+  response: responseReducer,
+  form: formReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

@@ -8,7 +8,7 @@ import {
   fetchUser,
   uploadProfilePicture,
 } from "../../redux/slices/userSlice";
-import Sidebar from "../components/sidebar";
+import Sidebar from "../../components/Sidebar";
 import { useRouter } from "next/navigation";
 import { Save, Trash2, Camera } from "lucide-react";
 import bcrypt from "bcryptjs";

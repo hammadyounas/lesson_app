@@ -7,12 +7,12 @@ const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
 const getGeminiResponse = async (prompt) => {
   try {
     // Generate response for the same prompt twice
-    const result1 = await model.generateContent(prompt);
-    const result2 = await model.generateContent(prompt);
+    const result = await model.generateContent(prompt);
+    // const result2 = await model.generateContent(prompt);
 
     return {
-      response1: result1.response.text(),
-      response2: result2.response.text(),
+      response: result.response.text(),
+      // response2: result2.response.text(),
     };
   } catch (error) {
     console.error('Error generating content:', error);
@@ -42,7 +42,7 @@ export async function POST(req) {
     // Get the Gemini response using the same prompt twice
     const geminiResponse = await getGeminiResponse(prompt);
 
-    return NextResponse.json({ response1: geminiResponse.response1, response2: geminiResponse.response2 });
+    return NextResponse.json({ response: geminiResponse.response});
   } catch (error) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }

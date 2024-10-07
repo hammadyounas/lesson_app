@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import Sidebar from './components/Sidebar'; 
+import Sidebar from '../components/Sidebar'; 
 import { Send } from 'lucide-react';
 import { useSelector } from 'react-redux';
 
@@ -35,7 +35,7 @@ const HomePage = () => {
   // }, [router]);
 
   useEffect(()=> {
-    router.push('/login')
+    router.push('/freePrompts');
   })
   const handleSendMessage = () => {
     if (message.trim()) {
