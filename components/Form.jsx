@@ -219,7 +219,7 @@ const Form = ({ onSubmit, setIsLoading, isLoading, disableGenerate }) => {
           </label>
           <select
             id="tabs"
-            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            className="bg-gray-800 border border-gray-600 text-white text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
             value={activeTab}
             onChange={(e) => handleTabClick(e.target.value)}
           >
@@ -231,7 +231,7 @@ const Form = ({ onSubmit, setIsLoading, isLoading, disableGenerate }) => {
         </div>
 
         {/* Tabs for Desktop */}
-        <ul className="hidden bg-gray-800 text-sm font-medium text-center text-gray-500 rounded-lg shadow sm:flex dark:divide-gray-700 dark:text-gray-400">
+        <ul className="hidden bg-gray-800 text-sm font-medium text-center text-gray-400 rounded-lg shadow sm:flex divide-gray-700">
           {["Lesson", "Homework", "Quiz", "Term Planner"].map((tab) => (
             <li className="w-full" key={tab}>
               <button
@@ -239,9 +239,9 @@ const Form = ({ onSubmit, setIsLoading, isLoading, disableGenerate }) => {
                 onClick={() => handleTabClick(tab)}
                 className={`inline-block w-full p-4 ${
                   activeTab === tab
-                    ? "text-gray-900 bg-gray-100 dark:bg-gray-700 dark:text-white"
-                    : "bg-white dark:bg-gray-800 dark:text-gray-400 hover:text-gray-700 hover:bg-gray-50 dark:hover:text-white dark:hover:bg-gray-700"
-                } border-r border-gray-800 dark:border-gray-800 rounded-lg focus:outline-none`}
+                    ? "text-white bg-gray-600"
+                    : "text-gray-400 hover:text-white hover:bg-gray-700"
+                } border-r border-gray-700 rounded-lg focus:outline-none`}
               >
                 {tab}
               </button>
