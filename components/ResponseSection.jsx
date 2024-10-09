@@ -16,7 +16,6 @@ const ResponseSection = ({
   setIsEditing,
   isLoading,
   disableEdit,
-  disableGenerate,
 }) => {
   const dispatch = useDispatch();
   const { response } = useSelector((state) => state.response);
@@ -278,11 +277,11 @@ const ResponseSection = ({
   return (
     <>
       {hasResponse && (
-        <div className="flex flex-row-reverse justify-between items-center">
+        <div className="flex flex-col md:flex-row-reverse md:justify-between items-center mb-4">
           <button
             className={`${
               disableEdit ? "opacity-50 cursor-not-allowed" : ""
-            } p-2 bg-red-600 rounded-xl font-bold text-white hover:bg-white hover:text-black`}
+            } p-2 bg-red-600 rounded-xl font-bold text-white hover:bg-white hover:text-black transition duration-300`}
             onClick={handleEditToggle}
             disabled={disableEdit}
           >
@@ -290,7 +289,7 @@ const ResponseSection = ({
           </button>
 
           <button
-            className="w-12 h-12 flex items-center justify-center bg-gray-200 rounded-full"
+            className="w-12 h-12 flex items-center justify-center bg-gray-200 rounded-full mt-2 md:mt-0"
             onClick={() => {
               setResponse("");
               dispatch(clearResponse());
@@ -300,8 +299,8 @@ const ResponseSection = ({
             <Trash2 color="black" />
           </button>
 
-          <div className="flex items-center me-4 text-black space-x-2">
-            <Download />
+          <div className="flex items-center space-x-2 mt-2 md:mt-0">
+            <Download className="h-9 w-9 rounded-full p-2 bg-gray-200" stroke="black" />
             <button
               type="button"
               className="flex justify-center items-center w-[52px] h-[52px] rounded-full"
@@ -341,7 +340,7 @@ const ResponseSection = ({
       <div className="max-w-full h-full rounded-xl m-1 flex flex-col justify-between overflow-auto">
         <div
           className={`p-4 bg-gray-200 w-full ${
-            hasResponse ? "md:h-[800px]" : "md:h-full"
+            hasResponse ? "md:h-[800px] md:max-h-[82vh]" : "md:h-full"
           } my-2 rounded-xl shadow-lg text-black text-xl md:text-md overflow-y-auto`}
         >
           {isLoading ? (
@@ -364,11 +363,11 @@ const ResponseSection = ({
               />
             )
           ) : (
-            <div class="flex space-x-2 justify-center items-center bg-gray-200 h-full">
-              <span class="sr-only">Loading...</span>
-              <div class="h-8 w-8 bg-black rounded-full animate-bounce [animation-delay:-0.3s]"></div>
-              <div class="h-8 w-8 bg-black rounded-full animate-bounce [animation-delay:-0.15s]"></div>
-              <div class="h-8 w-8 bg-black rounded-full animate-bounce"></div>
+            <div className="flex space-x-2 justify-center items-center h-full">
+              <span className="sr-only">Loading...</span>
+              <div className="h-8 w-8 bg-black rounded-full animate-bounce [animation-delay:-0.3s]"></div>
+              <div className="h-8 w-8 bg-black rounded-full animate-bounce [animation-delay:-0.15s]"></div>
+              <div className="h-8 w-8 bg-black rounded-full animate-bounce"></div>
             </div>
           )}
         </div>

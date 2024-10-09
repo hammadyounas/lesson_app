@@ -45,19 +45,19 @@ const Sidebar = () => {
       {/* Nav Button for Mobile View */}
       <button
         onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-        className="lg:hidden absolute top-2 left-2 z-50 bg-blue-800 text-white p-2 rounded-full"
+        className="lg:hidden fixed top-2 left-2 z-50 bg-blue-800 text-white p-2 rounded-full"
       >
         <Menu className="w-6 h-6" />
       </button>
 
       <aside
-        className={`fixed lg:relative top-0 left-0 bg-blue-800 text-white h-full p-4 shadow flex flex-col transition-width duration-300 ease-in-out ${
+        className={`fixed top-0 left-0 bg-blue-800 text-white h-screen p-4 shadow flex flex-col transition-width duration-300 ease-in-out ${
           isSidebarOpen ? "translate-x-0" : "-translate-x-full"
         } lg:translate-x-0 ${isExpanded ? "w-64" : "w-20"} z-40`}
       >
-        {/* User Profile Picture Section */}
+        {/* Profile Section */}
         {user && (
-          <div className="flex justify-center items-center mb-5">
+          <div className="flex justify-center items-center mb-5 mt-10 lg:mt-0">
             <img
               src={user?.profile_picture_url || "default-avatar.png"}
               alt="Profile"
@@ -75,7 +75,7 @@ const Sidebar = () => {
         <ul className="flex flex-col justify-center items-center flex-grow space-y-5">
           {user?.id ? (
             <>
-              <li className="flex items-center space-x-2">
+              <li className="flex items-center space-x-2 relative group">
                 <Link
                   href="/dashboard"
                   className="w-full flex items-center space-x-2 px-2 py-1 hover:bg-white hover:text-black rounded-xl transition-all duration-300"
@@ -83,8 +83,17 @@ const Sidebar = () => {
                   <House className="w-8 h-8" />
                   {isExpanded && <span className="ml-2">Home</span>}
                 </Link>
+                {/* Tooltip */}
+                {!isExpanded && (
+                  <span className="tooltip absolute left-full top-1/2 transform -translate-y-1/2 ml-2 hidden group-hover:flex flex-col items-start transition-opacity duration-200 opacity-0 group-hover:opacity-100">
+                    <span className="bg-white text-black font-mono text-sm p-1 rounded shadow-md">
+                      Home
+                    </span>
+                    <span className="w-0 h-0 border-l-4 border-l-white border-t-4 border-t-transparent border-b-4 border-b-transparent absolute left-[-4px] top-1/2 transform -translate-y-1/2"></span>
+                  </span>
+                )}
               </li>
-              <li className="flex items-center space-x-2">
+              <li className="flex items-center space-x-2 relative group">
                 <Link
                   href="/user-setting"
                   className="w-full flex items-center space-x-2 px-2 py-1 hover:bg-white hover:text-black rounded-xl transition-all duration-300"
@@ -92,17 +101,17 @@ const Sidebar = () => {
                   <Settings className="w-8 h-8" />
                   {isExpanded && <span className="ml-2">Settings</span>}
                 </Link>
+                {/* Tooltip */}
+                {!isExpanded && (
+                  <span className="tooltip absolute left-full top-1/2 transform -translate-y-1/2 ml-2 hidden group-hover:flex flex-col items-start transition-opacity duration-200 opacity-0 group-hover:opacity-100">
+                    <span className="bg-white text-black font-mono text-sm p-1 rounded shadow-md">
+                      Settings
+                    </span>
+                    <span className="w-0 h-0 border-l-4 border-l-white border-t-4 border-t-transparent border-b-4 border-b-transparent absolute left-[-4px] top-1/2 transform -translate-y-1/2"></span>
+                  </span>
+                )}
               </li>
-              {/* <li className="flex items-center space-x-2">
-                <Link
-                  href="/pricing"
-                  className="w-full flex items-center space-x-2 px-2 py-1 hover:bg-white hover:text-black rounded-xl transition-all duration-300"
-                >
-                  <Gem className="w-8 h-8" />
-                  {isExpanded && <span className="ml-2">Go Premium</span>}
-                </Link>
-              </li> */}
-              <li className="flex items-center space-x-2">
+              <li className="flex items-center space-x-2 relative group">
                 <button
                   onClick={handleLogout}
                   className="w-full flex items-center space-x-2 px-2 py-1 hover:bg-white rounded-xl text-red-400 transition-all duration-300"
@@ -110,11 +119,20 @@ const Sidebar = () => {
                   <LogOut className="h-8 w-8" />
                   {isExpanded && <span className="ml-2">Logout</span>}
                 </button>
+                {/* Tooltip */}
+                {!isExpanded && (
+                  <span className="tooltip absolute left-full top-1/2 transform -translate-y-1/2 ml-2 hidden group-hover:flex flex-col items-start transition-opacity duration-200 opacity-0 group-hover:opacity-100">
+                    <span className="bg-white text-black font-mono text-sm p-1 rounded shadow-md">
+                      Logout
+                    </span>
+                    <span className="w-0 h-0 border-l-4 border-l-white border-t-4 border-t-transparent border-b-4 border-b-transparent absolute left-[-4px] top-1/2 transform -translate-y-1/2"></span>
+                  </span>
+                )}
               </li>
             </>
           ) : (
             <>
-              <li className="flex items-center space-x-2">
+              <li className="flex items-center space-x-2 relative group">
                 <Link
                   href="/login"
                   className="w-full flex items-center space-x-2 px-2 py-1 hover:bg-white hover:text-black rounded-full transition-all duration-300"
@@ -122,8 +140,17 @@ const Sidebar = () => {
                   <UserRound className="w-8 h-8" />
                   {isExpanded && <span className="ml-2">Login</span>}
                 </Link>
+                {/* Tooltip */}
+                {!isExpanded && (
+                  <span className="tooltip absolute left-full top-1/2 transform -translate-y-1/2 ml-2 hidden group-hover:flex flex-col items-start transition-opacity duration-200 opacity-0 group-hover:opacity-100">
+                    <span className="bg-white text-black font-mono text-sm p-1 rounded shadow-md">
+                      Login
+                    </span>
+                    <span className="w-0 h-0 border-l-4 border-l-white border-t-4 border-t-transparent border-b-4 border-b-transparent absolute left-[-4px] top-1/2 transform -translate-y-1/2"></span>
+                  </span>
+                )}
               </li>
-              <li className="flex items-center space-x-2">
+              <li className="flex items-center space-x-2 relative group">
                 <Link
                   href="/signup"
                   className="w-full flex items-center space-x-2 px-2 py-1 hover:bg-white hover:text-black rounded-full transition-all duration-300"
@@ -131,8 +158,17 @@ const Sidebar = () => {
                   <UserRoundPen className="w-8 h-8" />
                   {isExpanded && <span className="ml-2">SignUp</span>}
                 </Link>
+                {/* Tooltip */}
+                {!isExpanded && (
+                  <span className="tooltip absolute left-full top-1/2 transform -translate-y-1/2 ml-2 hidden group-hover:flex flex-col items-start transition-opacity duration-200 opacity-0 group-hover:opacity-100">
+                    <span className="bg-white text-black font-mono text-sm p-1 rounded shadow-md">
+                      Sign Up
+                    </span>
+                    <span className="w-0 h-0 border-l-4 border-l-white border-t-4 border-t-transparent border-b-4 border-b-transparent absolute left-[-4px] top-1/2 transform -translate-y-1/2"></span>
+                  </span>
+                )}
               </li>
-              <li className="flex items-center space-x-2">
+              <li className="flex items-center space-x-2 relative group">
                 <Link
                   href="/pricing"
                   className="w-full flex items-center space-x-2 px-2 py-1 hover:bg-white hover:text-black rounded-xl transition-all duration-300"
@@ -140,6 +176,15 @@ const Sidebar = () => {
                   <Gem className="w-8 h-8" />
                   {isExpanded && <span className="ml-2">Go Premium</span>}
                 </Link>
+                {/* Tooltip */}
+                {!isExpanded && (
+                  <span className="tooltip absolute left-full top-1/2 transform -translate-y-1/2 ml-2 hidden group-hover:flex flex-col items-start transition-opacity duration-200 opacity-0 group-hover:opacity-100">
+                    <span className="bg-white text-black font-mono text-sm p-1 rounded shadow-md">
+                      Go Premium
+                    </span>
+                    <span className="w-0 h-0 border-l-4 border-l-white border-t-4 border-t-transparent border-b-4 border-b-transparent absolute left-[-4px] top-1/2 transform -translate-y-1/2"></span>
+                  </span>
+                )}
               </li>
             </>
           )}

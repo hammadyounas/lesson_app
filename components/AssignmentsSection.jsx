@@ -7,7 +7,7 @@ const AssignmentsSection = ({ assignments }) => {
           {assignments.map((assignment, index) => (
             <li
               key={index}
-              className="flex flex-col p-3 bg-white shadow-md p-6 rounded-lg border border-gray-200"
+              className="flex flex-col p-3 bg-white shadow-md rounded-lg border border-gray-200"
             >
               <div className="flex items-center justify-between">
                 <p className="font-semibold text-gray-800">{assignment.title}</p>

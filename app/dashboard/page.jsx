@@ -31,14 +31,13 @@ const DashboardPage = () => {
   };
 
   return (
-
     <div className="min-w-screen flex flex-col md:flex-row min-h-screen bg-gray-100">
       <Sidebar className="md:w-1/4 w-full" />
 
-      <div className="max-w-full md:w-full h-auto m-4 bg-gray-100 rounded-xl flex flex-col md:flex-row">
+      <div className="max-w-full md:w-full h-auto lg:ml-24 m-4 bg-gray-100 rounded-xl flex flex-col md:flex-row">
         {/* Show the Form only when in editing mode */}
         <div
-          className={`flex flex-col items-center justify-center animate-fade-right shadow-lg rounded-xl m-2 max-w-full md:w-2/3  transition-all duration-300 ${
+          className={`flex flex-col items-center justify-center animate-fade-right shadow-lg rounded-xl m-2 max-w-full md:w-2/3 transition-all duration-300 ${
             isEditing
               ? "opacity-100 -translate-x-0"
               : "opacity-0 -translate-x-full hidden"
