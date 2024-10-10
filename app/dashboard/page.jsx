@@ -37,10 +37,10 @@ const DashboardPage = () => {
       <div className="max-w-full md:w-full h-auto lg:ml-24 m-4 bg-gray-100 rounded-xl flex flex-col md:flex-row">
         {/* Show the Form only when in editing mode */}
         <div
-          className={`flex flex-col items-center justify-center animate-fade-right shadow-lg rounded-xl m-2 max-w-full md:w-2/3 transition-all duration-300 ${
+          className={`flex flex-col items-center justify-center shadow-lg rounded-xl m-2 max-w-full md:w-2/3 transition-all duration-300 ${
             isEditing
-              ? "opacity-100 -translate-x-0"
-              : "opacity-0 -translate-x-full hidden"
+              ? "animate-fade-right opacity-100 translate-x-0 animate-delay-300"
+              : "animate-fade-left opacity-0 translate-x-full hidden"
           }`}
         >
           <Form
@@ -49,9 +49,12 @@ const DashboardPage = () => {
             isLoading={isLoading}
           />
         </div>
+
         <div
-          className={`rounded-xl max-h-full animate-fade-right m-2 flex flex-col ${
-            isEditing ? "md:w-full" : "w-full animate-fade-left"
+          className={`rounded-xl max-h-full m-2 flex flex-col transition-all duration-300 ${
+            isEditing
+              ? "md:w-full animate-fade-right"
+              : "w-full animate-fade-left"
           }`}
         >
           <ResponseSection

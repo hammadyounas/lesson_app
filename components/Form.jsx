@@ -16,11 +16,13 @@ const FormComponent = ({
   setIsLoading,
   isLoading,
   disableGenerate,
+  freeResponseCount,
+  FREE_RESPONSE_LIMIT,
+  setShowLimitModal,
 }) => {
   const dispatch = useDispatch();
   const formData = useSelector((state) => state.form.formData);
   const maxLength = 200;
-
   // State for Active Tab
   const [activeTab, setActiveTab] = useState("Lesson");
 
@@ -39,7 +41,8 @@ const FormComponent = ({
     setActiveTab(tab);
   };
 
-  const clearForm = async (resetForm) => {
+  const clearForm =  (resetForm) => {
+    // console.log("Clear form triggered");
     dispatch(clearFormData());
     resetForm();
   };
@@ -70,10 +73,16 @@ const FormComponent = ({
   return (
     <Formik
       initialValues={formData}
+      enableReinitialize 
       validationSchema={validationSchema}
       onSubmit={async (values) => {
+        if (freeResponseCount >= FREE_RESPONSE_LIMIT) {
+          // Show modal when the limit is reached
+          setShowLimitModal(true); // This should be a state variable for the modal
+          return; // Prevent further execution
+        }
+    
         setIsLoading(true);
-        // Send the form data to the API route
         try {
           const response = await fetch("/api/chatgpt", {
             method: "POST",
@@ -82,11 +91,11 @@ const FormComponent = ({
             },
             body: JSON.stringify(values),
           });
-
+    
           if (!response.ok) {
             throw new Error("Failed to fetch response from the API.");
           }
-
+    
           const result = await response.json();
           onSubmit(result.response);
           dispatch(setFormData(values));
@@ -118,9 +127,9 @@ const FormComponent = ({
           </div>
 
           {/* Tabs for Desktop */}
-          <ul className="hidden bg-gray-800 text-sm font-medium text-center text-gray-400 rounded-lg shadow sm:flex divide-gray-700 relative mb-4">
+          <ul className="hidden bg-gray-800 text-sm font-medium text-center text-gray-400 rounded-lg shadow sm:flex divide-gray-700 relative mb-4 ">
             <div
-              className={`absolute h-full w-1/4 bg-gray-600 rounded-lg transition-transform duration-200 ease-in-out transform ${
+              className={`absolute h-full w-1/4 bg-gray-600  rounded-lg transition-transform duration-200 ease-in-out transform ${
                 activeTab === "Lesson"
                   ? "translate-x-0"
                   : activeTab === "Homework"
@@ -219,7 +228,7 @@ const FormComponent = ({
           />
 
           {/* Difficulty Level & Energy Buttons */}
-          <div className="flex lg:flex-row flex-col gap-4 ">
+          <div className="flex lg:flex-col flex-col">
             {/* Difficulty Level */}
             <RadioInput
               name="Difficulty Level"
@@ -251,17 +260,22 @@ const FormComponent = ({
             className="mb-4"
           />
 
-          {/* Generate Button */}
+          {/* Generate and Clear Buttons */}
           <div className="flex gap-4">
-            <button type="button" onClick={() => clearForm(resetForm)}>
+            {/* Clear Form Button */}
+            <button
+              type="button"
+              onClick={() => clearForm(resetForm)}
+              // className="flex items-center justify-center bg-red-500 p-3 rounded-full text-white hover:bg-red-400 transition-all duration-200 ease-in-out"
+            >
               <CircleX className="h-8 w-8" />
             </button>
+
+            {/* Generate Button */}
             <button
               type="submit"
-              className={`bg-blue-700 p-3 flex items-center justify-center w-full text-white rounded-xl hover:bg-blue-500 ${
-                disableGenerate ? "opacity-50 cursor-not-allowed" : ""
-              }`}
-              disabled={disableGenerate || isLoading}
+              className={`bg-blue-700 p-3 flex items-center justify-center w-full text-white rounded-xl hover:bg-blue-500 `}
+              disabled={isLoading}
             >
               {isLoading ? (
                 <div className="loader animate-spin rounded-full h-5 w-5 border-t-2 border-b-2 border-white"></div>

@@ -1,6 +1,6 @@
 const RadioInput = ({ name, options, selectedValue, onChange, error }) => {
   return (
-    <div className="w-full mt-4"> {/* Ensures it uses available space */}
+    <div className="w-full mt-2"> {/* Ensures it uses available space */}
       <label className="flex items-center py-1">{name}</label>
       <div className="flex flex-col md:flex-row gap-2">
         {options.map((option) => (

@@ -1,17 +1,19 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setResponse } from "../../redux/slices/responseSlice";
 import Sidebar from "../../components/Sidebar";
 import Form from "../../components/Form";
 import ResponseSection from "../../components/ResponseSection";
 import LimitReachedModal from "../../components/LimitReachedModal";
+import { ArrowBigLeft, ArrowBigRight } from "lucide-react";
 
 const FREE_RESPONSE_LIMIT = 2;
 
 const FreeDashboardPage = () => {
   const dispatch = useDispatch();
+  const response = useSelector((state) => state.response.response); // Get the response from the Redux store
 
   // Set initial state directly from localStorage
   const initialCount =
@@ -21,6 +23,7 @@ const FreeDashboardPage = () => {
   const [freeResponseCount, setFreeResponseCount] = useState(initialCount);
   const [isLoading, setIsLoading] = useState(false);
   const [isEditing, setIsEditing] = useState(true);
+  const [showForm, setShowForm] = useState(true);
   const [showLimitModal, setShowLimitModal] = useState(
     localStorage.getItem("limitReached") === "true" &&
       initialCount >= FREE_RESPONSE_LIMIT
@@ -31,7 +34,7 @@ const FreeDashboardPage = () => {
     localStorage.setItem("freeResponseCount", freeResponseCount);
 
     // If the limit is reached, update the limit status in localStorage
-    if (freeResponseCount >= FREE_RESPONSE_LIMIT) {
+    if (freeResponseCount > FREE_RESPONSE_LIMIT) {
       localStorage.setItem("limitReached", "true");
       setShowLimitModal(true);
     } else {
@@ -44,6 +47,7 @@ const FreeDashboardPage = () => {
       dispatch(setResponse(res));
       setFreeResponseCount((prev) => prev + 1);
       setIsLoading(false);
+      setShowForm(false);
     } else {
       setShowLimitModal(true);
     }
@@ -53,25 +57,54 @@ const FreeDashboardPage = () => {
     setShowLimitModal(false);
   };
 
+  
+
   return (
     <div className="min-w-screen flex flex-col md:flex-row min-h-screen bg-gray-100">
       <Sidebar className="md:w-1/4 w-full" />
 
-      <div className="md:w-full h-auto lg:ml-24 m-4 bg-gray-100 rounded-xl flex flex-col md:flex-row">
-        <div className="flex flex-col items-center justify-center animate-fade-right rounded-xl m-2 max-w-full md:w-3/5 transition-all duration-300">
-          {/* Display free response count */}
-          <div className="text-gray-700 font-medium mb-2">
-            Free responses used: {freeResponseCount} / {FREE_RESPONSE_LIMIT}
-          </div>
-          <Form
-            onSubmit={handleFormSubmit}
-            setIsLoading={setIsLoading}
-            isLoading={isLoading}
-            disableGenerate={freeResponseCount >= FREE_RESPONSE_LIMIT}
-          />
+      <div className="md:w-full h-auto lg:ml-24 m-4z bg-gray-100 rounded-xl flex flex-col md:flex-row">
+        {/* Button to show the form */}
+        <div className="flex items-center justify-center">
+          <button
+            onClick={() => {
+              setShowForm(!showForm);
+            }}
+            className={`bg-black text-white p-2 rounded-full hover:bg-gray-900 ${
+              !response ? "opacity-50 cursor-not-allowed" : ""
+            }`} // Disable the button if there's no response
+            disabled={!response} // Disable button when no response is available
+          >
+            {showForm ? <ArrowBigLeft /> : <ArrowBigRight />}
+          </button>
         </div>
 
-        <div className="rounded-xl animate-fade-right md:m-2 flex flex-col w-full overflow-auto">
+        {/* Show form only when button is clicked */}
+        {showForm && (
+          <div className="flex flex-col items-center justify-center rounded-xl m-2 max-w-full md:w-3/5 animate-fade-right animate-delay-300">
+            {/* Display free response count */}
+            <div className="text-gray-700 font-medium mb-2">
+              Free responses used: {freeResponseCount} / {FREE_RESPONSE_LIMIT}
+            </div>
+
+            <Form
+              onSubmit={handleFormSubmit}
+              setIsLoading={setIsLoading}
+              isLoading={isLoading}
+              disableGenerate={freeResponseCount >= FREE_RESPONSE_LIMIT}
+              setShowLimitModal={setShowLimitModal}
+              freeResponseCount={freeResponseCount}
+              FREE_RESPONSE_LIMIT={FREE_RESPONSE_LIMIT}
+            />
+          </div>
+        )}
+
+        {/* Response Section with Fade Effects */}
+        <div
+          className={`rounded-xl md:m-2 flex flex-col w-full overflow-auto transition-all duration-300 ${
+            showForm ? "animate-fade-right" : "animate-fade-left"
+          }`}
+        >
           <ResponseSection
             handleEditToggle={() => {}}
             isEditing={isEditing}
