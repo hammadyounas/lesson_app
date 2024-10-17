@@ -114,9 +114,11 @@ export default function SignupPage() {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
 
-    // Check if passwords match
-    if (name === "password" || name === "confirmPassword") {
-      setPasswordsMatch(formData.password === formData.confirmPassword);
+    // Check if passwords match using the new value
+    if (name === "password") {
+      setPasswordsMatch(value === formData.confirmPassword);
+    } else if (name === "confirmPassword") {
+      setPasswordsMatch(formData.password === value);
     }
   };
 

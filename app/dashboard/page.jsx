@@ -28,7 +28,7 @@ const DashboardPage = () => {
 
   const handleEditToggle = () => {
     setIsEditing((prev) => !prev);
-  };
+  };                                                       
 
   return (
     <div className="min-w-screen flex flex-col md:flex-row min-h-screen bg-gray-100">
