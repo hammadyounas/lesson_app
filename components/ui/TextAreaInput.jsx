@@ -5,6 +5,7 @@ const TextareaInput = ({
   onChange,
   maxLength,
   charactersTyped,
+  className,
   error,
 }) => {
   return (
@@ -14,7 +15,7 @@ const TextareaInput = ({
       </label>
       <textarea
         id={id}
-        className="bg-transparent border-2 border-gray-500 p-1 focus:outline-none w-full resize-none"
+        className={`bg-transparent border-2 border-gray-500 p-1 focus:outline-none w-full resize-none ${className}`}
         maxLength={maxLength}
         rows="4"
         value={value}

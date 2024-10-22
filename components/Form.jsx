@@ -127,7 +127,7 @@ const FormComponent = ({
           </div>
 
           {/* Tabs for Desktop */}
-          <ul className="hidden bg-gray-800 text-sm font-medium text-center text-gray-400 rounded-lg shadow sm:flex divide-gray-700 relative mb-4 ">
+          <ul className="hidden bg-gray-800 xl:text-sm text-xs font-medium text-center text-gray-400 rounded-lg shadow sm:flex sm:items-center divide-gray-700 relative mb-4 ">
             <div
               className={`absolute h-full w-1/4 bg-gray-600  rounded-lg transition-transform duration-200 ease-in-out transform ${
                 activeTab === "Lesson"
@@ -144,7 +144,7 @@ const FormComponent = ({
                 <button
                   type="button"
                   onClick={() => handleTabClick(tab)}
-                  className={`inline-block w-full p-4 ${
+                  className={`inline-block w-full xl:p-4 p-2 ${
                     activeTab === tab
                       ? "text-white"
                       : "text-gray-400 hover:text-white"
@@ -165,7 +165,7 @@ const FormComponent = ({
               value={values.age}
               onChange={(e) => setFieldValue("age", e.target.value)}
               error={touched.age && errors.age}
-              className="flex-1"
+              className="flex-1 border-blue-800"
             />
             <TextInput
               label="Class Duration"
@@ -174,7 +174,7 @@ const FormComponent = ({
               value={values.duration}
               onChange={(e) => setFieldValue("duration", e.target.value)}
               error={touched.duration && errors.duration}
-              className="flex-1"
+              className="flex-1 border-blue-800"
             />
           </div>
 
@@ -186,7 +186,7 @@ const FormComponent = ({
             value={values.curriculum}
             onChange={(e) => setFieldValue("curriculum", e.target.value)}
             error={touched.curriculum && errors.curriculum}
-            className={'mb-4'}
+            className={'mb-4 border-blue-800'}
           />
 
           {/* Subject and Topic Inputs */}
@@ -198,7 +198,7 @@ const FormComponent = ({
               value={values.subject}
               onChange={(e) => setFieldValue("subject", e.target.value)}
               error={touched.subject && errors.subject}
-              className="flex-1"
+              className="flex-1 border-blue-800"
             />
             <TextInput
               label="Topic"
@@ -207,7 +207,7 @@ const FormComponent = ({
               value={values.topic}
               onChange={(e) => setFieldValue("topic", e.target.value)}
               error={touched.topic && errors.topic}
-              className="flex-1"
+              className="flex-1 border-blue-800"
             />
           </div>
 
@@ -224,7 +224,7 @@ const FormComponent = ({
               handleSelectionToggle(selection, values, setFieldValue)
             }
             error={touched.fourCs && errors.fourCs}
-            className="mb-4"
+            className="mb-4 border-blue-800 checked:bg-blue-800"
           />
 
           {/* Difficulty Level & Energy Buttons */}
@@ -257,19 +257,19 @@ const FormComponent = ({
             maxLength={maxLength}
             charactersTyped={values.additional.length}
             error={touched.additional && errors.additional}
-            className="mb-4"
+            className="mb-4 border-blue-800"
           />
 
           {/* Generate and Clear Buttons */}
-          <div className="flex gap-4">
+          <div className="flex gap-4 pt-2">
             {/* Clear Form Button */}
-            <button
+            {/* <button
               type="button"
               onClick={() => clearForm(resetForm)}
               // className="flex items-center justify-center bg-red-500 p-3 rounded-full text-white hover:bg-red-400 transition-all duration-200 ease-in-out"
             >
               <CircleX className="h-8 w-8" />
-            </button>
+            </button> */}
 
             {/* Generate Button */}
             <button

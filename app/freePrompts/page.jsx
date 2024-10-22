@@ -81,7 +81,7 @@ const FreeDashboardPage = () => {
 
         {/* Show form only when button is clicked */}
         {showForm && (
-          <div className="flex flex-col items-center justify-center rounded-xl m-2 max-w-full md:w-3/5 animate-fade-right animate-delay-300">
+          <div className="flex flex-col items-center justify-center rounded-xl m-2 max-w-full md:w-4/5 animate-fade-right animate-delay-300">
             {/* Display free response count */}
             <div className="text-gray-700 font-medium mb-2">
               Free responses used: {freeResponseCount} / {FREE_RESPONSE_LIMIT}

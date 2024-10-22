@@ -146,7 +146,7 @@ export default function SignupPage() {
           <span ref={typedRef}></span>
         </h1>
 
-        <img src="/login.svg" alt="Graphic" className="max-w-full h-3/4" />
+        <img src="/teacher_bot2.png" alt="Graphic" className="max-w-full h-3/4 transform scale-x-[-1]" />
       </div>
 
       {/* Right Column - Signup Form */}

@@ -26,7 +26,7 @@ const RadioInput = ({ name, options, selectedValue, onChange, error }) => {
                     : option === "Medium"
                     ? "border-green-500"
                     : "border-red-500"
-                  : "border-gray-700"
+                  : "border-blue-700"
               }`}
             >
               {selectedValue === option && (

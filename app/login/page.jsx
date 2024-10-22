@@ -100,7 +100,7 @@ export default function LoginPage() {
         <h1 className="w-full font-mono px-6 text-white text-4xl mb-8">
           <span ref={typedRef}></span>
         </h1>
-        <img src="/login.svg" alt="Graphic" className="max-w-full  h-3/4" />
+        <img src="teacher_bot2.png" alt="Graphic" className="max-w-full transform scale-x-[-1] h-3/4" />
       </div>
 
       {/* Right Column - Login Form */}

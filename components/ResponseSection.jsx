@@ -363,7 +363,7 @@ const ResponseSection = ({
               />
             )
           ) : (
-            <div className="flex space-x-2 justify-center items-center h-full max-sm:hidden">
+            <div className="flex space-x-2 justify-center items-center h-full">
               <img src="no-content.png" className="h-52 w-52 rounded-2xl"/>
               {/* <span className="sr-only">Loading...</span>
               <div className="h-8 w-8 bg-black rounded-full animate-bounce [animation-delay:-0.3s]"></div>
