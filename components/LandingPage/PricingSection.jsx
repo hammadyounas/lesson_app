@@ -1,36 +1,68 @@
-import React from 'react'
+import React, { useEffect, useRef, useState } from 'react';
+import { motion } from 'framer-motion'; // Import framer-motion for animations
 import PricingCard from '../PricingCard';
 
 export default function PricingSection() {
-    const pricingPlans = [
-        {
-          title: "Free Tier",
-          price: "$0",
-          features: [
-            "Basic access to all features",
-            "Limited support",
-            "Community access",
-            "Monthly updates",
-          ],
-          buttonText: "Sign Up Free",
-        },
-        {
-          title: "Premium Plan",
-          price: "$12",
-          features: [
-            "All Free Tier features",
-            "Priority support",
-            "Access to premium features",
-            "Weekly updates",
-          ],
-          buttonText: "Get Started",
-        },
-      ];
+  const pricingPlans = [
+    {
+      title: "Free Tier",
+      price: "$0",
+      features: [
+        "Basic access to all features",
+        "Limited support",
+        "Community access",
+        "Monthly updates",
+      ],
+      buttonText: "Sign Up Free",
+    },
+    {
+      title: "Premium Plan",
+      price: "$12",
+      features: [
+        "All Free Tier features",
+        "Priority support",
+        "Access to premium features",
+        "Weekly updates",
+      ],
+      buttonText: "Get Started",
+    },
+  ];
+
+  const [isVisible, setIsVisible] = useState(false);
+  const sectionRef = useRef(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true); // Set to true when the section is visible
+        } else {
+          setIsVisible(false); // Reset when it goes out of view
+        }
+      },
+      { threshold: 0.5 } // Trigger when 50% of the component is in view
+    );
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    return () => {
+      if (sectionRef.current) {
+        observer.unobserve(sectionRef.current);
+      }
+    };
+  }, []);
 
   return (
-    <div>
-       <main className="flex-grow flex flex-col min-h-screen items-center bg-gray-900 justify-center text-center sm:p-20 max-sm:py-10">
-        <div className="xl:w-1/2 lg:w-3/2 sm:mb-20 mb-10">
+    <div ref={sectionRef}>
+      <main className="flex-grow flex flex-col min-h-screen items-center bg-gray-900 justify-center text-center sm:p-20 max-sm:py-10">
+        <motion.div
+          className="xl:w-1/2 lg:w-3/2 sm:mb-20 mb-10"
+          initial={{ opacity: 0, y: -30 }} // Initial state for the header
+          animate={isVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: -30 }} // Animate on visibility
+          transition={{ duration: 0.5, ease: "easeInOut" }} // Even faster transition
+        >
           <h1 className="sm:text-5xl text-3xl font-extrabold text-white mb-5">
             Find Your Perfect Plan
           </h1>
@@ -38,22 +70,31 @@ export default function PricingSection() {
             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
             eiusmod tempor incididunt ut labore et dolore magna aliqua.
           </p>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 sm:gap-10 gap-4 text-white xl:w-2/3 w-full max-sm:px-4">
+        </motion.div>
+        <motion.div
+          className="grid grid-cols-1 md:grid-cols-2 sm:gap-10 gap-4 text-white xl:w-2/3 w-full max-sm:px-4"
+          initial={{ opacity: 0, y: 30 }} // Initial state for pricing cards
+          animate={isVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }} // Animate on visibility
+          transition={{ duration: 0.5, ease: "easeInOut", staggerChildren: 0.05 }} // Faster staggered animation for cards
+        >
           {/* Pricing cards section */}
           {pricingPlans.map((plan, index) => (
-            <PricingCard
+            <motion.div
               key={index}
-              title={plan.title}
-              price={plan.price}
-              description={plan.description}
-              features={plan.features}
-              buttonText={plan.buttonText}
-              buttonLink={plan.buttonLink}
-            />
+              initial={{ opacity: 0, y: 20 }} // Initial state for each card
+              animate={isVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }} // Animate each card on visibility
+              transition={{ duration: 0.2 }} // Faster transition for individual cards
+            >
+              <PricingCard
+                title={plan.title}
+                price={plan.price}
+                features={plan.features}
+                buttonText={plan.buttonText}
+              />
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
       </main>
     </div>
-  )
+  );
 }
