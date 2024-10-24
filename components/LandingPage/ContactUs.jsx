@@ -1,7 +1,8 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import emailjs from "emailjs-com";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { motion } from "framer-motion"; // Import framer-motion for animations
 
 export default function ContactUs() {
   const form = useRef();
@@ -13,8 +14,6 @@ export default function ContactUs() {
     phone: "",
     message: "",
   });
-
-  //   const [submittedDetails, setSubmittedDetails] = useState(null);
 
   // Handle input change
   const handleChange = (e) => {
@@ -29,10 +28,10 @@ export default function ContactUs() {
 
     emailjs
       .sendForm(
-        process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID, // Replace with your EmailJS service ID
+        process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID,
         process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID,
         form.current,
-        process.env.NEXT_PUBLIC_EMAILJS_USER_ID // Replace with your EmailJS user ID
+        process.env.NEXT_PUBLIC_EMAILJS_USER_ID
       )
       .then(
         (result) => {
@@ -53,13 +52,49 @@ export default function ContactUs() {
       );
   };
 
+  const [isVisible, setIsVisible] = useState(false);
+  const sectionRef = useRef(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true); // Set to true when the section is visible
+        } else {
+          setIsVisible(false); // Reset when it goes out of view
+        }
+      },
+      { threshold: 0.5 } // Trigger when 50% of the component is in view
+    );
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    return () => {
+      if (sectionRef.current) {
+        observer.unobserve(sectionRef.current);
+      }
+    };
+  }, []);
+
   return (
-    <div>
+    <div ref={sectionRef}>
       <main className="flex-grow flex flex-col min-h-screen items-center justify-center text-center xl:p-20 sm:p-5">
-        <div className="w-full xl:mb-20 lg:mb-10 max-lg:my-5">
+        <motion.div
+          className="w-full xl:mb-20 lg:mb-10 max-lg:my-5"
+          initial={{ opacity: 0, y: -30 }} // Initial state for animation
+          animate={isVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: -30 }} // Animate on visibility
+          transition={{ duration: 0.3, ease: "easeInOut" }} // Faster transition
+        >
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
             {/* Left Column - Contact Details */}
-            <div className="flex flex-col justify-start p-6 border-r-2 text-left">
+            <motion.div
+              className="flex flex-col justify-start p-6 border-r-2 text-left"
+              initial={{ opacity: 0, x: -50 }} // Slide in from left
+              animate={isVisible ? { opacity: 1, x: 0 } : { opacity: 0, x: -50 }} // Animate on visibility
+              transition={{ duration: 0.3 }} // Faster transition
+            >
               <h1 className="lg:text-7xl text-5xl font-bold text-gray-900 sm:mb-10 mb-5">
                 Contact Us
               </h1>
@@ -72,14 +107,22 @@ export default function ContactUs() {
               <p className="sm:text-lg text-gray-700 mb-2">
                 Phone: (123) 456-7890
               </p>
-            </div>
+            </motion.div>
 
             {/* Right Column - Contact Form */}
-            <div className="flex flex-col sm:p-6">
-              <form
+            <motion.div
+              className="flex flex-col sm:p-6"
+              initial={{ opacity: 0, x: 50 }} // Slide in from right
+              animate={isVisible ? { opacity: 1, x: 0 } : { opacity: 0, x: 50 }} // Animate on visibility
+              transition={{ duration: 0.3 }} // Faster transition
+            >
+              <motion.form
                 ref={form}
                 onSubmit={sendEmail}
                 className="text-black xl:px-14 px-4"
+                initial={{ opacity: 0, y: 20 }} // Initial state for form animation
+                animate={isVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }} // Animate on visibility
+                transition={{ duration: 0.3 }} // Faster transition
               >
                 <div className="grid grid-cols-1 md:grid-cols-1 gap-6">
                   <div>
@@ -90,7 +133,7 @@ export default function ContactUs() {
                       placeholder="Your Name"
                       required
                       value={formDetails.name}
-                      onChange={handleChange} // Capture input change
+                      onChange={handleChange}
                     />
                   </div>
                   <div>
@@ -101,7 +144,7 @@ export default function ContactUs() {
                       placeholder="Your Email"
                       required
                       value={formDetails.email}
-                      onChange={handleChange} // Capture input change
+                      onChange={handleChange}
                     />
                   </div>
                   <div>
@@ -112,7 +155,7 @@ export default function ContactUs() {
                       placeholder="Your Phone Number"
                       required
                       value={formDetails.phone}
-                      onChange={handleChange} // Capture input change
+                      onChange={handleChange}
                     />
                   </div>
                 </div>
@@ -123,19 +166,20 @@ export default function ContactUs() {
                     placeholder="Your Message"
                     required
                     value={formDetails.message}
-                    onChange={handleChange} // Capture input change
+                    onChange={handleChange}
                   ></textarea>
                 </div>
-                <button
+                <motion.button
                   type="submit"
                   className="mt-6 w-1/2 py-3 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition"
+                  whileHover={{ scale: 1.05, transition: { duration: 0.3 } }} // Scale effect on hover
                 >
                   Send Message
-                </button>
-              </form>
-            </div>
+                </motion.button>
+              </motion.form>
+            </motion.div>
           </div>
-        </div>
+        </motion.div>
       </main>
     </div>
   );

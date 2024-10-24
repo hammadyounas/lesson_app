@@ -8,6 +8,7 @@ import { useSelector } from "react-redux";
 import Navbar from "@/components/LandingPage/Navbar";
 import DemoSection from "@/components/LandingPage/DemoSection";
 import TryNowSection from "@/components/LandingPage/TryNowSection";
+import FAQSection from "@/components/LandingPage/faq";
 import PricingSection from "@/components/LandingPage/PricingSection";
 import ContactUs from "@/components/LandingPage/ContactUs";
 import Footer from "@/components/LandingPage/Footer";
@@ -71,6 +72,7 @@ const HomePage = () => {
       <DemoSection />
       <TryNowSection />
       <PricingSection />
+      <FAQSection /> 
       <ContactUs />
       <Footer />
     </div>
