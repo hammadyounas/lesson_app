@@ -60,7 +60,7 @@ export default function DemoSection() {
               <img
                 src="image_2.png" // Replace this with your image path
                 alt="Lesson Generator Illustration"
-                className="rounded-lg shadow-lg"
+                className="rounded-lg "
                 style={{ margin: "0 20px" }} // Optional: add margins for extra spacing
               />
             </motion.div>
