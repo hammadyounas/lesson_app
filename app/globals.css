@@ -201,3 +201,97 @@ body {
 .transition-all {
   transition-property: opacity, transform; /* Control which properties transition */
 }
+
+
+
+
+
+
+
+
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(20px); /* Start from the right */
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0); /* End in place */
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.8s ease forwards;
+  animation-delay: 0.2s5; /* Delay for a staggered effect */
+}
+
+.animate-fade-in-button {
+  animation: fadeIn 0.8s ease forwards;
+  animation-delay: 0.4s; /* Delay for a staggered effect */
+}
+
+.animate-slide-in {
+  animation: slideIn 0.8s ease forwards; /* Slide in from the right */
+  animation-delay: 0.6s; /* Delay for a staggered effect */
+}
+
+/* Background for the section */
+.lesson-section {
+  background: linear-gradient(to bottom right, #f0f4ff, #e0e7ff);
+  padding: 60px 20px;
+  border-radius: 20px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+}
+
+/* Text animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Cursor styling */
+.cursor {
+  display: inline-block;
+  width: 10px;
+  background-color: blue;
+  animation: blink 1s step-end infinite;
+}
+
+@keyframes blink {
+  50% {
+    background-color: transparent;
+  }
+}
+
+/* Button styling */
+.button {
+  background-color: #1d4ed8; /* Tailwind's blue-700 */
+  color: white;
+  padding: 12px 24px;
+  border-radius: 25px;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+.button:hover {
+  background-color: #1e40af; /* Darker blue */
+  transform: translateY(-2px);
+}
+
