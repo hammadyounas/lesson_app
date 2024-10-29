@@ -26,6 +26,17 @@ export default function PricingSection() {
       ],
       buttonText: "Get Started",
     },
+    {
+      title: "Free Books",
+      price: "$15",
+      features: [
+        "All Free Books",
+        "Priority support",
+        "Access to premium features",
+        "Monthly updates",
+      ],
+      buttonText: "Contact Us",
+    },
   ];
 
   const [isVisible, setIsVisible] = useState(false);
@@ -55,7 +66,7 @@ export default function PricingSection() {
   }, []);
 
   return (
-    <div ref={sectionRef}>
+    <div ref={sectionRef} className=' w-full overflow-x-hidden'>
       <main className="flex-grow flex flex-col min-h-screen items-center bg-gray-900 justify-center text-center sm:p-20 max-sm:py-10">
         <motion.div
           className="xl:w-1/2 lg:w-3/2 sm:mb-20 mb-10"
@@ -72,7 +83,7 @@ export default function PricingSection() {
           </p>
         </motion.div>
         <motion.div
-          className="grid grid-cols-1 md:grid-cols-2 sm:gap-10 gap-4 text-white xl:w-2/3 w-full max-sm:px-4"
+          className="grid grid-cols-1 md:grid-cols-3 sm:gap-10 gap-4 text-white xl:w-[80%] w-full max-sm:px-4"
           initial={{ opacity: 0, y: 30 }} // Initial state for pricing cards
           animate={isVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }} // Animate on visibility
           transition={{ duration: 0.5, ease: "easeInOut", staggerChildren: 0.05 }} // Faster staggered animation for cards

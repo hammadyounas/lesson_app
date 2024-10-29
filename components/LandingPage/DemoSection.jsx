@@ -29,7 +29,7 @@ export default function DemoSection() {
   }, []);
 
   return (
-    <div ref={sectionRef}>
+    <div id='demo-section' ref={sectionRef} className=' w-full overflow-x-hidden'>
       {/* Demo Section */}
       <main className="flex-grow flex flex-col min-h-screen items-center justify-center text-center">
         <section className="flex flex-col w-full">
@@ -48,6 +48,13 @@ export default function DemoSection() {
                 enim ad minim veniam, quis nostrud exercitation ullamco laboris
                 nisi ut aliquip ex ea commodo consequat.
               </p>
+
+              <button
+        className="bg-blue-600 text-white hover:bg-blue-700 mt-3 block py-3 px-10 rounded-md text-center font-medium transition-colors duration-1000 ease-in-out"
+        href={'#'}
+      >
+       Try Now
+      </button>
             </motion.div>
 
             {/* Bottom - Full Page Image */}

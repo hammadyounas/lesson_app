@@ -29,7 +29,7 @@ export default function TryNowSection() {
   }, []);
 
   return (
-    <div ref={sectionRef}>
+    <div ref={sectionRef} className=' w-full overflow-x-hidden'>
       <main className="flex-grow flex flex-col min-h-screen items-center justify-center text-center">
         <section className="flex flex-col items-center justify-center w-full">
           <div className="grid grid-cols-1 md:grid-cols-2 xl:space-x-40 max-w-full mx-auto xl:p-32 lg:p-10 p-5">

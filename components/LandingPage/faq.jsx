@@ -6,7 +6,7 @@ const FAQItem = ({ question, answer }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div className="mb-6">
+    <div className="mb-6  w-full overflow-x-hidden">
       <motion.div
         className="cursor-pointer flex justify-between items-center py-2"
         onClick={() => setIsOpen(!isOpen)}

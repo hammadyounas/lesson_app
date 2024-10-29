@@ -8,7 +8,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
+    <html lang="en" className="scroll scroll-smooth">
     <body>
       <Provider store={store}>
         <PersistGate loading={null} persistor={persistor}>
