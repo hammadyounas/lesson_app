@@ -73,11 +73,11 @@ const Sidebar = () => {
           </div>
         ) : (
           <div className="flex justify-center items-center mb-5 mt-10 lg:mt-0">
-            <Link href={'/'}>
+            <Link href={'/'} className="flex items-center space-x-2"> 
             <House className="rounded-full w-10 h-10 object-cover " />
             {isExpanded && (
-              <div className="ml-3">
-                <span className="font-bold">Home</span>
+              <div className="ml-3 flex">
+                <span className="text-sm">Home</span>
               </div>
             )}
             </Link>
@@ -173,7 +173,7 @@ const Sidebar = () => {
                 {/* Tooltip */}
                 {!isExpanded && (
                   <span className="tooltip absolute left-full top-1/2 transform -translate-y-1/2 ml-2 hidden group-hover:flex flex-col items-start transition-opacity duration-200 opacity-0 group-hover:opacity-100">
-                    <span className="bg-white text-black font-mono w-16 text-center text-sm p-1 rounded shadow-md">
+                    <span className="bg-white text-black font-mono w-20 text-center text-sm p-1 rounded shadow-md">
                       Sign Up
                     </span>
                     <span className="w-0 h-0 border-l-4 border-l-white border-t-4 border-t-transparent border-b-4 border-b-transparent absolute left-[-4px] top-1/2 transform -translate-y-1/2"></span>
@@ -191,7 +191,7 @@ const Sidebar = () => {
                 {/* Tooltip */}
                 {!isExpanded && (
                   <span className="tooltip absolute left-full top-1/2 transform -translate-y-1/2 ml-2 hidden group-hover:flex flex-col items-start transition-opacity duration-200 opacity-0 group-hover:opacity-100">
-                    <span className="bg-white text-black w-24 text-center font-mono text-sm p-1 rounded shadow-md">
+                    <span className="bg-white text-black w-28 text-center font-mono text-sm p-1 rounded shadow-md">
                       Go Premium
                     </span>
                     <span className="w-0 h-0 border-l-4 border-l-white border-t-4 border-t-transparent border-b-4 border-b-transparent absolute left-[-4px] top-1/2 transform -translate-y-1/2"></span>
