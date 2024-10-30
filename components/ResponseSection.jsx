@@ -294,14 +294,14 @@ const ResponseSection = ({
               disableEdit ? "opacity-50 cursor-pointer" : ""
             } p-2  rounded-xl font-bold flex gap-2 text-gray-800  hover:text-black hover:underline transition duration-300`}
             onClick={handleEditToggle}
-            disabled={disableEdit}
+            // disabled={disableEdit}
           >
             {isEditing ? "Preview" : <>Update Lesson Plan <Edit /></>}
           </button>
 
         
 
-          <div className="flex items-center space-x-2 mt-2 md:mt-0">
+          <div className="flex items-end space-x-2 mt-2 md:mt-0">
             <Download className="h-9 w-9 rounded-full p-2 bg-gray-200" stroke="black" />
             <button
               type="button"

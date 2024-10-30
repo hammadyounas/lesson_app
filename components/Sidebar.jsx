@@ -52,7 +52,7 @@ const Sidebar = () => {
       </button>
 
       <aside
-        className={`fixed top-0 left-0 bg-blue-800 text-white h-screen p-4 shadow flex flex-col transition-width duration-300 ease-in-out ${
+        className={`fixed top-0 left-0 bg-blue-800 text-white h-screen p-4 shadow flex flex-col justify-center transition-width duration-300 ease-in-out ${
           isSidebarOpen ? "translate-x-0" : "-translate-x-full"
         } lg:translate-x-0 ${isExpanded ? "w-64" : "w-20"} z-40`}
       >

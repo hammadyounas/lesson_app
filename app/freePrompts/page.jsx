@@ -109,11 +109,11 @@ const FreeDashboardPage = () => {
               {" "}
             </div>
           <ResponseSection
-            handleEditToggle={() => {}}
+            handleEditToggle={() => { setShowForm(!showForm)}}
             isEditing={isEditing}
             setIsEditing={setIsEditing}
             isLoading={isLoading}
-            disableEdit={true} // Disable edit button for free users
+            disableEdit={false} // Disable edit button for free users
           />
         </div>
       </div>
