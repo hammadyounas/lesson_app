@@ -1,5 +1,5 @@
 // components/ResponseSection.js
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import MDEditor from "@uiw/react-md-editor";
 import SkeletonLoader from "./Skeleton";
 import { Download, Edit, Trash2 } from "lucide-react";
@@ -9,6 +9,7 @@ import { Document, Packer, Paragraph, TextRun, HeadingLevel } from "docx";
 import { saveAs } from "file-saver";
 import { PDFDocument, StandardFonts } from "pdf-lib";
 import PptxGenJS from "pptxgenjs";
+import ConfirmationModal from "./ui/ConfirmationModal";
 
 const ResponseSection = ({
   handleEditToggle,
@@ -20,6 +21,7 @@ const ResponseSection = ({
   const dispatch = useDispatch();
   const { response } = useSelector((state) => state.response);
   const hasResponse = response !== "";
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     if (hasResponse) setIsEditing(false);
@@ -274,11 +276,29 @@ const ResponseSection = ({
     createPdfFromResponse(response);
   };
 
+  const handleDelete = () => {
+    setResponse("");
+    dispatch(clearResponse());
+    setIsEditing(true);
+    setIsModalOpen(false); // Close modal after confirming
+  };
+
   return (
     <>
+     <ConfirmationModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onConfirm={handleDelete}
+      />
       {hasResponse && (
         <div className="flex flex-col md:flex-row-reverse md:justify-between items-center mb-4">
             <button
+            className="w-12 h-12 flex items-center justify-center bg-gray-200 rounded-full mt-2 md:mt-0"
+            onClick={() => setIsModalOpen(true)} // Open modal on delete click
+          >
+            <Trash2 color="black" />
+          </button>
+            {/* <button
             className="w-12 h-12 flex items-center justify-center bg-gray-200 rounded-full mt-2 md:mt-0"
             onClick={() => {
               setResponse("");
@@ -287,7 +307,7 @@ const ResponseSection = ({
             }}
           >
             <Trash2 color="black" />
-          </button>
+          </button> */}
 
           <button
             className={`${
