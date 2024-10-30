@@ -60,10 +60,10 @@ const FreeDashboardPage = () => {
   
 
   return (
-    <div className="min-w-screen flex flex-col md:flex-row min-h-screen bg-gray-100">
+    <div className="min-w-screen flex flex-col md:flex-row min-h-screen bg-gray-200">
       <Sidebar className="md:w-1/4 w-full" />
 
-      <div className="md:w-full h-auto lg:ml-24 m-4z bg-gray-100 rounded-xl flex flex-col md:flex-row">
+      <div className="md:w-full h-auto lg:ml-24 m-4z bg-gray-200 rounded-xl flex flex-col md:flex-row">
         {/* Button to show the form */}
         <div className="flex items-center justify-center">
           <button
@@ -71,7 +71,7 @@ const FreeDashboardPage = () => {
               setShowForm(!showForm);
             }}
             className={`bg-black text-white p-2 rounded-full hover:bg-gray-900 ${
-              !response ? "opacity-50 cursor-not-allowed" : ""
+              !response ? "opacity-50 cursor-not-allowed hidden" : ""
             }`} // Disable the button if there's no response
             disabled={!response} // Disable button when no response is available
           >
@@ -101,10 +101,13 @@ const FreeDashboardPage = () => {
 
         {/* Response Section with Fade Effects */}
         <div
-          className={`rounded-xl md:m-2 flex flex-col w-full overflow-auto transition-all duration-300 ${
+          className={`rounded-xl md:m-2  flex flex-col w-full overflow-auto transition-all duration-300 ${
             showForm ? "animate-fade-right" : "animate-fade-left"
           }`}
         >
+           <div className="text-gray-700 font-medium mb-4">
+              {" "}
+            </div>
           <ResponseSection
             handleEditToggle={() => {}}
             isEditing={isEditing}

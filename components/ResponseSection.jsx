@@ -2,7 +2,7 @@
 import { useEffect } from "react";
 import MDEditor from "@uiw/react-md-editor";
 import SkeletonLoader from "./Skeleton";
-import { Download, Trash2 } from "lucide-react";
+import { Download, Edit, Trash2 } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { setResponse, clearResponse } from "../redux/slices/responseSlice";
 import { Document, Packer, Paragraph, TextRun, HeadingLevel } from "docx";
@@ -278,17 +278,7 @@ const ResponseSection = ({
     <>
       {hasResponse && (
         <div className="flex flex-col md:flex-row-reverse md:justify-between items-center mb-4">
-          <button
-            className={`${
-              disableEdit ? "opacity-50 cursor-not-allowed" : ""
-            } p-2 bg-red-600 rounded-xl font-bold text-white hover:bg-white hover:text-black transition duration-300`}
-            onClick={handleEditToggle}
-            disabled={disableEdit}
-          >
-            {isEditing ? "Preview" : "Edit Response"}
-          </button>
-
-          <button
+            <button
             className="w-12 h-12 flex items-center justify-center bg-gray-200 rounded-full mt-2 md:mt-0"
             onClick={() => {
               setResponse("");
@@ -298,6 +288,18 @@ const ResponseSection = ({
           >
             <Trash2 color="black" />
           </button>
+
+          <button
+            className={`${
+              disableEdit ? "opacity-50 cursor-pointer" : ""
+            } p-2  rounded-xl font-bold flex gap-2 text-gray-800  hover:text-black hover:underline transition duration-300`}
+            onClick={handleEditToggle}
+            disabled={disableEdit}
+          >
+            {isEditing ? "Preview" : <>Update Lesson Plan <Edit /></>}
+          </button>
+
+        
 
           <div className="flex items-center space-x-2 mt-2 md:mt-0">
             <Download className="h-9 w-9 rounded-full p-2 bg-gray-200" stroke="black" />
@@ -337,11 +339,11 @@ const ResponseSection = ({
           </div>
         </div>
       )}
-      <div className="max-w-full h-full rounded-xl m-1 flex flex-col justify-between overflow-auto">
+      <div className="max-w-full h-full rounded-xl flex flex-col justify-between overflow-auto">
         <div
-          className={`p-4 bg-gray-200 w-full ${
-            hasResponse ? "md:h-[800px] md:max-h-[82vh]" : "md:h-full"
-          } my-2 rounded-xl shadow-lg text-black text-xl md:text-md overflow-y-auto`}
+          className={`p-4 shadow-lg shadow-gray-400 bg-gray-50 w-full ${
+            hasResponse ? "md:h-[800px] md:max-h-full bg-gray-50" : "md:h-full"
+          } my-2 rounded-xl shadow-md text-black text-xl md:text-md overflow-y-auto`}
         >
           {isLoading ? (
             <SkeletonLoader />
@@ -356,7 +358,8 @@ const ResponseSection = ({
               <MDEditor.Markdown
                 source={response}
                 style={{
-                  backgroundColor: "#E5E7EB",
+                  backgroundColor: "#f9fafb",
+                  // backgroundColor: "#E5E7EB",
                   color: "black",
                   padding: "5px",
                 }}

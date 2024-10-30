@@ -22,6 +22,7 @@
     "file-saver": "^2.0.5",
     "formik": "^2.4.6",
     "framer-motion": "^11.11.10",
+    "iconify": "^1.4.0",
     "lucide-react": "^0.439.0",
     "next": "14.2.6",
     "pdf-lib": "^1.17.1",

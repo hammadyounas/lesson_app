@@ -6,6 +6,7 @@ const TextareaInput = ({
   maxLength,
   charactersTyped,
   className,
+  maxLengthClassName,
   error,
 }) => {
   return (
@@ -22,7 +23,7 @@ const TextareaInput = ({
         onChange={onChange}
       />
       {error && <p className="text-red-500 text-sm">{error}</p>}
-      <span className="w-full">
+      <span className={`w-full ${maxLengthClassName}`}>
         {charactersTyped}/{maxLength}
       </span>
     </div>
