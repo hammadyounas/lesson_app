@@ -65,7 +65,7 @@ const FreeDashboardPage = () => {
 
       <div className="md:w-full h-auto lg:ml-24 m-4z bg-gray-200 rounded-xl flex flex-col md:flex-row">
         {/* Button to show the form */}
-        <div className="flex items-center justify-center">
+        {/* <div className="flex items-center justify-center">
           <button
             onClick={() => {
               setShowForm(!showForm);
@@ -77,7 +77,7 @@ const FreeDashboardPage = () => {
           >
             {showForm ? <ArrowBigLeft /> : <ArrowBigRight />}
           </button>
-        </div>
+        </div> */}
 
         {/* Show form only when button is clicked */}
         {showForm && (
