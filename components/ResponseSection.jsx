@@ -17,11 +17,13 @@ const ResponseSection = ({
   setIsEditing,
   isLoading,
   disableEdit,
+  showForm,
+  setIsModalOpen
 }) => {
   const dispatch = useDispatch();
   const { response } = useSelector((state) => state.response);
   const hasResponse = response !== "";
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  // const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     if (hasResponse) setIsEditing(false);
@@ -285,18 +287,19 @@ const ResponseSection = ({
 
   return (
     <>
-     <ConfirmationModal
+     {/* <ConfirmationModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         onConfirm={handleDelete}
-      />
+        showForm={showForm}
+      /> */}
       {hasResponse && (
         <div className="flex flex-col md:flex-row-reverse md:justify-between items-center mb-4">
             <button
             className="w-12 h-12 flex items-center justify-center bg-gray-200 rounded-full mt-2 md:mt-0"
             onClick={() => setIsModalOpen(true)} // Open modal on delete click
           >
-            <Trash2 color="black" />
+            <Trash2 color="black" className="hover:animate-bounce" />
           </button>
             {/* <button
             className="w-12 h-12 flex items-center justify-center bg-gray-200 rounded-full mt-2 md:mt-0"

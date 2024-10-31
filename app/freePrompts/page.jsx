@@ -8,6 +8,7 @@ import Form from "../../components/Form";
 import ResponseSection from "../../components/ResponseSection";
 import LimitReachedModal from "../../components/LimitReachedModal";
 import { ArrowBigLeft, ArrowBigRight } from "lucide-react";
+import ConfirmationModal from "@/components/ui/ConfirmationModal";
 
 const FREE_RESPONSE_LIMIT = 2;
 
@@ -24,6 +25,7 @@ const FreeDashboardPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isEditing, setIsEditing] = useState(true);
   const [showForm, setShowForm] = useState(true);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [showLimitModal, setShowLimitModal] = useState(
     localStorage.getItem("limitReached") === "true" &&
       initialCount >= FREE_RESPONSE_LIMIT
@@ -57,7 +59,12 @@ const FreeDashboardPage = () => {
     setShowLimitModal(false);
   };
 
-  
+  const handleDeleteConfirmation = () => {
+    // Logic for deletion
+    dispatch(clearResponse());
+    setIsEditing(true);
+    setIsModalOpen(false);
+  };
 
   return (
     <div className="min-w-screen flex flex-col md:flex-row min-h-screen bg-gray-200">
@@ -114,8 +121,18 @@ const FreeDashboardPage = () => {
             setIsEditing={setIsEditing}
             isLoading={isLoading}
             disableEdit={false} // Disable edit button for free users
+            showForm={showForm}
+            setIsModalOpen={setIsModalOpen}
           />
         </div>
+
+        {/* Confirmation Modal placed here */}
+      <ConfirmationModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onConfirm={handleDeleteConfirmation}
+        showForm={showForm}
+      />
       </div>
 
       {/* Show modal when limit is reached */}
