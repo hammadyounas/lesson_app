@@ -3,9 +3,10 @@ import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { loginUser, fetchUser } from "../../redux/slices/userSlice";
 import { useDispatch } from "react-redux";
-import { Eye, EyeOff } from "lucide-react";
+import { ArrowLeft, Eye, EyeOff } from "lucide-react";
 import Link from "next/link";
 import Typed from "typed.js";
+import { toast, ToastContainer } from "react-toastify";
 
 export default function LoginPage() {
   const [formData, setFormData] = useState({ email: "", password: "" });
@@ -57,9 +58,11 @@ export default function LoginPage() {
 
       if (loginUser.rejected.match(resultAction)) {
         setError(resultAction.payload || "Login failed");
+        toast.error("Invalid Credentials" || resultAction.payload);
         setMessage("");
       } else {
-        setMessage("Login successful!");
+        // setMessage("Login successful!");
+        toast.success("Login successful!");
         setError("");
 
         await dispatch(fetchUser());
@@ -79,6 +82,7 @@ export default function LoginPage() {
 
   return (
     <div className="flex flex-col md:flex-row min-h-screen">
+      <ToastContainer />
       {/* Background Animation */}
       <div className="area absolute inset-0 z-[-1]">
         <ul className="circles">
@@ -96,8 +100,9 @@ export default function LoginPage() {
       </div>
       {/* End Background Animation */}
       {/* Left Column - Graphic */}
-      <div className="hidden md:flex  animate-fade-up flex-col w-1/2 items-center justify-center bg-transparent">
-        <h1 className="w-full font-mono px-6 text-white text-4xl mb-8">
+      <div className="hidden md:flex relative animate-fade-up flex-col w-1/2 items-center justify-center bg-transparent">
+      <Link href={'/'} className="absolute top-6 left-6 p-1 bg-gray-300 text-black rounded-full hover:bg-gray-100 z-[9999]"><ArrowLeft className="w-6 h-6"/></Link>
+        <h1 className="w-full font-mono px-6 text-white mt-8 text-4xl mb-8">
           <span ref={typedRef}></span>
         </h1>
         <img src="teacher_bot2.png" alt="Graphic" className="max-w-full transform scale-x-[-1] h-3/4" />
@@ -120,6 +125,7 @@ export default function LoginPage() {
             placeholder="Type your email"
             value={formData.email}
             onChange={handleInputChange}
+            required
             className="block w-full my-4 p-3 border rounded text-black transition duration-300 ease-in-out focus:border-black focus:outline-none focus:ring-1 focus:ring-black"
           />
 
@@ -135,6 +141,7 @@ export default function LoginPage() {
               placeholder="8+ characters, 1 capital letter"
               value={formData.password}
               onChange={handleInputChange}
+              required
               className="block w-full my-4 p-3 border rounded text-black transition duration-200 ease-in-out focus:border-black focus:outline-none focus:ring-1 focus:ring-black"
             />
             <button
@@ -194,8 +201,8 @@ export default function LoginPage() {
               </Link>
             </p>
           </div>
-          {error && <p className="text-red-500 mt-4">{error}</p>}
-          {message && <p className="text-green-500 mt-4">{message}</p>}
+          {/* {error && <p className="text-red-500 mt-4">{error}</p>}
+          {message && <p className="text-green-500 mt-4">{message}</p>} */}
         </form>
       </div>
     </div>

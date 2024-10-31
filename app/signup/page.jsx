@@ -4,8 +4,10 @@ import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
 import { registerUser } from "../../redux/slices/userSlice";
-import { Eye, EyeOff } from "lucide-react";
+import { ArrowLeft, Eye, EyeOff } from "lucide-react";
 import Typed from "typed.js";
+import Link from "next/link";
+import { Icons, toast, ToastContainer } from "react-toastify";
 
 export default function SignupPage() {
   const [formData, setFormData] = useState({
@@ -53,6 +55,7 @@ export default function SignupPage() {
     const { email, password, confirmPassword, firstName, lastName } = formData;
     if (!email || !password || !confirmPassword || !firstName || !lastName) {
       setError("All fields are required.");
+      toast.error('All fields are required.');
       return false;
     }
     if (!passwordsMatch) {
@@ -87,9 +90,11 @@ export default function SignupPage() {
 
       if (registerUser.rejected.match(resultAction)) {
         setError(user?.error?.message || "Sign up failed");
+        toast.error(user?.error?.message || "Sign up failed");
         setMessage("");
       } else {
         setMessage("Sign up successful!");
+        toast.success("Sign up successful!");
         setError("");
         setTimeout(() => {
           router.push("/login");
@@ -124,6 +129,7 @@ export default function SignupPage() {
 
   return (
     <div className="flex flex-col md:flex-row min-h-screen">
+      <ToastContainer />
       {/* Background Animation */}
       <div className="area absolute inset-0 z-[-1]">
         <ul className="circles">
@@ -141,8 +147,9 @@ export default function SignupPage() {
       </div>
       {/* End Background Animation */}
       {/* Left Column - Graphic */}
-      <div className="hidden md:flex flex-col w-1/2 animate-fade-up items-center justify-center">
-        <h1 className="w-full font-mono px-6 text-white text-4xl mb-8">
+      <div className="hidden relative md:flex flex-col w-1/2 animate-fade-up items-center justify-center">
+      <Link href={'/'} className="absolute top-6 left-6 p-1 bg-gray-300 text-black rounded-full hover:bg-gray-100 z-[9999]"><ArrowLeft className="w-6 h-6"/></Link>
+        <h1 className="w-full font-mono px-6 text-white text-4xl mt-8 mb-8">
           <span ref={typedRef}></span>
         </h1>
 
@@ -164,6 +171,7 @@ export default function SignupPage() {
             placeholder="First Name"
             value={formData.firstName}
             onChange={handleChange}
+            required
             className="block w-full mb-4 p-3 border rounded text-black"
           />
           <input
@@ -172,6 +180,7 @@ export default function SignupPage() {
             placeholder="Last Name"
             value={formData.lastName}
             onChange={handleChange}
+            required
             className="block w-full mb-4 p-3 border rounded text-black"
           />
           <input
@@ -180,6 +189,7 @@ export default function SignupPage() {
             placeholder="Email"
             value={formData.email}
             onChange={handleChange}
+            required
             className="block w-full mb-4 p-3 border rounded text-black"
           />
 
@@ -191,6 +201,7 @@ export default function SignupPage() {
               placeholder="Password"
               value={formData.password}
               onChange={handleChange}
+              required
               className="block w-full p-3 border rounded text-black"
             />
             <button
@@ -274,10 +285,10 @@ export default function SignupPage() {
               </a>
             </p>
           </div>
-          {error && <p className="text-red-500 mt-4">{error}</p>}
+          {/* {error && <p className="text-red-500 mt-4">{error}</p>} */}
           {message && (
             <div>
-              <p className="text-green-500 mt-4">{message}</p>
+              {/* <p className="text-green-500 mt-4">{message}</p> */}
               <button
                 onClick={() => router.push("/login")}
                 className="mt-4 w-full p-2 bg-gray-500 text-white rounded"

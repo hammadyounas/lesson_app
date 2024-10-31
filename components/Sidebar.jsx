@@ -84,13 +84,13 @@ const Sidebar = () => {
           </div>
         )}
 
-        <ul className="flex flex-col justify-center items-center flex-grow space-y-5">
+        <ul className="flex flex-col justify-center flex-grow space-y-5">
           {user?.id ? (
             <>
               <li className="flex items-center space-x-2 relative group">
                 <Link
                   href="/dashboard"
-                  className="w-full flex items-center space-x-2 px-2 py-1 hover:bg-white hover:text-black rounded-xl transition-all duration-300"
+                  className="w-full flex items-center  space-x-2 px-2 py-1 hover:bg-white hover:text-black rounded-xl transition-all duration-300"
                 >
                   <House className="w-8 h-8" />
                   {isExpanded && <span className="ml-2">Home</span>}
@@ -147,7 +147,7 @@ const Sidebar = () => {
               <li className="flex items-center space-x-2 relative group">
                 <Link
                   href="/login"
-                  className="w-full flex items-center space-x-2 px-2 py-1 hover:bg-white hover:text-black rounded-full transition-all duration-300"
+                  className="w-full flex items-center space-x-2 px-2 py-1 hover:bg-white hover:text-black rounded-xl transition-all duration-300"
                 >
                   <UserRound className="w-8 h-8" />
                   {isExpanded && <span className="ml-2">Login</span>}
@@ -165,7 +165,7 @@ const Sidebar = () => {
               <li className="flex items-center space-x-2 relative group">
                 <Link
                   href="/signup"
-                  className="w-full flex items-center space-x-2 px-2 py-1 hover:bg-white hover:text-black rounded-full transition-all duration-300"
+                  className="w-full flex items-center space-x-2 px-2 py-1 hover:bg-white hover:text-black rounded-xl transition-all duration-300"
                 >
                   <UserRoundPen className="w-8 h-8" />
                   {isExpanded && <span className="ml-2 w-full">SignUp</span>}
@@ -203,7 +203,7 @@ const Sidebar = () => {
         </ul>
 
         {/* Expand/Collapse Button at the Bottom */}
-        <div className="flex justify-center mt-auto">
+        <div className="flex justify-end mt-auto">
           <button
             onClick={() => setIsExpanded(!isExpanded)}
             className="flex items-center space-x-2 px-2 py-1 hover:bg-white hover:text-black rounded-full transition-all duration-300"
