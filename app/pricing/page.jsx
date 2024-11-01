@@ -34,7 +34,7 @@ const pricingPlans = [
   },
   {
     title: "Free Books",
-      price: "$15",
+      price: "",
       features: [
         "All Free Books",
         "Priority support",
@@ -61,7 +61,7 @@ const PricingCard = ({
         <h2 className="text-2xl font-semibold">{title}</h2>
         <p className="mt-4 text-5xl font-extrabold tracking-tight">
           {price}
-          <span className="ml-1 text-xl font-semibold">/ month</span>
+          <span className={`ml-1 text-xl font-semibold  ${title === 'Free Books' ? 'text-transparent': ''}`}>/ month</span>
         </p>
         <p className="mt-4">{description}</p>
         <ul className="mt-6 space-y-3">

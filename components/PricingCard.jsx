@@ -15,7 +15,7 @@ const PricingCard = ({
         <h2 className="text-2xl font-semibold text-white mb-2">{title}</h2>
         <p className="mt-4 text-5xl font-extrabold tracking-tight text-white">
           {price}
-          <span className="ml-1 text-xl font-semibold text-white">/ month</span>
+          <span className={`ml-1 text-xl font-semibold text-white ${title === 'Free Books' ? 'text-transparent': ''}`}>/ month</span>
         </p>
         <p className="mt-4 text-white">{description}</p>
         <ul className="mt-6 space-y-3">

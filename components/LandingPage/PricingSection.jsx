@@ -28,7 +28,7 @@ export default function PricingSection() {
     },
     {
       title: "Free Books",
-      price: "$15",
+      price: "",
       features: [
         "All Free Books",
         "Priority support",
