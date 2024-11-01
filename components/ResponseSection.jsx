@@ -278,12 +278,12 @@ const ResponseSection = ({
     createPdfFromResponse(response);
   };
 
-  const handleDelete = () => {
-    setResponse("");
-    dispatch(clearResponse());
-    setIsEditing(true);
-    setIsModalOpen(false); // Close modal after confirming
-  };
+  // const handleDelete = () => {
+  //   setResponse("");
+  //   dispatch(clearResponse());
+  //   setIsEditing(true);
+  //   setIsModalOpen(false); // Close modal after confirming
+  // };
 
   return (
     <>
