@@ -17,7 +17,13 @@ export default function SignupPage() {
     password: "",
     confirmPassword: "",
   });
-  const [error, setError] = useState("");
+  const [error, setError] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+  });
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const [passwordVisible, setPasswordVisible] = useState(false);
@@ -53,29 +59,50 @@ export default function SignupPage() {
 
   const validateFields = () => {
     const { email, password, confirmPassword, firstName, lastName } = formData;
-    if (!email || !password || !confirmPassword || !firstName || !lastName) {
-      setError("All fields are required.");
-      toast.error('All fields are required.');
-      return false;
+    let newError = { ...error };
+  
+    // Reset error states
+    Object.keys(newError).forEach((key) => (newError[key] = ""));
+  
+    if (!firstName) newError.firstName = "First Name is required.";
+    if (!lastName) newError.lastName = "Last Name is required.";
+    if (!email) newError.email = "Email is required.";
+    
+    // Password validation
+    if (!password) {
+      newError.password = "Password is required.";
+    } else if (password.length < 8) {
+      newError.password = "Password must be at least 8 characters long.";
+    } else if (!/[A-Z]/.test(password)) {
+      newError.password = "Password must contain at least one uppercase letter.";
     }
-    if (!passwordsMatch) {
-      setError("Passwords do not match.");
-      return false;
+  
+    if (!confirmPassword) {
+      newError.confirmPassword = "Confirm Password is required.";
+    } else if (password && confirmPassword && password !== confirmPassword) {
+      newError.confirmPassword = "Passwords do not match.";
+      setPasswordsMatch(false);
+    } else {
+      setPasswordsMatch(true);
     }
-    return true;
+  
+    setError(newError);
+    return Object.values(newError).every((err) => err === "");
   };
+  
 
   const handleSignup = async (e) => {
     e.preventDefault();
-
-    if (!validateFields()) {
-      setMessage("");
-      return;
-    }
-
     setLoading(true);
-    setError("");
-    setMessage("");
+
+    // Clear previous errors
+    setError({ firstName: "", lastName: "", email: "", password: "", confirmPassword: "" });
+
+    // Validate required fields
+    if (!validateFields()) {
+      setLoading(false);
+      return; // Stop loading if validation fails
+    }
 
     try {
       const resultAction = await dispatch(
@@ -98,10 +125,10 @@ export default function SignupPage() {
         setError("");
         setTimeout(() => {
           router.push("/login");
-        }, 2000); // Delay to show success message
+        }, 2000);
       }
     } catch (error) {
-      setError("An unexpected error occurred");
+      setError({ ...error, general: "An unexpected error occurred." });
     } finally {
       setLoading(false);
     }
@@ -171,27 +198,27 @@ export default function SignupPage() {
             placeholder="First Name"
             value={formData.firstName}
             onChange={handleChange}
-            required
             className="block w-full mb-4 p-3 border rounded text-black"
           />
+              {error.firstName && <p className="text-red-500 text-sm -mt-2 mb-2">{error.firstName}</p>}
           <input
             type="text"
             name="lastName"
             placeholder="Last Name"
             value={formData.lastName}
             onChange={handleChange}
-            required
             className="block w-full mb-4 p-3 border rounded text-black"
           />
+               {error.lastName && <p className="text-red-500 text-sm -mt-2 mb-2">{error.lastName}</p>}
           <input
             type="email"
             name="email"
             placeholder="Email"
             value={formData.email}
             onChange={handleChange}
-            required
             className="block w-full mb-4 p-3 border rounded text-black"
           />
+               {error.email && <p className="text-red-500 text-sm -mt-2 mb-2">{error.email}</p>}
 
           {/* Password Field with Toggle Visibility */}
           <div className="relative mb-4">
@@ -201,7 +228,6 @@ export default function SignupPage() {
               placeholder="Password"
               value={formData.password}
               onChange={handleChange}
-              required
               className="block w-full p-3 border rounded text-black"
             />
             <button
@@ -216,6 +242,7 @@ export default function SignupPage() {
               )}
             </button>
           </div>
+            {error.password && <p className="text-red-500 text-sm -mt-2 mb-2">{error.password}</p>}
 
           {/* Confirm Password Field with Toggle Visibility */}
           <div className="relative mb-4">
@@ -239,10 +266,11 @@ export default function SignupPage() {
               )}
             </button>
           </div>
+          {error.confirmPassword && <p className="text-red-500 text-sm -mt-2 mb-2">{error.confirmPassword}</p>}
 
           {/* Passwords Match Indicator */}
           {!passwordsMatch && (
-            <p className="text-red-500 mb-4">Passwords do not match.</p>
+            <p className="text-red-500 text-sm -mt-2 mb-2">Passwords do not match.</p>
           )}
 
           <button

@@ -10,8 +10,7 @@ import { toast, ToastContainer } from "react-toastify";
 
 export default function LoginPage() {
   const [formData, setFormData] = useState({ email: "", password: "" });
-  const [error, setError] = useState("");
-  const [message, setMessage] = useState("");
+  const [fieldErrors, setFieldErrors] = useState({ email: "", password: "" });
   const [loading, setLoading] = useState(false);
   const [passwordVisible, setPasswordVisible] = useState(false);
 
@@ -25,7 +24,7 @@ export default function LoginPage() {
         "Generate Lessons Through AI",
         "Create Interactive Lessons with AI",
         "Make Learning Fun with AI",
-      ], // You can add more variations if you'd like
+      ],
       typeSpeed: 50,
       backSpeed: 50,
       loop: true,
@@ -33,10 +32,8 @@ export default function LoginPage() {
       cursorChar: "_",
     };
 
-    // Initialize Typed.js
     const typed = new Typed(typedRef.current, options);
 
-    // Destroy Typed.js instance on cleanup
     return () => {
       typed.destroy();
     };
@@ -45,36 +42,69 @@ export default function LoginPage() {
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({ ...prevData, [name]: value }));
+    setFieldErrors((prevErrors) => ({ ...prevErrors, [name]: "" })); // Clear field error on input change
   };
 
+  // handle login function
   const handleLogin = async (e) => {
     e.preventDefault();
     setLoading(true);
-    setError("");
-    setMessage("");
-
+  
+    // Clear previous errors
+    setFieldErrors({ email: "", password: "" });
+  
+    // Validate required fields
+    let hasError = false;
+    let newFieldErrors = { email: "", password: "" };
+  
+    if (!formData.email) {
+      newFieldErrors.email = "Email is required";
+      hasError = true;
+    }
+  
+    if (!formData.password) {
+      newFieldErrors.password = "Password is required";
+      hasError = true;
+    } else {
+      // Password validation: minimum 8 characters and at least 1 uppercase letter
+      const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[a-z]).{8,}$/;
+      if (!passwordRegex.test(formData.password)) {
+        newFieldErrors.password = "Password must be at least 8 characters long and one uppercase letter.";
+        hasError = true;
+      }
+    }
+  
+    if (hasError) {
+      setFieldErrors(newFieldErrors);
+      setLoading(false); // Stop loading if there's an error
+      return;
+    }
+  
     try {
       const resultAction = await dispatch(loginUser(formData));
-
+  
       if (loginUser.rejected.match(resultAction)) {
-        setError(resultAction.payload || "Login failed");
-        toast.error("Invalid Credentials" || resultAction.payload);
-        setMessage("");
+        const error = resultAction.payload || "Login failed";
+  
+        // Display a generic error message in the toast
+        toast.error("Invalid credentials");
+  
+        // Optional: if you want to capture other errors for logging/debugging
+        console.error(error);
       } else {
-        // setMessage("Login successful!");
         toast.success("Login successful!");
-        setError("");
-
         await dispatch(fetchUser());
         router.push("/dashboard");
       }
     } catch (error) {
-      setError("An unexpected error occurred");
-      setMessage("");
+      toast.error("An unexpected error occurred");
     } finally {
       setLoading(false);
     }
   };
+  
+  
+  
 
   const togglePasswordVisibility = () => {
     setPasswordVisible(!passwordVisible);
@@ -83,7 +113,6 @@ export default function LoginPage() {
   return (
     <div className="flex flex-col md:flex-row min-h-screen">
       <ToastContainer />
-      {/* Background Animation */}
       <div className="area absolute inset-0 z-[-1]">
         <ul className="circles">
           <li></li>
@@ -98,17 +127,15 @@ export default function LoginPage() {
           <li></li>
         </ul>
       </div>
-      {/* End Background Animation */}
-      {/* Left Column - Graphic */}
+      
       <div className="hidden md:flex relative animate-fade-up flex-col w-1/2 items-center justify-center bg-transparent">
-      <Link href={'/'} className="absolute top-6 left-6 p-1 bg-gray-300 text-black rounded-full hover:bg-gray-100 z-[9999]"><ArrowLeft className="w-6 h-6"/></Link>
+        <Link href={'/'} className="absolute top-6 left-6 p-1 bg-gray-300 text-black rounded-full hover:bg-gray-100 z-[9999]"><ArrowLeft className="w-6 h-6"/></Link>
         <h1 className="w-full font-mono px-6 text-white mt-8 text-4xl mb-8">
           <span ref={typedRef}></span>
         </h1>
         <img src="teacher_bot2.png" alt="Graphic" className="max-w-full transform scale-x-[-1] h-3/4" />
       </div>
 
-      {/* Right Column - Login Form */}
       <div className="w-full h-screen md:w-1/2 flex flex-col animate-fade-up gap-7 items-center justify-center bg-transparent p-6">
         <h1 className="text-4xl font-bold text-white">Sign In</h1>
         <form
@@ -120,30 +147,35 @@ export default function LoginPage() {
           </label>
           <input
             id="email"
-            name="email" // Use name attribute
+            name="email"
             type="email"
             placeholder="Type your email"
             value={formData.email}
             onChange={handleInputChange}
-            required
+            // required
             className="block w-full my-4 p-3 border rounded text-black transition duration-300 ease-in-out focus:border-black focus:outline-none focus:ring-1 focus:ring-black"
           />
+          {fieldErrors.email && (
+            <p className="text-red-500 text-sm -mt-2 mb-2">{fieldErrors.email}</p>
+          )}
 
-          {/* Password Field with Toggle Visibility */}
           <div className="relative mb-4">
             <label htmlFor="pwd" className="text-gray-600">
               Password
             </label>
             <input
               id="pwd"
-              name="password" // Use name attribute
+              name="password"
               type={passwordVisible ? "text" : "password"}
               placeholder="8+ characters, 1 capital letter"
               value={formData.password}
               onChange={handleInputChange}
-              required
+              // required
               className="block w-full my-4 p-3 border rounded text-black transition duration-200 ease-in-out focus:border-black focus:outline-none focus:ring-1 focus:ring-black"
             />
+            {fieldErrors.password && (
+              <p className="text-red-500 text-sm -mt-2 mb-2">{fieldErrors.password}</p>
+            )}
             <button
               type="button"
               onClick={togglePasswordVisibility}
@@ -156,6 +188,7 @@ export default function LoginPage() {
               )}
             </button>
           </div>
+
           <div className="hover:underline text-black text-right p-2">
             <Link href="/forget-password">Forgot Password?</Link>
           </div>
@@ -201,8 +234,6 @@ export default function LoginPage() {
               </Link>
             </p>
           </div>
-          {/* {error && <p className="text-red-500 mt-4">{error}</p>}
-          {message && <p className="text-green-500 mt-4">{message}</p>} */}
         </form>
       </div>
     </div>
