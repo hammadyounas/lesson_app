@@ -14,6 +14,7 @@ export default function ForgotPasswordPage() {
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+  const [error, setError] = useState();
 
   const dispatch = useDispatch();
   const typedRef = useRef(null);
@@ -43,6 +44,12 @@ export default function ForgotPasswordPage() {
   const handleRequestPasswordReset = async (e) => {
     e.preventDefault();
     setLoading(true);
+    if(!email) {
+      // toast.error("Please enter your email");
+      setError("Please enter your email");
+      setLoading(false);
+      return;
+    }
 
     try {
       const resultAction = await dispatch(requestPasswordReset(email));
@@ -108,6 +115,7 @@ export default function ForgotPasswordPage() {
             onChange={(e) => setEmail(e.target.value)}
             className="block w-full my-4 p-3 border rounded"
           />
+                         {error && <p className="text-red-500 text-sm -mt-2 mb-2">{error}</p>}
 
           <button
             type="submit"
