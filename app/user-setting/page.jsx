@@ -14,6 +14,7 @@ import { Save, Trash2, Camera } from "lucide-react";
 import bcrypt from "bcryptjs";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import ConfirmationModal from "@/components/ui/ConfirmationModal";
 
 const UserSettingsPage = () => {
   const [firstName, setFirstName] = useState("");
@@ -26,6 +27,7 @@ const UserSettingsPage = () => {
   const [isUpdating, setIsUpdating] = useState(false);
   const [isOldPasswordVerified, setIsOldPasswordVerified] = useState(false);
   const [isPasswordUpdating, setIsPasswordUpdating] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const [profilePicture, setProfilePicture] = useState(null);
   const [previewPicture, setPreviewPicture] = useState("/default-avatar.png");
@@ -116,6 +118,7 @@ const UserSettingsPage = () => {
     try {
       await dispatch(deleteUser(user.id)).unwrap();
       toast.success("Account deleted successfully");
+      setIsModalOpen(false);
       router.push("/login");
     } catch (error) {
       console.error("Error deleting account:", error);
@@ -318,12 +321,19 @@ const UserSettingsPage = () => {
                   </button>
                 )}
                 <button
-                  onClick={handleDelete}
+                onClick={() => setIsModalOpen(true)}
+                  // onClick={handleDelete}
                   className="bg-red-500 text-white p-2 w-full md:w-1/4 rounded flex items-center justify-center"
                   aria-label="Delete Account"
                 >
                   <Trash2 className="w-5 h-5" />
                 </button>
+
+                <ConfirmationModal
+                isOpen={isModalOpen}
+                onClose={() => setIsModalOpen(false)}
+                onConfirm={handleDelete}
+      />
               </div>
             </div>
           )}
