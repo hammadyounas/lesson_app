@@ -144,8 +144,8 @@ const UserSettingsPage = () => {
     <div className="w-full flex flex-col md:flex-row min-h-screen bg-gray-100">
       <Sidebar className="md:w-1/4" />
 
-      <div className="flex-1 grid place-items-center p-4 text-black md:p-6 bg-gray-100">
-        <div className="bg-gray-200 rounded-lg shadow-md p-6 w-full animate-fade-up max-w-4xl">
+      <div className="flex-1 grid place-items-center p-4 text-black md:p-6 bg-blue-50">
+        <div className="bg-blue-100 rounded-lg shadow-md p-6 w-full animate-fade-up max-w-4xl">
           <h2 className="text-2xl text-center font-bold mb-4">User Settings</h2>
           {isUpdating ? (
             <div className="flex justify-center items-center h-full">
@@ -315,7 +315,7 @@ const UserSettingsPage = () => {
                 ) : (
                   <button
                     onClick={() => setIsEditing(true)}
-                    className="bg-blue-500 text-white w-full md:w-1/4 p-2 rounded"
+                    className="bg-blue-500 text-white w-full md:w-1/4 p-2 sm:ml-4 rounded"
                   >
                     Edit
                   </button>
