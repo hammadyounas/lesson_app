@@ -49,9 +49,9 @@ export default function LessonSection() {
                 eiusmod tempor incididunt ut labore et dolore magna aliqua.
               </p>
               <div className="sm:mt-8 mt-4">
-                <button className="px-6 sm:py-3 py-2 border-2 border-blue-600 text-blue-700 font-semibold rounded-md hover:bg-blue-700 hover:text-white hover:border-blue-700 transition">
+                <Link href={'/freePrompts'} className="px-6 sm:py-3 py-2 border-2 border-blue-600 text-blue-700 font-semibold rounded-md hover:bg-blue-700 hover:text-white hover:border-blue-700 transition">
                   Get Started
-                </button>
+                </Link>
               </div>
             </div>
 

@@ -10,7 +10,7 @@ import LimitReachedModal from "../../components/LimitReachedModal";
 import { ArrowBigLeft, ArrowBigRight } from "lucide-react";
 import ConfirmationModal from "@/components/ui/ConfirmationModal";
 
-const FREE_RESPONSE_LIMIT = 2;
+const FREE_RESPONSE_LIMIT = Infinity;
 
 const FreeDashboardPage = () => {
   const dispatch = useDispatch();
