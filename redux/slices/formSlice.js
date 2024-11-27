@@ -8,9 +8,12 @@ const initialState = {
     curriculum: '',
     topic: '',
     subject: '',
+    indoorOutdoor: '',
     additional: '',
     difficulty: '',
     energy: '',
+    noOfChildren: '',
+    noOfAdults: '',
     fourCs: [],
   },
 };

@@ -25,6 +25,7 @@ const FormComponent = ({
   const maxLength = 200;
   // State for Active Tab
   const [activeTab, setActiveTab] = useState("Lesson");
+  const [mobileActiveTab, setMobileActiveTab] = useState("");
 
   // Toggle selection for 4 C's (allows multiple selections)
   const handleSelectionToggle = (selection, values, setFieldValue) => {
@@ -39,6 +40,9 @@ const FormComponent = ({
   // Handle Tab Click
   const handleTabClick = (tab) => {
     setActiveTab(tab);
+  };
+  const handleMobileTabClick = (tab) => {
+    setMobileActiveTab(tab);
   };
 
   const clearForm =  (resetForm) => {
@@ -58,13 +62,16 @@ const FormComponent = ({
       .positive("Duration must be a positive number."),
     curriculum: Yup.string().required("Curriculum is required."),
     topic: Yup.string().required("Topic is required."),
-    subject: Yup.string().required("Subject is required."),
+    subject: Yup.string().required("Indoor/Outdoor is required."),
+    indoorOutdoor: Yup.string().required("Subject is required."),
     additional: Yup.string().max(
       maxLength,
       `Exceeded max length of ${maxLength} characters.`
     ),
     difficulty: Yup.string().required("Difficulty level is required."),
     energy: Yup.string().required("Energy option is required."),
+    noOfChildren: Yup.string().required("No of Children is required."),
+    noOfAdults: Yup.string().required("No of Adults is required."),
     fourCs: Yup.array()
       .of(Yup.string())
       .min(1, "At least one 4 C's item must be selected."),
@@ -115,10 +122,11 @@ const FormComponent = ({
             </label>
             <select
               id="tabs"
-              className="bg-gray-800 border border-gray-600 text-white text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-              value={activeTab}
-              onChange={(e) => handleTabClick(e.target.value)}
+              className="bg-gray-800 border border-gray-600 text-white text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full max-sm:py-3 p-2.5"
+              value={mobileActiveTab}
+              onChange={(e) => handleMobileTabClick(e.target.value)}
             >
+              <option value=" ">Select</option>
               <option value="Lesson">Lesson</option>
               <option value="Homework">Homework</option>
               <option value="Quiz">Quiz</option>
@@ -210,6 +218,18 @@ const FormComponent = ({
               className="flex-1 border-blue-800"
             />
           </div>
+          {/* indoor/outdoor */}
+          <div className="flex flex-col md:flex-row w-full gap-4 mb-4">
+            <TextInput
+              label="Indoor/Outdoor"
+              id="indoorOutdoor"
+              type="text"
+              value={values.indoorOutdoor}
+              onChange={(e) => setFieldValue("indoorOutdoor", e.target.value)}
+              error={touched.indoorOutdoor && errors.indoorOutdoor}
+              className="flex-1 border-blue-800"
+            />
+          </div>
 
           {/* 4 C's Selection */}
           <CheckboxInput
@@ -245,6 +265,28 @@ const FormComponent = ({
               onChange={(e) => setFieldValue("energy", e.target.value)}
               error={touched.energy && errors.energy}
               // className="flex-1"
+            />
+          </div>
+
+          {/* No of children and adults */}
+          <div className="flex flex-col md:flex-row w-full gap-4 mb-4">
+            <TextInput
+              label="No of Children"
+              id="noOfChildren"
+              type="text"
+              value={values.noOfChildren}
+              onChange={(e) => setFieldValue("noOfChildren", e.target.value)}
+              error={touched.noOfChildren && errors.noOfChildren}
+              className="flex-1 border-blue-800"
+            />
+            <TextInput
+              label="No of Adults"
+              id="noOfAdults"
+              type="text"
+              value={values.noOfAdults}
+              onChange={(e) => setFieldValue("noOfAdults", e.target.value)}
+              error={touched.noOfAdults && errors.noOfAdults}
+              className="flex-1 border-blue-800"
             />
           </div>
 

@@ -2,13 +2,14 @@
 
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setResponse } from "../../redux/slices/responseSlice";
+import { setResponse, clearResponse } from "../../redux/slices/responseSlice";
 import Sidebar from "../../components/Sidebar";
 import Form from "../../components/Form";
 import ResponseSection from "../../components/ResponseSection";
 import LimitReachedModal from "../../components/LimitReachedModal";
 import { ArrowBigLeft, ArrowBigRight } from "lucide-react";
 import ConfirmationModal from "@/components/ui/ConfirmationModal";
+import { clearFormData } from "@/redux/slices/formSlice";
 
 const FREE_RESPONSE_LIMIT = Infinity;
 
@@ -62,6 +63,7 @@ const FreeDashboardPage = () => {
   const handleDeleteConfirmation = () => {
     // Logic for deletion
     dispatch(clearResponse());
+    dispatch(clearFormData());
     setIsEditing(true);
     setIsModalOpen(false);
   };
