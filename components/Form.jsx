@@ -114,7 +114,7 @@ const FormComponent = ({
       }}
     >
       {({ values, errors, touched, setFieldValue, resetForm }) => (
-        <Form className="flex flex-col justify-between shadow-xl shadow-gray-400 border border-gray-300 bg-gray-50 w-full h-full rounded-xl p-4 text-black">
+        <Form className="flex flex-col justify-between shadow-xl shadow-gray-400 border border-gray-300 bg-gray-50 max-sm:mt-5 w-full h-full rounded-xl p-4 text-black">
           {/* Responsive Select for Mobile */}
           <div className="sm:hidden mb-4">
             <label htmlFor="tabs" className="sr-only">
