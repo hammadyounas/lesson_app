@@ -47,9 +47,9 @@ const Sidebar = () => {
       {/* Nav Button for Mobile View */}
       <button
         onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-        className="lg:hidden fixed top-2 left-2 z-50 bg-blue-800 text-white p-2 rounded-full"
+        className="lg:hidden fixed top-2 left-2 z-50 bg-blue-800 text-white p-1 rounded-full"
       >
-        <Menu className="w-6 h-6" />
+        <Menu className="sm:w-6 sm:h-6 w-4 h-4" />
       </button>
 
       <aside

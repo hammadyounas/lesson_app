@@ -126,7 +126,7 @@ const FormComponent = ({
               value={mobileActiveTab}
               onChange={(e) => handleMobileTabClick(e.target.value)}
             >
-              <option value=" ">Select</option>
+              <option value=" ">Please Choose</option>
               <option value="Lesson">Lesson</option>
               <option value="Homework">Homework</option>
               <option value="Quiz">Quiz</option>

@@ -92,7 +92,7 @@ const FreeDashboardPage = () => {
         {showForm && (
           <div className="flex flex-col items-center justify-center rounded-xl m-2 max-w-full md:w-4/5 animate-fade-right animate-delay-300">
             {/* Display free response count */}
-            <div className="text-gray-700 font-medium mb-2">
+            <div className="text-gray-700 font-medium mb-2 max-sm:text-sm">
               Free responses used: {freeResponseCount} / {FREE_RESPONSE_LIMIT}
             </div>
 
