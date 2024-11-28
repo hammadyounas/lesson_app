@@ -1,6 +1,6 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { motion } from 'framer-motion'; // Import framer-motion for animations
-import PricingCard from '../PricingCard';
+import React, { useEffect, useRef, useState } from "react";
+import { motion } from "framer-motion"; // Import framer-motion for animations
+import PricingCard from "../PricingCard";
 
 export default function PricingSection() {
   const pricingPlans = [
@@ -66,9 +66,9 @@ export default function PricingSection() {
   }, []);
 
   return (
-    <div ref={sectionRef} className=' w-full overflow-x-hidden'>
+    <div ref={sectionRef} className=" w-full overflow-x-hidden">
       <main className="flex-grow flex flex-col  min-2xl:h-auto max-2xl:min-h-screen items-center bg-primary justify-center text-center sm:p-20 max-sm:py-10">
-        <motion.div
+        <div
           className="xl:w-1/2 lg:w-3/2 sm:mb-20 mb-10"
           initial={{ opacity: 0, y: -30 }} // Initial state for the header
           animate={isVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: -30 }} // Animate on visibility
@@ -81,16 +81,14 @@ export default function PricingSection() {
             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
             eiusmod tempor incididunt ut labore et dolore magna aliqua.
           </p>
-        </motion.div>
-        <motion.div
+        </div>
+        <div
           className="grid grid-cols-1 md:grid-cols-3 sm:gap-10 gap-4 text-white xl:w-[80%] w-full max-sm:px-4"
-          initial={{ opacity: 0, y: 30 }} // Initial state for pricing cards
-          animate={isVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }} // Animate on visibility
-          transition={{ duration: 0.5, ease: "easeInOut", staggerChildren: 0.05 }} // Faster staggered animation for cards
+       // Faster staggered animation for cards
         >
           {/* Pricing cards section */}
           {pricingPlans.map((plan, index) => (
-            <motion.div
+            <div
               key={index}
               initial={{ opacity: 0, y: 20 }} // Initial state for each card
               animate={isVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }} // Animate each card on visibility
@@ -102,9 +100,9 @@ export default function PricingSection() {
                 features={plan.features}
                 buttonText={plan.buttonText}
               />
-            </motion.div>
+            </div>
           ))}
-        </motion.div>
+        </div>
       </main>
     </div>
   );
