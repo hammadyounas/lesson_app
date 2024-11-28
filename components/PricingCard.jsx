@@ -10,7 +10,7 @@ const PricingCard = ({
   buttonLink 
 }) => {
   return (
-    <div className="flex flex-col justify-between items-center border border-gray-600 rounded-lg max-h-full w-full shadow-xl hover:shadow-xl transition-shadow duration-1000 ease-in-out p-6 bg-gray-600 animate-fade-up animate-delay-700">
+    <div className="flex flex-col justify-between items-center  rounded-lg max-h-full w-full shadow-xl hover:shadow-xl transition-shadow duration-1000 ease-in-out p-6 bg-[#0b734e] animate-fade-up animate-delay-700">
       <div className="flex-grow">
         <h2 className="text-2xl font-semibold text-white mb-2">{title}</h2>
         <p className="mt-4 text-5xl font-extrabold tracking-tight text-white">
@@ -28,7 +28,7 @@ const PricingCard = ({
         </ul>
       </div>
       <button
-        className="bg-blue-600 text-white hover:bg-blue-700 mt-8 block w-full py-3 px-6 rounded-md text-center font-medium transition-colors duration-1000 ease-in-out"
+        className="bg-black text-white hover:bg-white hover:text-primary mt-8 block w-full py-3 px-6 rounded-md text-center font-medium transition-colors duration-1000 ease-in-out"
         href={buttonLink}
       >
         {buttonText}

@@ -1,35 +1,103 @@
-import React from 'react'
+import React, { useState } from "react";
 
 export default function Navbar() {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
   return (
-    <div>
+    <div className="bg-white w-full sm:py-4 max-sm:p-2 relative z-50">
       {/* Navbar */}
-      <nav className="w-full flex justify-between items-center sm:p-6 max-sm:px-2 max-sm:py-4 bg-gray-100 shadow-md fixed top-0 left-0 z-50">
-        <h1 className="sm:text-2xl text-black font-bold">Brand</h1>
-        <ul className="flex sm:space-x-9 space-x-2  max-sm:text-sm">
-          <li>
-            <a href="#" className="text-gray-600 hover:text-blue-900 hover:font-semibold">
-              Contact Us
-            </a>
-          </li>
-          <li>
-            <a
-              href="./freePrompts"
-              className="text-white rounded-md bg-blue-700 sm:py-3 py-1 sm:px-6 px-2 hover:text-gray-900 hover:bg-gray-300 transition"
+      <nav className="flex flex-wrap justify-between items-center lg:w-[90%] w-full mx-auto">
+        {/* Logo */}
+        <div className="flex items-center w-full md:w-auto justify-between">
+          <h1 className="sm:text-2xl text-black font-sans font-bold">
+            Lesson Generator
+          </h1>
+
+          {/* Hamburger Icon */}
+          <button
+            className="md:hidden block text-gray-800 focus:outline-none"
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-6 w-6"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              strokeWidth={2}
             >
-              Free Trial
-            </a>
-          </li>
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M4 6h16M4 12h16m-7 6h7"
+              />
+            </svg>
+          </button>
+        </div>
+
+        {/* Navigation Links */}
+        <div
+          className={`md:flex ${
+            isMenuOpen ? "flex items-center  justify-center h-[80vh]" : "hidden"
+          } md:items-center md:justify-center md:w-auto w-full flex-col md:flex-row md:space-x-6`}
+        >
+          <ul className="flex flex-col md:flex-row w-full lg:w-auto items-center lg:space-x-6 md:space-x-2 mt-4 lg:mt-0">
+            <li>
+              <a
+                href="#"
+                className="text-gray-800 sm:hover:text-primary font-semibold sm:hover:border-b-2 border-primary max-sm:hover:bg-primary max-sm:w-full max-sm:mb-2 max-sm:px-2 hover:text-white transition duration-500 "
+              >
+                Home
+              </a>
+            </li>
+            <li>
+              <a
+                href="#"
+                className="text-gray-800 sm:hover:text-primary font-semibold sm:hover:border-b-2 border-primary max-sm:hover:bg-primary max-sm:w-full max-sm:mb-2 max-sm:px-2 hover:text-white transition duration-500 "
+              >
+                About
+              </a>
+            </li>
+            <li>
+              <a
+                href="#"
+                className="text-gray-800 sm:hover:text-primary font-semibold sm:hover:border-b-2 border-primary max-sm:hover:bg-primary max-sm:w-full max-sm:mb-2 max-sm:px-2 hover:text-white transition duration-500 "
+              >
+                Contact Us
+              </a>
+            </li>
+            <li>
+              <a
+                href="./freePrompts"
+                className="text-gray-800 sm:hover:text-primary font-semibold sm:hover:border-b-2 border-primary max-sm:hover:bg-primary max-sm:w-full max-sm:mb-2 max-sm:px-2 hover:text-white transition duration-500 "
+              >
+                Free Trial
+              </a>
+            </li>
+            <li className="md:hidden">
+              <a
+                href="./login"
+                className=" text-gray-800 sm:hover:text-primary font-semibold sm:hover:border-b-2 border-primary max-sm:hover:bg-primary max-sm:w-full max-sm:mb-2 max-sm:px-2 hover:text-white transition duration-500 "
+              >
+                Sign In
+              </a>
+            </li>
+          </ul>
+        </div>
+
+        <div>
+          <ul className="max-md:hidden">
           <li>
-            <a
-              href="./login"
-              className="text-black rounded-md bg-gray-300 sm:py-3 py-1 sm:px-6 px-2 hover:text-white hover:bg-blue-700 transition"
-            >
-              Sign In
-            </a>
-          </li>
-        </ul>
+              <a
+                href="./login"
+                className="bg-primary py-2 px-4 text-white transition"
+              >
+                Sign In
+              </a>
+            </li>
+          </ul>
+        </div>
       </nav>
     </div>
-  )
+  );
 }

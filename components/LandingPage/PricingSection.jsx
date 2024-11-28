@@ -67,7 +67,7 @@ export default function PricingSection() {
 
   return (
     <div ref={sectionRef} className=' w-full overflow-x-hidden'>
-      <main className="flex-grow flex flex-col min-h-screen items-center bg-gray-900 justify-center text-center sm:p-20 max-sm:py-10">
+      <main className="flex-grow flex flex-col  min-2xl:h-auto max-2xl:min-h-screen items-center bg-primary justify-center text-center sm:p-20 max-sm:py-10">
         <motion.div
           className="xl:w-1/2 lg:w-3/2 sm:mb-20 mb-10"
           initial={{ opacity: 0, y: -30 }} // Initial state for the header

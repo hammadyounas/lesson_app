@@ -80,9 +80,9 @@ export default function ContactUs() {
 
   return (
     <div ref={sectionRef}>
-      <main className="flex-grow flex flex-col min-h-screen items-center justify-center text-center xl:p-20 sm:p-5">
+      <main className="flex-grow flex flex-col bg-primary  min-2xl:h-auto max-2xl:min-h-screen items-center justify-center text-center xl:p-20 sm:p-5">
         <motion.div
-          className="w-full xl:mb-20 lg:mb-10 max-lg:my-5"
+          className="w-full"
           initial={{ opacity: 0, y: -30 }} // Initial state for animation
           animate={isVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: -30 }} // Animate on visibility
           transition={{ duration: 0.3, ease: "easeInOut" }} // Faster transition
@@ -92,19 +92,21 @@ export default function ContactUs() {
             <motion.div
               className="flex flex-col justify-start p-6 border-r-2 text-left"
               initial={{ opacity: 0, x: -50 }} // Slide in from left
-              animate={isVisible ? { opacity: 1, x: 0 } : { opacity: 0, x: -50 }} // Animate on visibility
+              animate={
+                isVisible ? { opacity: 1, x: 0 } : { opacity: 0, x: -50 }
+              } // Animate on visibility
               transition={{ duration: 0.3 }} // Faster transition
             >
-              <h1 className="lg:text-7xl text-5xl font-bold text-gray-900 sm:mb-10 mb-5">
+              <h1 className="lg:text-7xl text-5xl font-bold text-white sm:mb-10 mb-5">
                 Contact Us
               </h1>
-              <p className="sm:text-lg text-gray-700 mb-2">
+              <p className="sm:text-lg text-white mb-2">
                 Location: 123 Main St, Anytown, USA
               </p>
-              <p className="sm:text-lg text-gray-700 mb-2">
+              <p className="sm:text-lg text-white mb-2">
                 Email: support@example.com
               </p>
-              <p className="sm:text-lg text-gray-700 mb-2">
+              <p className="sm:text-lg text-white mb-2">
                 Phone: (123) 456-7890
               </p>
             </motion.div>
@@ -121,7 +123,9 @@ export default function ContactUs() {
                 onSubmit={sendEmail}
                 className="text-black xl:px-14 px-4"
                 initial={{ opacity: 0, y: 20 }} // Initial state for form animation
-                animate={isVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }} // Animate on visibility
+                animate={
+                  isVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }
+                } // Animate on visibility
                 transition={{ duration: 0.3 }} // Faster transition
               >
                 <div className="grid grid-cols-1 md:grid-cols-1 gap-6">
@@ -129,7 +133,7 @@ export default function ContactUs() {
                     <input
                       type="text"
                       name="name"
-                      className="mt-2 p-3 border-b-2 border-gray-300 bg-transparent rounded-md w-full focus:outline-none"
+                      className="mt-2 p-3 border-b-2 border-gray-300 placeholder:text-white text-white bg-transparent rounded-md w-full focus:outline-none"
                       placeholder="Your Name"
                       required
                       value={formDetails.name}
@@ -140,7 +144,7 @@ export default function ContactUs() {
                     <input
                       type="email"
                       name="email"
-                      className="mt-2 p-3 border-b-2 border-gray-300 bg-transparent rounded-md w-full focus:outline-none"
+                      className="mt-2 p-3 border-b-2 border-gray-300 bg-transparent placeholder:text-white text-white rounded-md w-full focus:outline-none"
                       placeholder="Your Email"
                       required
                       value={formDetails.email}
@@ -151,7 +155,7 @@ export default function ContactUs() {
                     <input
                       type="tel"
                       name="phone"
-                      className="mt-2 p-3 border-b-2 border-gray-300 bg-transparent rounded-md w-full focus:outline-none"
+                      className="mt-2 p-3 border-b-2 border-gray-300 bg-transparent placeholder:text-white text-white rounded-md w-full focus:outline-none"
                       placeholder="Your Phone Number"
                       required
                       value={formDetails.phone}
@@ -171,7 +175,7 @@ export default function ContactUs() {
                 </div>
                 <motion.button
                   type="submit"
-                  className="mt-6 w-1/2 py-3 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition"
+                  className="mt-6 max-sm:mb-6 w-1/2 py-3 bg-black text-white rounded-md hover:bg-white hover:text-primary transition"
                   whileHover={{ scale: 1.05, transition: { duration: 0.3 } }} // Scale effect on hover
                 >
                   Send Message
