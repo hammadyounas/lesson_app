@@ -129,7 +129,7 @@ export default function LoginPage() {
       </div>
       
       <div className="hidden md:flex relative animate-fade-up flex-col w-1/2 items-center justify-center bg-transparent">
-        <Link href={'/'} className="absolute top-6 left-6 p-1 bg-gray-300 text-black rounded-full hover:bg-gray-100 z-[9999]"><ArrowLeft className="w-6 h-6"/></Link>
+        <Link href={'/'} className="absolute top-6 left-6 p-1 bg-gray-300 text-black rounded-full hover:bg-primary hover:text-white z-[9999]"><ArrowLeft className="w-6 h-6"/></Link>
         <h1 className="w-full font-mono px-6 text-white mt-8 text-4xl mb-8">
           <span ref={typedRef}></span>
         </h1>
@@ -142,7 +142,7 @@ export default function LoginPage() {
           onSubmit={handleLogin}
           className="p-8 bg-white w-full rounded-lg max-w-md"
         >
-          <label htmlFor="email" className="text-gray-600">
+          <label htmlFor="email" className="text-gray-600 ">
             Email
           </label>
           <input
@@ -153,7 +153,7 @@ export default function LoginPage() {
             value={formData.email}
             onChange={handleInputChange}
             // required
-            className="block w-full my-4 p-3 border rounded text-black transition duration-300 ease-in-out focus:border-black focus:outline-none focus:ring-1 focus:ring-black"
+            className="block w-full my-4 p-3 border rounded text-black transition duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
           />
           {fieldErrors.email && (
             <p className="text-red-500 text-sm -mt-2 mb-2">{fieldErrors.email}</p>
@@ -171,7 +171,7 @@ export default function LoginPage() {
               value={formData.password}
               onChange={handleInputChange}
               // required
-              className="block w-full my-4 p-3 border rounded text-black transition duration-200 ease-in-out focus:border-black focus:outline-none focus:ring-1 focus:ring-black"
+              className="block w-full my-4 p-3 border rounded text-black transition duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
             />
             {fieldErrors.password && (
               <p className="text-red-500 text-sm -mt-2 mb-2">{fieldErrors.password}</p>
@@ -179,7 +179,7 @@ export default function LoginPage() {
             <button
               type="button"
               onClick={togglePasswordVisibility}
-              className="absolute inset-y-0 right-0 h-[50px] mt-[40px] flex items-center px-3 text-gray-600"
+              className="absolute inset-y-0 right-0 h-[50px] mt-[40px] flex items-center px-3 text-white bg-primary hover:bg-transparent hover:text-primary"
             >
               {passwordVisible ? (
                 <Eye className="h-6 w-6" />
@@ -189,13 +189,13 @@ export default function LoginPage() {
             </button>
           </div>
 
-          <div className="hover:underline text-black text-right p-2">
+          <div className="hover:underline text-black hover:text-primary text-right p-2">
             <Link href="/forget-password">Forgot Password?</Link>
           </div>
 
           <button
             type="submit"
-            className="w-full p-3 bg-black text-white rounded-lg transition duration-300 ease-in-out transform hover:bg-black hover:shadow-lg hover:ring-2 hover:ring-offset-2 hover:ring-black"
+            className="w-full p-3 bg-primary text-white rounded-lg transition duration-300 ease-in-out transform  hover:shadow-lg hover:ring-2 hover:ring-offset-2 hover:ring-primary"
             disabled={loading}
           >
             {loading ? (
@@ -229,7 +229,7 @@ export default function LoginPage() {
           <div className="mt-6 text-center">
             <p className="text-sm text-gray-600">
               Don't have an account?{" "}
-              <Link href="/signup" className="text-blue-500 hover:underline">
+              <Link href="/signup" className="text-primary hover:text-blue-500 hover:underline">
                 Sign up
               </Link>
             </p>
