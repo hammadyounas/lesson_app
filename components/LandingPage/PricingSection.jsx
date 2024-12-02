@@ -1,41 +1,59 @@
 import React, { useEffect, useRef, useState } from "react";
-import { motion } from "framer-motion"; // Import framer-motion for animations
+import { motion } from "framer-motion";
 import PricingCard from "../PricingCard";
 
 export default function PricingSection() {
   const pricingPlans = [
     {
-      title: "Free Tier",
-      price: "$0",
+      title: "Pro Monthly",
+      price: "6.99",
       features: [
-        "Basic access to all features",
-        "Limited support",
-        "Community access",
-        "Monthly updates",
+        "Access to all tools",
+        "Free access to CPD webinar",
+        "Beautiful content downloads",
+        "Time-saved tracking",
+        "Access to future features",
+        "Curriculum specific",
+        "Slideshow generator",
+        "Responsive support team",
+        "Rolling AI Improvements",
       ],
-      buttonText: "Sign Up Free",
+      buttonText: "Continue",
     },
     {
-      title: "Premium Plan",
-      price: "$12",
+      title: "Pro Annual",
+      price: "6",
       features: [
-        "All Free Tier features",
-        "Priority support",
-        "Access to premium features",
-        "Weekly updates",
+        "Access to all tools",
+        "Free access to CPD webinar",
+        "Beautiful content downloads",
+        "Time-saved tracking",
+        "Access to future features",
+        "Curriculum specific",
+        "Slideshow generator",
+        "Responsive support team",
+        "Rolling AI Improvements",
       ],
-      buttonText: "Get Started",
+      buttonText: "Continue",
     },
     {
-      title: "Free Books",
+      title: "Whole School Subscription",
       price: "",
       features: [
-        "All Free Books",
-        "Priority support",
-        "Access to premium features",
-        "Monthly updates",
+        "Reduced pricing for schools",
+        "Schools manage own licenses",
+        "Access to all tools",
+        "Free access to CPD webinar",
+        "Beautiful content downloads",
+        "Time-saved tracking",
+        "Access to future features",
+        "Curriculum specific",
+        "Slideshow generator",
+        "Responsive support team",
+        "Rolling AI Improvements",
       ],
-      buttonText: "Contact Us",
+      buttonText: "Find out more",
+      isSchoolPlan: true,
     },
   ];
 
@@ -45,13 +63,9 @@ export default function PricingSection() {
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true); // Set to true when the section is visible
-        } else {
-          setIsVisible(false); // Reset when it goes out of view
-        }
+        setIsVisible(entry.isIntersecting);
       },
-      { threshold: 0.5 } // Trigger when 50% of the component is in view
+      { threshold: 0.2 } // Lower threshold for better visibility on smaller screens
     );
 
     if (sectionRef.current) {
@@ -66,44 +80,204 @@ export default function PricingSection() {
   }, []);
 
   return (
-    <div ref={sectionRef} className=" w-full overflow-x-hidden">
-      <main className="flex-grow flex flex-col  min-2xl:h-auto max-2xl:min-h-screen items-center bg-primary justify-center text-center sm:p-20 max-sm:py-10">
-        <div
+    <div ref={sectionRef} className="w-full overflow-x-hidden">
+      <main className="flex-grow flex flex-col min-h-screen items-center bg-white text-primary justify-center text-center sm:p-20 px-4 py-10">
+        {/* Heading animation */}
+        <motion.div
           className="xl:w-1/2 lg:w-3/2 sm:mb-20 mb-10"
-          initial={{ opacity: 0, y: -30 }} // Initial state for the header
-          animate={isVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: -30 }} // Animate on visibility
-          transition={{ duration: 0.5, ease: "easeInOut" }} // Even faster transition
+          initial={{ opacity: 0, x: "100%" }}
+          animate={isVisible ? { opacity: 1, x: 0 } : { opacity: 0, x: "100%" }}
+          transition={{ duration: 1.5, ease: "easeInOut" }}
         >
-          <h1 className="sm:text-5xl text-3xl font-extrabold text-white mb-5">
+          <h1 className="sm:text-5xl text-3xl font-extrabold mb-5">
             Find Your Perfect Plan
           </h1>
-          <p className="sm:text-lg text-white">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-            eiusmod tempor incididunt ut labore et dolore magna aliqua.
-          </p>
-        </div>
-        <div
-          className="grid grid-cols-1 md:grid-cols-3 sm:gap-10 gap-4 text-white xl:w-[80%] w-full max-sm:px-4"
-       // Faster staggered animation for cards
+        </motion.div>
+
+        {/* Paragraph animation */}
+        <motion.div
+          className="xl:w-1/2 lg:w-3/2 sm:mb-20 mb-10"
+          initial={{ opacity: 0, x: "-100%" }}
+          animate={isVisible ? { opacity: 1, x: 0 } : { opacity: 0, x: "-100%" }}
+          transition={{ duration: 1.5, ease: "easeInOut" }}
         >
-          {/* Pricing cards section */}
+          <p className="sm:text-lg text-sm">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+          </p>
+        </motion.div>
+
+        {/* Cards animation */}
+        <motion.div
+          className="grid grid-cols-1 md:grid-cols-3 gap-6 xl:w-[80%] w-full"
+          initial={{ opacity: 0, x: "100%" }}
+          animate={isVisible ? { opacity: 1, x: 0 } : { opacity: 0, x: "100%" }}
+          transition={{ duration: 1.5 }}
+        >
           {pricingPlans.map((plan, index) => (
-            <div
+            <motion.div
               key={index}
-              initial={{ opacity: 0, y: 20 }} // Initial state for each card
-              animate={isVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }} // Animate each card on visibility
-              transition={{ duration: 0.2 }} // Faster transition for individual cards
+              className="flex h-full"
+              initial={{ opacity: 0, x: "100%" }}
+              animate={isVisible ? { opacity: 1, x: 0 } : { opacity: 0, x: "100%" }}
+              transition={{ duration: 0.7, delay: index * 0.2 }}
             >
               <PricingCard
                 title={plan.title}
                 price={plan.price}
                 features={plan.features}
                 buttonText={plan.buttonText}
+                isSchoolPlan={plan.isSchoolPlan}
               />
-            </div>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
       </main>
     </div>
   );
 }
+
+
+
+// import React, { useEffect, useRef, useState } from "react";
+// import { motion } from "framer-motion"; // Import framer-motion for animations
+// import PricingCard from "../PricingCard";
+
+// export default function PricingSection() {
+//   const pricingPlans = [
+//     {
+//       title: "Pro Monthly",
+//       price: "6.99",
+//       features: [
+//         "Access to all tools",
+//         "Free access to CPD webinar",
+//         "Beautiful content downlaods",
+//         "Time-saved tracking",
+//         "Access to future features",
+//         "Curriculum specific",
+//         "Slideshow generator",
+//         "Responsive support team",
+//         "Rolling AI Improvements"
+//       ],
+//       buttonText: "Continue",
+//     },
+//     {
+//       title: "Pro Annual",
+//       price: "6",
+//       features: [
+//         "Access to all tools",
+//         "Free access to CPD webinar",
+//         "Beautiful content downlaods",
+//         "Time-saved tracking",
+//         "Access to future features",
+//         "Curriculum specific",
+//         "Slideshow generator",
+//         "Responsive support team",
+//         "Rolling AI Improvements"
+//       ],
+//       buttonText: "Continue",
+//     },
+//     {
+//       title: "Whole School Subscription",
+//       price: "",
+//       features: [
+//         "Reduced pricing for schools",
+//         "Schools manage own licenses",
+//         "Access to all tools",
+//         "Free access to CPD webinar",
+//         "Beautiful content downlaods",
+//         "Time-saved tracking",
+//         "Access to future features",
+//         "Curriculum specific",
+//         "Slideshow generator",
+//         "Responsive support team",
+//         "Rolling AI Improvements"
+//       ],
+//       buttonText: "Find out more",
+//     },
+//   ];
+
+//   const [isVisible, setIsVisible] = useState(false);
+//   const sectionRef = useRef(null);
+
+//   useEffect(() => {
+//     const observer = new IntersectionObserver(
+//       ([entry]) => {
+//         if (entry.isIntersecting) {
+//           setIsVisible(true); // Set to true when the section is visible
+//         } else {
+//           setIsVisible(false); // Reset when it goes out of view
+//         }
+//       },
+//       { threshold: 0.5 } // Trigger when 50% of the component is in view
+//     );
+
+//     if (sectionRef.current) {
+//       observer.observe(sectionRef.current);
+//     }
+
+//     return () => {
+//       if (sectionRef.current) {
+//         observer.unobserve(sectionRef.current);
+//       }
+//     };
+//   }, []);
+
+//   return (
+//     <div ref={sectionRef} className="w-full overflow-x-hidden">
+//       <main className="flex-grow flex flex-col min-2xl:h-auto max-2xl:min-h-screen items-center bg-white text-primary justify-center text-center sm:p-20 max-sm:py-10">
+//         {/* Heading animation - Slide from right to left */}
+//         <motion.div
+//           className="xl:w-1/2 lg:w-3/2 sm:mb-20 mb-10"
+//           initial={{ opacity: 0, x: "100%" }} // Initial state (off-screen to the right)
+//           animate={isVisible ? { opacity: 1, x: 0 } : { opacity: 0, x: "100%" }} // Animate on visibility
+//           transition={{ duration: 1.5, ease: "easeInOut" }} // Slower transition for smoothness
+//         >
+//           <h1 className="sm:text-5xl text-3xl font-extrabold mb-5">
+//             Find Your Perfect Plan
+//           </h1>
+//         </motion.div>
+
+//         {/* Paragraph animation - Slide from left to right */}
+//         <motion.div
+//           className="xl:w-1/2 lg:w-3/2 sm:mb-20 mb-10"
+//           initial={{ opacity: 0, x: "-100%" }} // Initial state (off-screen to the left)
+//           animate={isVisible ? { opacity: 1, x: 0 } : { opacity: 0, x: "-100%" }} // Animate on visibility
+//           transition={{ duration: 1.5, ease: "easeInOut" }} // Slower transition for smoothness
+//         >
+//           <p className="sm:text-lg">
+//             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+//           </p>
+//         </motion.div>
+
+//         {/* Cards animation - Slide from right to left */}
+//         <motion.div
+//           className="grid grid-cols-1 md:grid-cols-3 gap-6 xl:w-[80%] w-full max-sm:px-4"
+//           initial={{ opacity: 0, x: "100%" }}
+//           animate={isVisible ? { opacity: 1, x: 0 } : { opacity: 0, x: "100%" }}
+//           transition={{ duration: 1.5 }}
+//         >
+//           {pricingPlans.map((plan, index) => (
+//             <motion.div
+//               key={index}
+//               className="flex h-full" // Ensures cards maintain uniform height
+//               initial={{ opacity: 0, x: "100%" }}
+//               animate={isVisible ? { opacity: 1, x: 0 } : { opacity: 0, x: "100%" }}
+//               transition={{ duration: 0.7, delay: index * 0.2 }}
+//             >
+//               <PricingCard
+//                 title={plan.title}
+//                 price={plan.price}
+//                 description={plan.description}
+//                 features={plan.features}
+//                 buttonText={plan.buttonText}
+//                 buttonLink={plan.buttonLink}
+//                 isSchoolPlan={plan.title === "Whole School Subscription"}
+//               />
+//             </motion.div>
+//           ))}
+//         </motion.div>
+
+//       </main>
+//     </div>
+//   );
+// }

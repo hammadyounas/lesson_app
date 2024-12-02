@@ -21,7 +21,7 @@ export default function ExploreCategories() {
   return (
     <div
       ref={sectionRef}
-      className="xl:p-20 sm:p-10 p-5 bg-primary text-white flex flex-col justify-center items-center mx-auto overflow-hidden min-2xl:h-auto max-2xl:min-h-screen transform transition-transform duration-300 shadow-xl xl:shadow-2xl rounded-lg hover:scale-105"
+      className="group xl:p-20 sm:p-10 p-5 bg-primary text-white flex flex-col justify-center items-center mx-auto overflow-hidden min-2xl:h-auto max-2xl:min-h-screen transform transition-transform duration-300 shadow-xl xl:shadow-2xl rounded-lg hover:scale-105" // Hover effect on this div
     >
       <motion.div
         initial="hidden"
@@ -37,10 +37,10 @@ export default function ExploreCategories() {
             initial="hidden"
             animate={isInView ? "visible" : "hidden"}
           >
-            <h1 className="text-white font-bold 2xl:text-4xl lg:text-3xl sm:text-2xl text-xl">
+            <h1 className=" font-bold 2xl:text-4xl lg:text-3xl sm:text-2xl text-xl">
               Explore Our Categories
             </h1>
-            <p className="text-white sm:mt-8 mt-4">
+            <p className=" sm:mt-8 mt-4">
               Discover a world of possibilities with our diverse categories.
               From technology and education to health, travel, food, and art,
               there’s something for everyone. Start exploring and find what
@@ -49,7 +49,7 @@ export default function ExploreCategories() {
             <div className="sm:my-8 my-4">
               <Link
                 href={"#"}
-                className="px-6 sm:py-3 py-2 border-2 border-primary text-primary hover:bg-white hover:text-blue-800 font-semibold bg-white hover:border-blue-800 transition"
+                className="px-6 sm:py-3 py-2 border-2 border-primary text-primary hover:bg-white hover:text-primary font-semibold bg-gray-100 hover:border-primary transition hover:shadow-lg hover:ring-2 hover:ring-offset-2 hover:ring-gray-100"
               >
                 All Categories
               </Link>
