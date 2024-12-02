@@ -135,34 +135,35 @@ const FormComponent = ({
           </div>
 
           {/* Tabs for Desktop */}
-          <ul className="hidden bg-gray-800 xl:text-sm text-xs font-medium text-center text-gray-400 rounded-lg shadow sm:flex sm:items-center divide-primary relative mb-4 ">
-            <div
-              className={`absolute h-full w-1/4 bg-primary  rounded-lg transition-transform duration-200 ease-in-out transform ${
-                activeTab === "Lesson"
-                  ? "translate-x-0"
-                  : activeTab === "Homework"
-                  ? "translate-x-full"
-                  : activeTab === "Quiz"
-                  ? "translate-x-[200%]"
-                  : "translate-x-[300%]"
-              }`}
-            />
-            {["Lesson", "Homework", "Quiz", "Play"].map((tab) => (
-              <li className="w-full z-10" key={tab}>
-                <button
-                  type="button"
-                  onClick={() => handleTabClick(tab)}
-                  className={`inline-block w-full xl:p-4 p-2 ${
-                    activeTab === tab
-                      ? "text-white"
-                      : "text-gray-400 hover:text-white"
-                  } border-r border-gray-700 rounded-lg focus:outline-none`}
-                >
-                  {tab}
-                </button>
-              </li>
-            ))}
-          </ul>
+          <ul className="hidden bg-primary xl:text-sm text-xs font-medium text-center text-black shadow sm:flex sm:items-center divide-primary relative mb-4 ">
+  <div
+    className={`absolute h-full w-1/4 bg-white transition-transform duration-200 ease-in-out transform ${
+      activeTab === "Lesson"
+        ? "translate-x-0"
+        : activeTab === "Homework"
+        ? "translate-x-full"
+        : activeTab === "Quiz"
+        ? "translate-x-[200%]"
+        : "translate-x-[300%]"
+    }`}
+  />
+  {["Lesson", "Homework", "Quiz", "Play"].map((tab) => (
+    <li className="w-full z-10" key={tab}>
+      <button
+        type="button"
+        onClick={() => handleTabClick(tab)}
+        className={`inline-block w-full xl:p-4 p-2 ${
+          activeTab === tab
+            ? "text-black"
+            : "text-white hover:text-black"
+        } border-r border-white focus:outline-none`}
+      >
+        {tab}
+      </button>
+    </li>
+  ))}
+</ul>
+
 
           {/* Age and Class Duration Inputs */}
           <div className="flex flex-col md:flex-row w-full gap-4 mb-4">
@@ -186,17 +187,6 @@ const FormComponent = ({
             />
           </div>
 
-          {/* Curriculum Input */}
-          <TextInput
-            label="Curriculum"
-            id="curriculum"
-            type="text"
-            value={values.curriculum}
-            onChange={(e) => setFieldValue("curriculum", e.target.value)}
-            error={touched.curriculum && errors.curriculum}
-            className={'mb-4 border-blue-800'}
-          />
-
           {/* Subject and Topic Inputs */}
           <div className="flex flex-col md:flex-row w-full gap-4 mb-4">
             <TextInput
@@ -218,6 +208,41 @@ const FormComponent = ({
               className="flex-1 border-blue-800"
             />
           </div>
+          
+          {/* No of children and adults */}
+
+          <div className="flex flex-col md:flex-row w-full gap-4 mb-4">
+            <TextInput
+              label="No of Children"
+              id="noOfChildren"
+              type="text"
+              value={values.noOfChildren}
+              onChange={(e) => setFieldValue("noOfChildren", e.target.value)}
+              error={touched.noOfChildren && errors.noOfChildren}
+              className="flex-1 border-blue-800"
+            />
+            <TextInput
+              label="No of Adults"
+              id="noOfAdults"
+              type="text"
+              value={values.noOfAdults}
+              onChange={(e) => setFieldValue("noOfAdults", e.target.value)}
+              error={touched.noOfAdults && errors.noOfAdults}
+              className="flex-1 border-blue-800"
+            />
+          </div>
+
+  {/* Curriculum Input */}
+  <TextInput
+            label="Curriculum"
+            id="curriculum"
+            type="text"
+            value={values.curriculum}
+            onChange={(e) => setFieldValue("curriculum", e.target.value)}
+            error={touched.curriculum && errors.curriculum}
+            className={'mb-4 border-blue-800'}
+          />
+
           {/* indoor/outdoor */}
           <div className="flex flex-col md:flex-row w-full gap-4 mb-4">
             <TextInput
@@ -268,28 +293,7 @@ const FormComponent = ({
             />
           </div>
 
-          {/* No of children and adults */}
-          <div className="flex flex-col md:flex-row w-full gap-4 mb-4">
-            <TextInput
-              label="No of Children"
-              id="noOfChildren"
-              type="text"
-              value={values.noOfChildren}
-              onChange={(e) => setFieldValue("noOfChildren", e.target.value)}
-              error={touched.noOfChildren && errors.noOfChildren}
-              className="flex-1 border-blue-800"
-            />
-            <TextInput
-              label="No of Adults"
-              id="noOfAdults"
-              type="text"
-              value={values.noOfAdults}
-              onChange={(e) => setFieldValue("noOfAdults", e.target.value)}
-              error={touched.noOfAdults && errors.noOfAdults}
-              className="flex-1 border-blue-800"
-            />
-          </div>
-
+          
           {/* Additional Information Input */}
           <TextareaInput
             id="additional"

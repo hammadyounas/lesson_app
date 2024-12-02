@@ -7,9 +7,10 @@ export default function Navbar() {
     <div className="bg-white w-full sm:py-4 max-sm:p-2 relative z-50">
       {/* Navbar */}
       <nav className="flex flex-wrap justify-between items-center lg:w-[90%] w-full mx-auto">
-        {/* Logo */}
+        {/* Logo Section */}
         <div className="flex items-center w-full md:w-auto justify-between">
-          <h1 className="sm:text-2xl text-black font-sans font-bold">
+          {/* Aesthetic Heading with Gradient and Font Styling */}
+          <h1 className="sm:text-3xl text-2xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-primary to-green-300">
             Lesson Generator
           </h1>
 
@@ -85,12 +86,13 @@ export default function Navbar() {
           </ul>
         </div>
 
+        {/* Sign In Button for Desktop */}
         <div>
           <ul className="max-md:hidden">
-          <li>
+            <li>
               <a
                 href="./login"
-                className="bg-primary py-2 px-4 text-white transition"
+                className="px-4 sm:py-3 py-2 border-2 border-primary hover:text-primary font-semibold bg-primary hover:bg-gray-100 text-white hover:shadow-lg hover:ring-2 hover:ring-offset-2 hover:ring-primary"
               >
                 Sign In
               </a>
