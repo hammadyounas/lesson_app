@@ -90,7 +90,7 @@ export default function ForgotPasswordPage() {
       {/* End Background Animation */}
       {/* Left Column - Graphic */}
       <div className="hidden relative md:flex flex-col w-1/2 animate-fade-up items-center justify-center">
-      <Link href={'/login'} className="absolute top-6 left-6 p-1 bg-gray-300 text-black rounded-full hover:bg-gray-100 z-[9999]"><ArrowLeft className="w-6 h-6"/></Link>
+      <Link href={'/login'} className="absolute top-6 left-6 p-1 bg-gray-300 text-black rounded-full hover:bg-primary hover:text-white z-[9999]"><ArrowLeft className="w-6 h-6"/></Link>
         <h1 className="w-full font-mono px-6 text-white text-4xl mt-8 mb-8">
           <span ref={typedRef}></span>
         </h1>
@@ -113,13 +113,13 @@ export default function ForgotPasswordPage() {
             placeholder="example@example.com"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="block w-full my-4 p-3 border rounded"
+            className="block w-full my-4 p-3 border rounded focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
           />
                          {error && <p className="text-red-500 text-sm -mt-2 mb-2">{error}</p>}
 
           <button
             type="submit"
-            className="w-full p-3 bg-black text-white rounded"
+            className="w-full p-3 bg-primary text-white rounded-lg transition duration-300 ease-in-out transform  hover:shadow-lg hover:ring-2 hover:ring-offset-2 hover:ring-primary"
             disabled={loading}
           >
             {loading ? "Processing..." : "Request Password Reset"}

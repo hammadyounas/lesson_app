@@ -175,7 +175,7 @@ export default function SignupPage() {
       {/* End Background Animation */}
       {/* Left Column - Graphic */}
       <div className="hidden relative md:flex flex-col w-1/2 animate-fade-up items-center justify-center">
-      <Link href={'/'} className="absolute top-6 left-6 p-1 bg-gray-300 text-black rounded-full hover:bg-gray-100 z-[9999]"><ArrowLeft className="w-6 h-6"/></Link>
+      <Link href={'/'} className="absolute top-6 left-6 p-1 bg-gray-300 text-black rounded-full hover:bg-primary hover:text-white z-[9999]"><ArrowLeft className="w-6 h-6"/></Link>
         <h1 className="w-full font-mono px-6 text-white text-4xl mt-8 mb-8">
           <span ref={typedRef}></span>
         </h1>
@@ -198,7 +198,7 @@ export default function SignupPage() {
             placeholder="First Name"
             value={formData.firstName}
             onChange={handleChange}
-            className="block w-full mb-4 p-3 border rounded text-black"
+            className="block w-full mb-4 p-3 border rounded text-black focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
           />
               {error.firstName && <p className="text-red-500 text-sm -mt-2 mb-2">{error.firstName}</p>}
           <input
@@ -207,7 +207,7 @@ export default function SignupPage() {
             placeholder="Last Name"
             value={formData.lastName}
             onChange={handleChange}
-            className="block w-full mb-4 p-3 border rounded text-black"
+            className="block w-full mb-4 p-3 border rounded text-black focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
           />
                {error.lastName && <p className="text-red-500 text-sm -mt-2 mb-2">{error.lastName}</p>}
           <input
@@ -216,7 +216,7 @@ export default function SignupPage() {
             placeholder="Email"
             value={formData.email}
             onChange={handleChange}
-            className="block w-full mb-4 p-3 border rounded text-black"
+            className="block w-full mb-4 p-3 border rounded text-black focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
           />
                {error.email && <p className="text-red-500 text-sm -mt-2 mb-2">{error.email}</p>}
 
@@ -228,12 +228,12 @@ export default function SignupPage() {
               placeholder="Password"
               value={formData.password}
               onChange={handleChange}
-              className="block w-full p-3 border rounded text-black"
+              className="block w-full p-3 border rounded text-black focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
             />
             <button
               type="button"
               onClick={togglePasswordVisibility}
-              className="absolute inset-y-0 right-0 flex items-center px-3 text-gray-600"
+              className="absolute inset-y-0 right-0 flex items-center px-3  text-white bg-primary hover:bg-transparent hover:text-primary"
             >
               {passwordVisible ? (
                 <Eye className="h-6 w-6" />
@@ -252,12 +252,12 @@ export default function SignupPage() {
               placeholder="Confirm Password"
               value={formData.confirmPassword}
               onChange={handleChange}
-              className="block w-full p-3 border rounded text-black"
+              className="block w-full p-3 border rounded text-black focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
             />
             <button
               type="button"
               onClick={toggleConfirmPasswordVisibility}
-              className="absolute inset-y-0 right-0 flex items-center px-3 text-gray-600"
+              className="absolute inset-y-0 right-0 flex items-center px-3 text-white bg-primary hover:bg-transparent hover:text-primary"
             >
               {confirmPasswordVisible ? (
                 <Eye className="h-6 w-6" />
@@ -275,7 +275,7 @@ export default function SignupPage() {
 
           <button
             type="submit"
-            className="w-full p-3 bg-black text-white rounded"
+            className="w-full p-3 bg-primary text-white rounded-lg transition duration-300 ease-in-out transform  hover:shadow-lg hover:ring-2 hover:ring-offset-2 hover:ring-primary"
           >
             {loading ? (
               <span className="flex justify-center items-center">
@@ -308,7 +308,7 @@ export default function SignupPage() {
           <div className="mt-6 text-center">
             <p className="text-sm text-gray-600">
               Already have an account?{" "}
-              <a href="/login" className="text-blue-500 hover:underline">
+              <a href="/login" className=" text-primary hover:text-blue-500 hover:underline">
                 Go to login
               </a>
             </p>
@@ -330,3 +330,4 @@ export default function SignupPage() {
     </div>
   );
 }
+

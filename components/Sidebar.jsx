@@ -47,13 +47,13 @@ const Sidebar = () => {
       {/* Nav Button for Mobile View */}
       <button
         onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-        className="lg:hidden fixed top-2 left-2 z-50 bg-blue-800 text-white p-2 rounded-full"
+        className="lg:hidden fixed top-2 left-2 z-50 bg-primary text-white p-2 rounded-full"
       >
         <Menu className="w-6 h-6" />
       </button>
 
       <aside
-        className={`fixed top-0 left-0 bg-blue-800 text-white h-screen p-4 shadow flex flex-col justify-center transition-width duration-300 ease-in-out ${
+        className={`fixed top-0 left-0 bg-primary text-white h-screen p-4 shadow flex flex-col justify-center transition-width duration-300 ease-in-out ${
           isSidebarOpen ? "translate-x-0" : "-translate-x-full"
         } lg:translate-x-0 ${isExpanded ? "w-64" : "w-20"} z-40`}
       >

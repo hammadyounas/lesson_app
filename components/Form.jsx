@@ -114,7 +114,7 @@ const FormComponent = ({
       }}
     >
       {({ values, errors, touched, setFieldValue, resetForm }) => (
-        <Form className="flex flex-col justify-between shadow-xl shadow-gray-400 border border-gray-300 bg-gray-50 max-sm:mt-5 w-full h-full rounded-xl p-4 text-black">
+        <Form className="flex flex-col justify-between shadow-xl shadow-primary border border-primary bg-gray-50 max-sm:mt-5 w-full h-full rounded-xl p-4 text-black">
           {/* Responsive Select for Mobile */}
           <div className="sm:hidden mb-4">
             <label htmlFor="tabs" className="sr-only">
@@ -122,7 +122,7 @@ const FormComponent = ({
             </label>
             <select
               id="tabs"
-              className="bg-gray-800 border border-gray-600 text-white text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full max-sm:py-3 p-2.5"
+              className="bg-gray-800 border border-gray-600 text-white text-sm rounded-lg focus:ring-primary focus:border-primary block w-full max-sm:py-3 p-2.5"
               value={mobileActiveTab}
               onChange={(e) => handleMobileTabClick(e.target.value)}
             >
@@ -135,9 +135,9 @@ const FormComponent = ({
           </div>
 
           {/* Tabs for Desktop */}
-          <ul className="hidden bg-gray-800 xl:text-sm text-xs font-medium text-center text-gray-400 rounded-lg shadow sm:flex sm:items-center divide-gray-700 relative mb-4 ">
+          <ul className="hidden bg-gray-800 xl:text-sm text-xs font-medium text-center text-gray-400 rounded-lg shadow sm:flex sm:items-center divide-primary relative mb-4 ">
             <div
-              className={`absolute h-full w-1/4 bg-gray-600  rounded-lg transition-transform duration-200 ease-in-out transform ${
+              className={`absolute h-full w-1/4 bg-primary  rounded-lg transition-transform duration-200 ease-in-out transform ${
                 activeTab === "Lesson"
                   ? "translate-x-0"
                   : activeTab === "Homework"
@@ -244,7 +244,7 @@ const FormComponent = ({
               handleSelectionToggle(selection, values, setFieldValue)
             }
             error={touched.fourCs && errors.fourCs}
-            className="mb-4 border-blue-800 checked:bg-blue-800"
+            className="mb-4 border-primary checked:bg-primary"
           />
 
           {/* Difficulty Level & Energy Buttons */}
@@ -317,7 +317,7 @@ const FormComponent = ({
             {/* Generate Button */}
             <button
               type="submit"
-              className={`bg-blue-700 p-3 flex items-center justify-center w-full text-white rounded-xl hover:bg-blue-500 `}
+              className={`bg-primary p-3 flex items-center justify-center w-full text-white rounded-xl hover:bg-green-700 `}
               disabled={isLoading}
             >
               {isLoading ? (
