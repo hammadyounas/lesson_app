@@ -3,7 +3,7 @@ import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { loginUser, fetchUser } from "../../redux/slices/userSlice";
 import { useDispatch } from "react-redux";
-import { ArrowLeft, Eye, EyeOff } from "lucide-react";
+import { House, Eye, EyeOff } from "lucide-react";
 import Link from "next/link";
 import Typed from "typed.js";
 import { toast, ToastContainer } from "react-toastify";
@@ -18,26 +18,26 @@ export default function LoginPage() {
   const dispatch = useDispatch();
 
   const typedRef = useRef(null);
-  useEffect(() => {
-    const options = {
-      strings: [
-        "Generate Lessons Through AI",
-        "Create Interactive Lessons with AI",
-        "Make Learning Fun with AI",
-      ],
-      typeSpeed: 50,
-      backSpeed: 50,
-      loop: true,
-      showCursor: true,
-      cursorChar: "_",
-    };
+  // useEffect(() => {
+  //   const options = {
+  //     strings: [
+  //       "Generate Lessons Through AI",
+  //       "Create Interactive Lessons with AI",
+  //       "Make Learning Fun with AI",
+  //     ],
+  //     typeSpeed: 50,
+  //     backSpeed: 50,
+  //     loop: true,
+  //     showCursor: true,
+  //     cursorChar: "_",
+  //   };
 
-    const typed = new Typed(typedRef.current, options);
+  //   const typed = new Typed(typedRef.current, options);
 
-    return () => {
-      typed.destroy();
-    };
-  }, []);
+  //   return () => {
+  //     typed.destroy();
+  //   };
+  // }, []);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -49,19 +49,19 @@ export default function LoginPage() {
   const handleLogin = async (e) => {
     e.preventDefault();
     setLoading(true);
-  
+
     // Clear previous errors
     setFieldErrors({ email: "", password: "" });
-  
+
     // Validate required fields
     let hasError = false;
     let newFieldErrors = { email: "", password: "" };
-  
+
     if (!formData.email) {
       newFieldErrors.email = "Email is required";
       hasError = true;
     }
-  
+
     if (!formData.password) {
       newFieldErrors.password = "Password is required";
       hasError = true;
@@ -73,22 +73,22 @@ export default function LoginPage() {
         hasError = true;
       }
     }
-  
+
     if (hasError) {
       setFieldErrors(newFieldErrors);
       setLoading(false); // Stop loading if there's an error
       return;
     }
-  
+
     try {
       const resultAction = await dispatch(loginUser(formData));
-  
+
       if (loginUser.rejected.match(resultAction)) {
         const error = resultAction.payload || "Login failed";
-  
+
         // Display a generic error message in the toast
         toast.error("Invalid credentials");
-  
+
         // Optional: if you want to capture other errors for logging/debugging
         console.error(error);
       } else {
@@ -102,9 +102,9 @@ export default function LoginPage() {
       setLoading(false);
     }
   };
-  
-  
-  
+
+
+
 
   const togglePasswordVisibility = () => {
     setPasswordVisible(!passwordVisible);
@@ -127,12 +127,12 @@ export default function LoginPage() {
           <li></li>
         </ul>
       </div>
-      
+
       <div className="hidden md:flex relative animate-fade-up flex-col w-1/2 items-center justify-center bg-transparent">
-        <Link href={'/'} className="absolute top-6 left-6 p-1 bg-gray-300 text-black rounded-full hover:bg-primary hover:text-white z-[9999]"><ArrowLeft className="w-6 h-6"/></Link>
-        <h1 className="w-full font-mono px-6 text-white mt-8 text-4xl mb-8">
+        <Link href={'/'} className="absolute top-6 left-6 p-1  text-white rounded-full hover:bg-white hover:text-primary z-[9999]"><House className="rounded-full w-10 h-10 object-cover" /></Link>
+        {/* <h1 className="w-full font-mono px-6 text-white mt-8 text-4xl mb-8">
           <span ref={typedRef}></span>
-        </h1>
+        </h1> */}
         <img src="teacher_bot2.png" alt="Graphic" className="max-w-full transform scale-x-[-1] h-3/4" />
       </div>
 

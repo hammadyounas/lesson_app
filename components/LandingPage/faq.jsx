@@ -18,9 +18,8 @@ const FAQItem = ({ question, answer, delay, isInView }) => {
       >
         <h3 className="font-medium text-black text-lg">{question}</h3>
         <motion.div
-          className={`ml-2 text-black transition-transform duration-300 ${
-            isOpen ? "rotate-180" : ""
-          }`}
+          className={`ml-2 text-black transition-transform duration-300 ${isOpen ? "rotate-180" : ""
+            }`}
         >
           <FiChevronDown />
         </motion.div>

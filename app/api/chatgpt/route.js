@@ -42,7 +42,7 @@ export async function POST(req) {
     // Get the Gemini response using the same prompt twice
     const geminiResponse = await getGeminiResponse(prompt);
 
-    return NextResponse.json({ response: geminiResponse.response});
+    return NextResponse.json({ response: geminiResponse.response });
   } catch (error) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }

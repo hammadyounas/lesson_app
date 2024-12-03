@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
 import { registerUser } from "../../redux/slices/userSlice";
-import { ArrowLeft, Eye, EyeOff } from "lucide-react";
+import { House, Eye, EyeOff } from "lucide-react";
 import Typed from "typed.js";
 import Link from "next/link";
 import { Icons, toast, ToastContainer } from "react-toastify";
@@ -34,40 +34,40 @@ export default function SignupPage() {
   const dispatch = useDispatch();
 
   const typedRef = useRef(null);
-  useEffect(() => {
-    const options = {
-      strings: [
-        "Generate Lessons Through AI",
-        "Create Interactive Lessons with AI",
-        "Make Learning Fun with AI",
-      ], // You can add more variations if you'd like
-      typeSpeed: 50,
-      backSpeed: 50,
-      loop: true,
-      showCursor: true,
-      cursorChar: "_",
-    };
+  // useEffect(() => {
+  //   const options = {
+  //     strings: [
+  //       "Generate Lessons Through AI",
+  //       "Create Interactive Lessons with AI",
+  //       "Make Learning Fun with AI",
+  //     ], // You can add more variations if you'd like
+  //     typeSpeed: 50,
+  //     backSpeed: 50,
+  //     loop: true,
+  //     showCursor: true,
+  //     cursorChar: "_",
+  //   };
 
-    // Initialize Typed.js
-    const typed = new Typed(typedRef.current, options);
+  //   // Initialize Typed.js
+  //   const typed = new Typed(typedRef.current, options);
 
-    // Destroy Typed.js instance on cleanup
-    return () => {
-      typed.destroy();
-    };
-  }, []);
+  //   // Destroy Typed.js instance on cleanup
+  //   return () => {
+  //     typed.destroy();
+  //   };
+  // }, []);
 
   const validateFields = () => {
     const { email, password, confirmPassword, firstName, lastName } = formData;
     let newError = { ...error };
-  
+
     // Reset error states
     Object.keys(newError).forEach((key) => (newError[key] = ""));
-  
+
     if (!firstName) newError.firstName = "First Name is required.";
     if (!lastName) newError.lastName = "Last Name is required.";
     if (!email) newError.email = "Email is required.";
-    
+
     // Password validation
     if (!password) {
       newError.password = "Password is required.";
@@ -76,7 +76,7 @@ export default function SignupPage() {
     } else if (!/[A-Z]/.test(password)) {
       newError.password = "Password must contain at least one uppercase letter.";
     }
-  
+
     if (!confirmPassword) {
       newError.confirmPassword = "Confirm Password is required.";
     } else if (password && confirmPassword && password !== confirmPassword) {
@@ -85,11 +85,11 @@ export default function SignupPage() {
     } else {
       setPasswordsMatch(true);
     }
-  
+
     setError(newError);
     return Object.values(newError).every((err) => err === "");
   };
-  
+
 
   const handleSignup = async (e) => {
     e.preventDefault();
@@ -175,10 +175,10 @@ export default function SignupPage() {
       {/* End Background Animation */}
       {/* Left Column - Graphic */}
       <div className="hidden relative md:flex flex-col w-1/2 animate-fade-up items-center justify-center">
-      <Link href={'/'} className="absolute top-6 left-6 p-1 bg-gray-300 text-black rounded-full hover:bg-primary hover:text-white z-[9999]"><ArrowLeft className="w-6 h-6"/></Link>
-        <h1 className="w-full font-mono px-6 text-white text-4xl mt-8 mb-8">
+        <Link href={'/'} className="absolute top-6 left-6 p-1 text-white rounded-full hover:bg-white hover:text-primary z-[9999]"><House className="rounded-full w-10 h-10 object-cover" /></Link>
+        {/* <h1 className="w-full font-mono px-6 text-white text-4xl mt-8 mb-8">
           <span ref={typedRef}></span>
-        </h1>
+        </h1> */}
 
         <img src="/teacher_bot2.png" alt="Graphic" className="max-w-full h-3/4 transform scale-x-[-1]" />
       </div>
@@ -200,7 +200,7 @@ export default function SignupPage() {
             onChange={handleChange}
             className="block w-full mb-4 p-3 border rounded text-black focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
           />
-              {error.firstName && <p className="text-red-500 text-sm -mt-2 mb-2">{error.firstName}</p>}
+          {error.firstName && <p className="text-red-500 text-sm -mt-2 mb-2">{error.firstName}</p>}
           <input
             type="text"
             name="lastName"
@@ -209,7 +209,7 @@ export default function SignupPage() {
             onChange={handleChange}
             className="block w-full mb-4 p-3 border rounded text-black focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
           />
-               {error.lastName && <p className="text-red-500 text-sm -mt-2 mb-2">{error.lastName}</p>}
+          {error.lastName && <p className="text-red-500 text-sm -mt-2 mb-2">{error.lastName}</p>}
           <input
             type="email"
             name="email"
@@ -218,7 +218,7 @@ export default function SignupPage() {
             onChange={handleChange}
             className="block w-full mb-4 p-3 border rounded text-black focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
           />
-               {error.email && <p className="text-red-500 text-sm -mt-2 mb-2">{error.email}</p>}
+          {error.email && <p className="text-red-500 text-sm -mt-2 mb-2">{error.email}</p>}
 
           {/* Password Field with Toggle Visibility */}
           <div className="relative mb-4">
@@ -242,7 +242,7 @@ export default function SignupPage() {
               )}
             </button>
           </div>
-            {error.password && <p className="text-red-500 text-sm -mt-2 mb-2">{error.password}</p>}
+          {error.password && <p className="text-red-500 text-sm -mt-2 mb-2">{error.password}</p>}
 
           {/* Confirm Password Field with Toggle Visibility */}
           <div className="relative mb-4">

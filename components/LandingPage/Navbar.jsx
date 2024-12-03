@@ -38,9 +38,8 @@ export default function Navbar() {
 
         {/* Navigation Links */}
         <div
-          className={`md:flex ${
-            isMenuOpen ? "flex items-center  justify-center h-[80vh]" : "hidden"
-          } md:items-center md:justify-center md:w-auto w-full flex-col md:flex-row md:space-x-6`}
+          className={`md:flex ${isMenuOpen ? "flex items-center  justify-center h-[80vh]" : "hidden"
+            } md:items-center md:justify-center md:w-auto w-full flex-col md:flex-row md:space-x-6`}
         >
           <ul className="flex flex-col md:flex-row w-full lg:w-auto items-center lg:space-x-6 md:space-x-2 mt-4 lg:mt-0">
             <li>

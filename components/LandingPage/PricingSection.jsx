@@ -101,7 +101,7 @@ export default function PricingSection() {
           animate={isVisible ? { opacity: 1, x: 0 } : { opacity: 0, x: "-100%" }}
           transition={{ duration: 1.5, ease: "easeInOut" }}
         >
-          <p className="sm:text-lg text-sm">
+          <p className="sm:text-lg text-sm text-black">
             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
           </p>
         </motion.div>

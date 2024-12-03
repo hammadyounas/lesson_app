@@ -53,9 +53,8 @@ const Sidebar = () => {
       </button>
 
       <aside
-        className={`fixed top-0 left-0 bg-primary text-white h-screen p-4 shadow flex flex-col justify-center transition-width duration-300 ease-in-out ${
-          isSidebarOpen ? "translate-x-0" : "-translate-x-full"
-        } lg:translate-x-0 ${isExpanded ? "w-64" : "w-20"} z-40`}
+        className={`fixed top-0 left-0 bg-primary text-white h-screen p-4 shadow flex flex-col justify-center transition-width duration-300 ease-in-out ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"
+          } lg:translate-x-0 ${isExpanded ? "w-64" : "w-20"} z-40`}
       >
         {/* Profile Section */}
         {user ? (
@@ -68,7 +67,7 @@ const Sidebar = () => {
             {isExpanded && (
               <div className="ml-3 mr-2">
                 <span className="font-bold">
-                  {user?.first_name + " " + user?.last_name|| "User"}
+                  {user?.first_name + " " + user?.last_name || "User"}
                 </span>
 
                 {/* <p className="text-sm">{user?.email || "user@example.com"}</p> */}

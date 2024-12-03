@@ -287,7 +287,7 @@ const ResponseSection = ({
 
   return (
     <>
-     {/* <ConfirmationModal
+      {/* <ConfirmationModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         onConfirm={handleDelete}
@@ -295,13 +295,13 @@ const ResponseSection = ({
       /> */}
       {hasResponse && (
         <div className="flex flex-col md:flex-row-reverse md:justify-between items-center mb-4">
-            <button
+          <button
             className="w-12 h-12 flex items-center justify-center bg-gray-200 rounded-full mt-2 md:mt-0"
             onClick={() => setIsModalOpen(true)} // Open modal on delete click
           >
             <Trash2 color="black" className="hover:animate-bounce" />
           </button>
-            {/* <button
+          {/* <button
             className="w-12 h-12 flex items-center justify-center bg-gray-200 rounded-full mt-2 md:mt-0"
             onClick={() => {
               setResponse("");
@@ -313,16 +313,15 @@ const ResponseSection = ({
           </button> */}
 
           <button
-            className={`${
-              disableEdit ? "opacity-50 cursor-pointer" : ""
-            } p-2  rounded-xl font-bold flex gap-2 text-gray-800  hover:text-black hover:underline transition duration-300`}
+            className={`${disableEdit ? "opacity-50 cursor-pointer" : ""
+              } p-2  rounded-xl font-bold flex gap-2 text-gray-800  hover:text-black hover:underline transition duration-300`}
             onClick={handleEditToggle}
-            // disabled={disableEdit}
+          // disabled={disableEdit}
           >
             {isEditing ? "Preview" : <>Update Lesson Plan <Edit /></>}
           </button>
 
-        
+
 
           <div className="flex items-end space-x-2 mt-2 md:mt-0">
             <Download className="h-9 w-9 rounded-full p-2 bg-gray-200" stroke="black" />
@@ -364,9 +363,8 @@ const ResponseSection = ({
       )}
       <div className="max-w-full h-full rounded-xl flex flex-col justify-between overflow-auto">
         <div
-          className={`p-4 shadow-lg shadow-gray-400 bg-gray-50 w-full ${
-            hasResponse ? "md:h-[800px] md:max-h-full bg-gray-50" : "md:h-full"
-          } my-2 rounded-xl shadow-md text-black text-xl md:text-md overflow-y-auto`}
+          className={`p-4 shadow-lg shadow-gray-400 bg-gray-50 w-full ${hasResponse ? "md:h-[800px] md:max-h-full bg-gray-50" : "md:h-full"
+            } my-2 rounded-xl shadow-md text-black text-xl md:text-md overflow-y-auto`}
         >
           {isLoading ? (
             <SkeletonLoader />
