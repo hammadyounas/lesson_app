@@ -28,7 +28,7 @@ const DashboardPage = () => {
 
   const handleEditToggle = () => {
     setIsEditing((prev) => !prev);
-  };                                                       
+  };
 
   return (
     <div className="min-w-screen flex flex-col md:flex-row min-h-screen bg-gray-100">
@@ -37,11 +37,10 @@ const DashboardPage = () => {
       <div className="max-w-full md:w-full h-auto lg:ml-24 m-4 bg-gray-100 rounded-xl flex flex-col md:flex-row">
         {/* Show the Form only when in editing mode */}
         <div
-          className={`flex flex-col items-center justify-center shadow-lg rounded-xl m-2 max-w-full md:w-2/3 transition-all duration-300 ${
-            isEditing
-              ? "animate-fade-right opacity-100 translate-x-0 animate-delay-300"
-              : "animate-fade-left opacity-0 translate-x-full hidden"
-          }`}
+          className={`flex flex-col items-center justify-center shadow-lg rounded-xl m-2 max-w-full md:w-2/3 transition-all duration-300 ${isEditing
+            ? "animate-fade-right opacity-100 translate-x-0 animate-delay-300"
+            : "animate-fade-left opacity-0 translate-x-full hidden"
+            }`}
         >
           <Form
             onSubmit={handleFormSubmit}
@@ -51,11 +50,10 @@ const DashboardPage = () => {
         </div>
 
         <div
-          className={`rounded-xl max-h-full m-2 flex flex-col transition-all duration-300 ${
-            isEditing
-              ? "md:w-full animate-fade-right"
-              : "w-full animate-fade-left"
-          }`}
+          className={`rounded-xl max-h-full m-2 flex flex-col transition-all duration-300 ${isEditing
+            ? "md:w-full animate-fade-right"
+            : "w-full animate-fade-left"
+            }`}
         >
           <ResponseSection
             handleEditToggle={handleEditToggle}

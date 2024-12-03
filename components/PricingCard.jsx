@@ -1,14 +1,14 @@
 import { Check } from 'lucide-react';
 import React from 'react';
 
-const PricingCard = ({ 
-  title, 
-  price, 
-  description, 
-  features, 
-  buttonText, 
-  buttonLink, 
-  isSchoolPlan 
+const PricingCard = ({
+  title,
+  price,
+  description,
+  features,
+  buttonText,
+  buttonLink,
+  isSchoolPlan
 }) => {
   return (
     <div className="flex flex-col justify-between items-center rounded-lg h-full w-full shadow-xl hover:shadow-xl transition-shadow duration-1000 ease-in-out p-6 bg-[#0b734e] animate-fade-up animate-delay-700">
@@ -37,7 +37,7 @@ const PricingCard = ({
         </ul>
       </div>
       <button
-        className="bg-black text-white hover:bg-white hover:text-primary mt-8 block w-full py-3 px-6 rounded-md text-center font-medium transition-colors duration-1000 ease-in-out"
+        className=" mt-8 block w-full py-3 px-6 rounded-lg border-black text-black bg-white hover:bg-primary hover:text-white font-semibold hover:border-primary transition hover:shadow-lg hover:ring-2 hover:ring-offset-2 hover:ring-primary"
         href={buttonLink}
       >
         {buttonText}

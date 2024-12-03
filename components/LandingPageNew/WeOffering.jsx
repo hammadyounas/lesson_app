@@ -50,7 +50,7 @@ export default function WeOffering() {
         {/* Features List */}
         <ul className="grid lg:grid-cols-2 grid-cols-1 mt-5">
           {/* First two list items animate from right to left */}
-          {[ 
+          {[
             {
               title: "Customizable Lesson Plans:",
               description: "Tailor lessons to your specific needs and goals.",
@@ -82,7 +82,7 @@ export default function WeOffering() {
           ))}
 
           {/* Last two list items animate from bottom to top */}
-          {[ 
+          {[
             {
               title: "High-Quality Resources:",
               description:
@@ -126,7 +126,7 @@ export default function WeOffering() {
             href={"#"}
             className="px-6 sm:py-3 py-2 border-2 border-primary text-white hover:text-primary font-semibold bg-primary hover:bg-gray-100 hover:shadow-lg hover:ring-2 hover:ring-offset-2 hover:ring-primary"
           >
-            Learn More
+            Try Us
           </Link>
         </motion.div>
       </motion.div>

@@ -1,12 +1,12 @@
 "use client";
 
-import { useState, useEffect, useRef  } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useDispatch } from "react-redux";
 import { requestPasswordReset } from "../../redux/slices/userSlice";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useRouter } from "next/navigation";
-import { ArrowLeft } from "lucide-react";
+import { House } from "lucide-react";
 import Typed from "typed.js";
 import Link from "next/link";
 
@@ -18,33 +18,33 @@ export default function ForgotPasswordPage() {
 
   const dispatch = useDispatch();
   const typedRef = useRef(null);
-  useEffect(() => {
-    const options = {
-      strings: [
-        "Generate Lessons Through AI",
-        "Create Interactive Lessons with AI",
-        "Make Learning Fun with AI",
-      ], // You can add more variations if you'd like
-      typeSpeed: 50,
-      backSpeed: 50,
-      loop: true,
-      showCursor: true,
-      cursorChar: "_",
-    };
+  // useEffect(() => {
+  //   const options = {
+  //     strings: [
+  //       "Generate Lessons Through AI",
+  //       "Create Interactive Lessons with AI",
+  //       "Make Learning Fun with AI",
+  //     ], // You can add more variations if you'd like
+  //     typeSpeed: 50,
+  //     backSpeed: 50,
+  //     loop: true,
+  //     showCursor: true,
+  //     cursorChar: "_",
+  //   };
 
-    // Initialize Typed.js
-    const typed = new Typed(typedRef.current, options);
+  //   // Initialize Typed.js
+  //   const typed = new Typed(typedRef.current, options);
 
-    // Destroy Typed.js instance on cleanup
-    return () => {
-      typed.destroy();
-    };
-  }, []);
+  //   // Destroy Typed.js instance on cleanup
+  //   return () => {
+  //     typed.destroy();
+  //   };
+  // }, []);
 
   const handleRequestPasswordReset = async (e) => {
     e.preventDefault();
     setLoading(true);
-    if(!email) {
+    if (!email) {
       // toast.error("Please enter your email");
       setError("Please enter your email");
       setLoading(false);
@@ -72,8 +72,8 @@ export default function ForgotPasswordPage() {
 
   return (
     <div className="flex flex-col md:flex-row min-h-screen">
-         {/* Background Animation */}
-         <div className="area absolute inset-0 z-[-1]">
+      {/* Background Animation */}
+      <div className="area absolute inset-0 z-[-1]">
         <ul className="circles">
           <li></li>
           <li></li>
@@ -90,10 +90,10 @@ export default function ForgotPasswordPage() {
       {/* End Background Animation */}
       {/* Left Column - Graphic */}
       <div className="hidden relative md:flex flex-col w-1/2 animate-fade-up items-center justify-center">
-      <Link href={'/login'} className="absolute top-6 left-6 p-1 bg-gray-300 text-black rounded-full hover:bg-primary hover:text-white z-[9999]"><ArrowLeft className="w-6 h-6"/></Link>
-        <h1 className="w-full font-mono px-6 text-white text-4xl mt-8 mb-8">
+        <Link href={'/login'} className="absolute top-6 left-6 p-1 text-white rounded-full hover:bg-white hover:text-primary z-[9999]"><House className="rounded-full w-10 h-10 object-cover" /></Link>
+        {/* <h1 className="w-full font-mono px-6 text-white text-4xl mt-8 mb-8">
           <span ref={typedRef}></span>
-        </h1>
+        </h1> */}
 
         <img src="/teacher_bot2.png" alt="Graphic" className="max-w-full h-3/4 transform scale-x-[-1]" />
       </div>
@@ -115,7 +115,7 @@ export default function ForgotPasswordPage() {
             onChange={(e) => setEmail(e.target.value)}
             className="block w-full my-4 p-3 border rounded focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
           />
-                         {error && <p className="text-red-500 text-sm -mt-2 mb-2">{error}</p>}
+          {error && <p className="text-red-500 text-sm -mt-2 mb-2">{error}</p>}
 
           <button
             type="submit"

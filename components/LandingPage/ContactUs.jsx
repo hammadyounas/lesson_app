@@ -199,14 +199,14 @@ export default function ContactUs() {
         </div>
       </div>
 
-      <div className="mt-10 mb-10">
+      {/* <div className="mt-10 mb-10">
         <iframe
           src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3153.2094823248096!2d-122.40135028468263!3d37.79397297975721!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x80858064d2edb3ef%3A0xeda6a72f1b6215af!2s123%20Main%20St%2C%20San%20Francisco%2C%20CA%2094105%2C%20USA!5e0!3m2!1sen!2s!4v1634458545905!5m2!1sen!2s"
           className="w-full h-64 border-0"
           allowFullScreen=""
           loading="lazy"
         ></iframe>
-      </div>
+      </div> */}
     </motion.div>
   );
 }

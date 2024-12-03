@@ -45,7 +45,7 @@ const FormComponent = ({
     setMobileActiveTab(tab);
   };
 
-  const clearForm =  (resetForm) => {
+  const clearForm = (resetForm) => {
     // console.log("Clear form triggered");
     dispatch(clearFormData());
     resetForm();
@@ -80,7 +80,7 @@ const FormComponent = ({
   return (
     <Formik
       initialValues={formData}
-      enableReinitialize 
+      enableReinitialize
       validationSchema={validationSchema}
       onSubmit={async (values) => {
         if (freeResponseCount >= FREE_RESPONSE_LIMIT) {
@@ -88,7 +88,7 @@ const FormComponent = ({
           setShowLimitModal(true); // This should be a state variable for the modal
           return; // Prevent further execution
         }
-    
+
         setIsLoading(true);
         try {
           const response = await fetch("/api/chatgpt", {
@@ -98,11 +98,11 @@ const FormComponent = ({
             },
             body: JSON.stringify(values),
           });
-    
+
           if (!response.ok) {
             throw new Error("Failed to fetch response from the API.");
           }
-    
+
           const result = await response.json();
           onSubmit(result.response);
           dispatch(setFormData(values));
@@ -136,33 +136,31 @@ const FormComponent = ({
 
           {/* Tabs for Desktop */}
           <ul className="hidden bg-primary xl:text-sm text-xs font-medium text-center text-black shadow sm:flex sm:items-center divide-primary relative mb-4 ">
-  <div
-    className={`absolute h-full w-1/4 bg-white transition-transform duration-200 ease-in-out transform ${
-      activeTab === "Lesson"
-        ? "translate-x-0"
-        : activeTab === "Homework"
-        ? "translate-x-full"
-        : activeTab === "Quiz"
-        ? "translate-x-[200%]"
-        : "translate-x-[300%]"
-    }`}
-  />
-  {["Lesson", "Homework", "Quiz", "Play"].map((tab) => (
-    <li className="w-full z-10" key={tab}>
-      <button
-        type="button"
-        onClick={() => handleTabClick(tab)}
-        className={`inline-block w-full xl:p-4 p-2 ${
-          activeTab === tab
-            ? "text-black"
-            : "text-white hover:text-black"
-        } border-r border-white focus:outline-none`}
-      >
-        {tab}
-      </button>
-    </li>
-  ))}
-</ul>
+            <div
+              className={`absolute h-full w-1/4 bg-white transition-transform duration-200 ease-in-out transform ${activeTab === "Lesson"
+                ? "translate-x-0"
+                : activeTab === "Homework"
+                  ? "translate-x-full"
+                  : activeTab === "Quiz"
+                    ? "translate-x-[200%]"
+                    : "translate-x-[300%]"
+                }`}
+            />
+            {["Lesson", "Homework", "Quiz", "Play"].map((tab) => (
+              <li className="w-full z-10" key={tab}>
+                <button
+                  type="button"
+                  onClick={() => handleTabClick(tab)}
+                  className={`inline-block w-full xl:p-4 p-2 ${activeTab === tab
+                    ? "text-black"
+                    : "text-white hover:text-black"
+                    } border-r border-white focus:outline-none`}
+                >
+                  {tab}
+                </button>
+              </li>
+            ))}
+          </ul>
 
 
           {/* Age and Class Duration Inputs */}
@@ -208,7 +206,7 @@ const FormComponent = ({
               className="flex-1 border-blue-800"
             />
           </div>
-          
+
           {/* No of children and adults */}
 
           <div className="flex flex-col md:flex-row w-full gap-4 mb-4">
@@ -232,8 +230,8 @@ const FormComponent = ({
             />
           </div>
 
-  {/* Curriculum Input */}
-  <TextInput
+          {/* Curriculum Input */}
+          <TextInput
             label="Curriculum"
             id="curriculum"
             type="text"
@@ -281,7 +279,7 @@ const FormComponent = ({
               selectedValue={values.difficulty}
               onChange={(e) => setFieldValue("difficulty", e.target.value)}
               error={touched.difficulty && errors.difficulty}
-              // className="flex-1"
+            // className="flex-1"
             />
             <RadioInput
               name="Energy Options"
@@ -289,11 +287,11 @@ const FormComponent = ({
               selectedValue={values.energy}
               onChange={(e) => setFieldValue("energy", e.target.value)}
               error={touched.energy && errors.energy}
-              // className="flex-1"
+            // className="flex-1"
             />
           </div>
 
-          
+
           {/* Additional Information Input */}
           <TextareaInput
             id="additional"
@@ -304,7 +302,7 @@ const FormComponent = ({
             charactersTyped={values.additional.length}
             error={touched.additional && errors.additional}
             className="mb-4 border-blue-800"
-            maxLengthClassName = 'text-right'
+            maxLengthClassName='text-right'
           />
 
           {/* Generate and Clear Buttons */}

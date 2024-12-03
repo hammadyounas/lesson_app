@@ -20,7 +20,7 @@ const HomePage = () => {
       <ExploreCategories />
       <WeOffering />
       <PricingSection />
-      <FAQSection /> 
+      <FAQSection />
       <ContactUs />
       <Footer />
     </div>
