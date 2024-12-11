@@ -70,8 +70,8 @@ const FormComponent = ({
     ),
     difficulty: Yup.string().required("Difficulty level is required."),
     energy: Yup.string().required("Energy option is required."),
-    noOfChildren: Yup.string().required("No of Children is required."),
-    noOfAdults: Yup.string().required("No of Adults is required."),
+    noOfStudents: Yup.string().required("No of Students is required."),
+    // noOfAdults: Yup.string().required("No of Adults is required."),
     fourCs: Yup.array()
       .of(Yup.string())
       .min(1, "At least one 4 C's item must be selected."),
@@ -146,7 +146,7 @@ const FormComponent = ({
                     : "translate-x-[300%]"
                 }`}
             />
-            {["Lesson", "Homework", "Quiz", "Play"].map((tab) => (
+            {["Lesson", "Homework", "Quiz", "Homework/Play"].map((tab) => (
               <li className="w-full z-10" key={tab}>
                 <button
                   type="button"
@@ -165,24 +165,71 @@ const FormComponent = ({
 
           {/* Age and Class Duration Inputs */}
           <div className="flex flex-col md:flex-row w-full gap-4 mb-4">
-            <TextInput
-              label="Age"
-              id="age"
-              type="number"
-              value={values.age}
-              onChange={(e) => setFieldValue("age", e.target.value)}
-              error={touched.age && errors.age}
-              className="flex-1 border-blue-800"
-            />
-            <TextInput
-              label="Class Duration"
-              id="duration"
-              type="number"
-              value={values.duration}
-              onChange={(e) => setFieldValue("duration", e.target.value)}
-              error={touched.duration && errors.duration}
-              className="flex-1 border-blue-800"
-            />
+            {/* Age Dropdown */}
+            <div className="flex-1">
+              <label htmlFor="age" className="block text-sm font-medium text-gray-700">
+                Age Range
+              </label>
+              <select
+                id="age"
+                value={values.age}
+                onChange={(e) => setFieldValue("age", e.target.value)}
+                className="mt-1 block w-full px-3 py-3 border border-l-7 border-gray-800 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary sm:text-sm"
+              >
+                <option value="">Select Age Range</option>
+                <option value="3">0-10</option>
+                <option value="13">11-20</option>
+                <option value="23">21-30</option>
+                <option value="33">31-40</option>
+                <option value="43">41-50</option>
+                <option value="53">51-60</option>
+                <option value="63">61-70</option>
+                <option value="73">71-80</option>
+                <option value="83">81-90</option>
+                <option value="93">91-100</option>
+
+                {/* Add more ranges as needed */}
+              </select>
+              {touched.age && errors.age && <div className="text-red-600 text-sm">{errors.age}</div>}
+            </div>
+
+
+
+            {/* Duration Dropdown */}
+            <div className="flex-1">
+              <label htmlFor="duration" className="block text-sm font-medium text-gray-700">
+                Class Duration
+              </label>
+              <select
+                id="duration"
+                value={values.duration}
+                onChange={(e) => setFieldValue("duration", e.target.value)}
+                className="mt-1 block w-full px-3 py-3 border border-gray-800  rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary sm:text-sm"
+              >
+                <option value="">Select Duration</option>
+                <option value="0.25">15 min</option>
+                <option value="0.5">30 min</option>
+                <option value="0.75">45 min</option>
+                <option value="1">1 hour</option>
+                <option value="1.25">1 hour 15 min</option>
+                <option value="1.5">1 hour 30 min</option>
+                <option value="1.75">1 hour 45 min</option>
+                <option value="2">2 hours</option>
+                <option value="2.25">2 hours 15 min</option>
+                <option value="2.5">2 hours 30 min</option>
+                <option value="2.75">2 hours 45 min</option>
+                <option value="3">3 hours</option>
+                <option value="3.25">3 hours 15 min</option>
+                <option value="3.5">3 hours 30 min</option>
+                <option value="3.75">3 hours 45 min</option>
+                <option value="4">4 hours</option>
+                <option value="4.25">4 hours 15 min</option>
+                <option value="4.5">4 hours 30 min</option>
+                <option value="4.75">4 hours 45 min</option>
+                <option value="5">5 hours</option>
+              </select>
+              {touched.duration && errors.duration && <div className="text-red-600 text-sm">{errors.duration}</div>}
+            </div>
           </div>
 
           {/* Subject and Topic Inputs */}
@@ -211,15 +258,15 @@ const FormComponent = ({
 
           <div className="flex flex-col md:flex-row w-full gap-4 mb-4">
             <TextInput
-              label="No of Children"
-              id="noOfChildren"
+              label="No of Students"
+              id="noOfStudents"
               type="text"
-              value={values.noOfChildren}
-              onChange={(e) => setFieldValue("noOfChildren", e.target.value)}
+              value={values.noOfStudents}
+              onChange={(e) => setFieldValue("noOfStudents", e.target.value)}
               error={touched.noOfChildren && errors.noOfChildren}
               className="flex-1 border-blue-800"
             />
-            <TextInput
+            {/* <TextInput
               label="No of Adults"
               id="noOfAdults"
               type="text"
@@ -227,7 +274,7 @@ const FormComponent = ({
               onChange={(e) => setFieldValue("noOfAdults", e.target.value)}
               error={touched.noOfAdults && errors.noOfAdults}
               className="flex-1 border-blue-800"
-            />
+            /> */}
           </div>
 
           {/* Curriculum Input */}
