@@ -12,8 +12,8 @@ const initialState = {
     additional: '',
     difficulty: '',
     energy: '',
-    noOfChildren: '',
-    noOfAdults: '',
+    noOfStudents: '',
+    // noOfAdults: '',
     fourCs: [],
   },
 };
