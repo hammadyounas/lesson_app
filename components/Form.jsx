@@ -53,17 +53,15 @@ const FormComponent = ({
 
   // Yup validation schema
   const validationSchema = Yup.object().shape({
-    age: Yup.number()
-      .required("Age is required.")
-      .positive("Age must be a positive number.")
-      .max(100, "Enter a valid age."),
+    age: Yup.string()
+      .required("Age is required."),
     duration: Yup.number()
       .required("Class duration is required.")
       .positive("Duration must be a positive number."),
     curriculum: Yup.string().required("Curriculum is required."),
     topic: Yup.string().required("Topic is required."),
-    subject: Yup.string().required("Indoor/Outdoor is required."),
-    indoorOutdoor: Yup.string().required("Subject is required."),
+    subject: Yup.string().required("Subject is required."),
+    indoorOutdoor: Yup.string().required(" indoorOutdoor is required."),
     additional: Yup.string().max(
       maxLength,
       `Exceeded max length of ${maxLength} characters.`
@@ -83,6 +81,7 @@ const FormComponent = ({
       enableReinitialize
       validationSchema={validationSchema}
       onSubmit={async (values) => {
+        console.log("Selected Duration (in minutes):", values.duration);
         if (freeResponseCount >= FREE_RESPONSE_LIMIT) {
           // Show modal when the limit is reached
           setShowLimitModal(true); // This should be a state variable for the modal
@@ -164,72 +163,123 @@ const FormComponent = ({
 
 
           {/* Age and Class Duration Inputs */}
-          <div className="flex flex-col md:flex-row w-full gap-4 mb-4">
+          <div className="flex flex-col md:flex-row w-full gap-4 mb-3 ">
             {/* Age Dropdown */}
-            <div className="flex-1">
-              <label htmlFor="age" className="block text-sm font-medium text-gray-700">
+            <div className="flex-1 ">
+              <label htmlFor="age" className="block text-sm font-medium  text-gray-700">
                 Age Range
               </label>
               <select
                 id="age"
                 value={values.age}
                 onChange={(e) => setFieldValue("age", e.target.value)}
-                className="mt-1 block w-full px-3 py-3 border border-l-7 border-gray-800 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary sm:text-sm"
+                className="mt-1 block w-full px-3 py-2  border border-l-7  border-gray-800 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary sm:text-sm"
               >
                 <option value="">Select Age Range</option>
-                <option value="3">0-10</option>
-                <option value="13">11-20</option>
-                <option value="23">21-30</option>
-                <option value="33">31-40</option>
-                <option value="43">41-50</option>
-                <option value="53">51-60</option>
-                <option value="63">61-70</option>
-                <option value="73">71-80</option>
-                <option value="83">81-90</option>
-                <option value="93">91-100</option>
+                <option value="0-6">0-6</option>
+                <option value="7-12">7-12</option>
+                <option value="13-17">13-17</option>
+                <option value="18-64">18-64</option>
+                <option value="65+">65+</option>
 
                 {/* Add more ranges as needed */}
               </select>
-              {touched.age && errors.age && <div className="text-red-600 text-sm">{errors.age}</div>}
+              {touched.age && errors.age && <div className="text-red-600  mt-1 text-sm">{errors.age}</div>}
             </div>
 
 
 
             {/* Duration Dropdown */}
             <div className="flex-1">
-              <label htmlFor="duration" className="block text-sm font-medium text-gray-700">
+              <label htmlFor="age" className="block text-sm font-medium  text-gray-700">
                 Class Duration
               </label>
-              <select
-                id="duration"
-                value={values.duration}
-                onChange={(e) => setFieldValue("duration", e.target.value)}
-                className="mt-1 block w-full px-3 py-3 border border-gray-800  rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary sm:text-sm"
-              >
-                <option value="">Select Duration</option>
-                <option value="0.25">15 min</option>
-                <option value="0.5">30 min</option>
-                <option value="0.75">45 min</option>
-                <option value="1">1 hour</option>
-                <option value="1.25">1 hour 15 min</option>
-                <option value="1.5">1 hour 30 min</option>
-                <option value="1.75">1 hour 45 min</option>
-                <option value="2">2 hours</option>
-                <option value="2.25">2 hours 15 min</option>
-                <option value="2.5">2 hours 30 min</option>
-                <option value="2.75">2 hours 45 min</option>
-                <option value="3">3 hours</option>
-                <option value="3.25">3 hours 15 min</option>
-                <option value="3.5">3 hours 30 min</option>
-                <option value="3.75">3 hours 45 min</option>
-                <option value="4">4 hours</option>
-                <option value="4.25">4 hours 15 min</option>
-                <option value="4.5">4 hours 30 min</option>
-                <option value="4.75">4 hours 45 min</option>
-                <option value="5">5 hours</option>
-              </select>
-              {touched.duration && errors.duration && <div className="text-red-600 text-sm">{errors.duration}</div>}
+              {/* Custom Duration Selector */}
+              <div className="flex items-center space-x-4  mt-1">
+                {/* Hours Dropdown */}
+                <div className="relative w-28   ">
+
+
+
+                  <select
+                    value={values.hours || 0}
+
+                    onChange={(e) => {
+                      const selectedHours = Number(e.target.value);
+                      setFieldValue("hours", selectedHours);
+
+                      // Calculate total duration in minutes: hours * 60 + minutes
+                      const selectedMinutes = values.minutes || 0;  // Ensure minutes are a number
+                      const totalMinutes = selectedHours * 60 + selectedMinutes;
+
+                      setFieldValue("duration", totalMinutes); // Store as number
+                    }}
+
+                    className="block w-full border border-gray-700 rounded-md shadow-sm px-2 py-2 focus:ring-primary focus:border-primary text-gray-700"
+                  >
+                    {[...Array(6)].map((_, i) => (
+                      <option key={i} value={i}>
+                        {i}
+
+                      </option>
+
+
+                    ))}
+                  </select>
+                  <span className="absolute top-1/2  left-16 transform -translate-y-1/2 text-xs text-gray-400 pointer-events-none">
+                    Hour
+                  </span>
+                </div>
+
+                {/* Separator */}
+                <span className="text-lg font-semibold  text-gray-700">:</span>
+
+                {/* Minutes Dropdown */}
+                <div className="relative w-28">
+
+                  <select
+                    value={values.minutes || 0}
+                    onChange={(e) => {
+                      const selectedMinutes = Number(e.target.value);
+                      setFieldValue("minutes", selectedMinutes);
+
+                      // Calculate total duration in minutes: hours * 60 + minutes
+                      const selectedHours = values.hours || 0;  // Ensure hours are a number
+                      const totalMinutes = selectedHours * 60 + selectedMinutes;
+
+                      setFieldValue("duration", totalMinutes); // Store as number
+                    }}
+                    className="block w-full border border-gray-700 rounded-md shadow-sm px-2 py-2 focus:ring-primary focus:border-primary text-gray-700"
+                  >
+                    {/* Dynamically generate minute options */}
+                    {values.hours > 0
+                      ? [0, 15, 30, 45, 59].map((minute) => (
+                        <option key={minute} value={minute}>
+                          {minute < 10 ? `0${minute}` : minute}
+                        </option>
+                      ))
+                      : [0, 15, 30, 45].map((minute) => (
+                        <option key={minute} value={minute}>
+                          {minute < 10 ? `0${minute}` : minute}
+                        </option>
+                      ))}
+                  </select>
+                  <span className="absolute top-1/2  left-12 transform -translate-y-1/2 text-xs text-gray-400 pointer-events-none">
+                    Minutes
+                  </span>
+
+                </div>
+              </div>
+
+
+
+              {/* Error Messages */}
+              {touched.duration && errors.duration && (
+                <p className="text-red-600 text-sm ">{errors.duration}</p>
+              )}
             </div>
+
+
           </div>
 
           {/* Subject and Topic Inputs */}
@@ -368,6 +418,7 @@ const FormComponent = ({
               type="submit"
               className={`bg-primary p-3 flex items-center justify-center w-full text-white rounded-xl hover:bg-green-700 `}
               disabled={isLoading}
+              onClick={() => console.log(`Value is ${values.duration}`)} // Log the value of duration
             >
               {isLoading ? (
                 <div className="loader animate-spin rounded-full h-5 w-5 border-t-2 border-b-2 border-white"></div>
@@ -375,6 +426,7 @@ const FormComponent = ({
                 "Generate"
               )}
             </button>
+
           </div>
         </Form>
       )}
