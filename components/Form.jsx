@@ -11,6 +11,7 @@ import TextareaInput from "./ui/TextAreaInput";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 
+
 const FormComponent = ({
   onSubmit,
   setIsLoading,
@@ -25,7 +26,7 @@ const FormComponent = ({
   const maxLength = 200;
   // State for Active Tab
   const [activeTab, setActiveTab] = useState("Lesson");
-  const [mobileActiveTab, setMobileActiveTab] = useState("");
+  const [mobileActiveTab, setMobileActiveTab] = useState("Lesson");
 
   // Toggle selection for 4 C's (allows multiple selections)
   const handleSelectionToggle = (selection, values, setFieldValue) => {
@@ -50,7 +51,6 @@ const FormComponent = ({
     dispatch(clearFormData());
     resetForm();
   };
-
   // Yup validation schema
   const validationSchema = Yup.object().shape({
     age: Yup.string()
@@ -61,7 +61,7 @@ const FormComponent = ({
     curriculum: Yup.string().required("Curriculum is required."),
     topic: Yup.string().required("Topic is required."),
     subject: Yup.string().required("Subject is required."),
-    indoorOutdoor: Yup.string().required(" indoorOutdoor is required."),
+    // indoorOutdoor: Yup.string().required(" indoorOutdoor is required."),
     additional: Yup.string().max(
       maxLength,
       `Exceeded max length of ${maxLength} characters.`
@@ -115,7 +115,7 @@ const FormComponent = ({
       {({ values, errors, touched, setFieldValue, resetForm }) => (
         <Form className="flex flex-col justify-between shadow-xl shadow-primary border border-primary bg-gray-50 max-sm:mt-5 w-full h-full rounded-xl p-4 text-black">
           {/* Responsive Select for Mobile */}
-          <div className="sm:hidden mb-4">
+          {/* <div className="sm:hidden mb-4">
             <label htmlFor="tabs" className="sr-only">
               Select Tab
             </label>
@@ -131,10 +131,10 @@ const FormComponent = ({
               <option value="Quiz">Quiz</option>
               <option value="Term Planner">Term Planner</option>
             </select>
-          </div>
+          </div> */}
 
           {/* Tabs for Desktop */}
-          <ul className="hidden bg-primary xl:text-sm text-xs font-medium text-center text-black shadow sm:flex sm:items-center divide-primary relative mb-4 ">
+          {/* <ul className="hidden bg-primary xl:text-sm text-xs font-medium text-center text-black shadow sm:flex sm:items-center divide-primary relative mb-4 ">
             <div
               className={`absolute h-full w-1/4 bg-white transition-transform duration-200 ease-in-out transform ${activeTab === "Lesson"
                 ? "translate-x-0"
@@ -159,74 +159,112 @@ const FormComponent = ({
                 </button>
               </li>
             ))}
+          </ul> */}
+
+          <div className="xl:block mb-4">
+            <label htmlFor="tabs" className="sr-only">
+              Select Tab
+            </label>
+            <select
+              id="tabs"
+              className="bg-gray-800 border border-gray-600 text-white text-sm rounded-lg focus:ring-primary focus:border-primary block w-full max-sm:py-3 p-2.5"
+              value={mobileActiveTab}
+              onChange={(e) => handleMobileTabClick(e.target.value)}
+            >
+              {/* <option value=" ">Please Choose</option> */}
+              <option value="Lesson">Lesson</option>
+              <option value="Homework">Homework</option>
+              <option value="Quiz">Quiz</option>
+              <option value="Term Planner">Term Planner</option>
+            </select>
+          </div>
+
+          {/* Tabs for Desktop */}
+          <ul className="hidden bg-primary xl:text-sm text-xs font-medium text-center text-black shadow sm:flex sm:items-center divide-primary relative mb-4 ">
+            <div
+              className={`absolute h-full w-1/4 bg-white transition-transform duration-200 ease-in-out transform ${
+                activeTab === "Lesson"
+                  ? "translate-x-0"
+                  : activeTab === "Homework"
+                  ? "translate-x-full"
+                  : activeTab === "Quiz"
+                  ? "translate-x-[200%]"
+                  : "translate-x-[300%]"
+              }`}
+            />
+            {/* {["Lesson", "Homework", "Quiz", "Homework/Play"].map((tab) => (
+    <li className="w-full z-10" key={tab}>
+      <button
+        type="button"
+        onClick={() => handleTabClick(tab)}
+        className={`inline-block w-full xl:p-4 p-2 ${activeTab === tab
+          ? "text-black"
+          : "text-white hover:text-black"
+          } border-r border-white focus:outline-none`}
+      >
+        {tab}
+      </button>
+    </li>
+  ))} */}
           </ul>
 
-
           {/* Age and Class Duration Inputs */}
-          <div className="flex flex-col md:flex-row w-full gap-4 mb-3 ">
-            {/* Age Dropdown */}
-            <div className="flex-1 ">
-              <label htmlFor="age" className="block text-sm font-medium  text-gray-700">
+          <div className="flex flex-col xl:flex-row w-full gap-4 mb-3 ">
+            <div className="flex-1">
+              <label
+                htmlFor="age"
+                className="block text-sm font-medium text-gray-700"
+              >
                 Age Range
               </label>
-              <select
+              <input
                 id="age"
+                type="number"
                 value={values.age}
                 onChange={(e) => setFieldValue("age", e.target.value)}
-                className="mt-1 block w-full px-3 py-2  border border-l-7  border-gray-800 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary sm:text-sm"
-              >
-                <option value="">Select Age Range</option>
-                <option value="0-6">0-6</option>
-                <option value="7-12">7-12</option>
-                <option value="13-17">13-17</option>
-                <option value="18-64">18-64</option>
-                <option value="65+">65+</option>
-
-                {/* Add more ranges as needed */}
-              </select>
-              {touched.age && errors.age && <div className="text-red-600  mt-1 text-sm">{errors.age}</div>}
+                className="mt-1 block w-full px-3 py-2 border border-l-7 border-gray-800 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary sm:text-sm"
+                placeholder="Enter Age"
+                min="1"
+                max="65"
+              />
+              {touched.age && errors.age && (
+                <div className="text-red-600 mt-1 text-sm">{errors.age}</div>
+              )}
             </div>
 
-
-
             {/* Duration Dropdown */}
-            <div className="flex-1">
-              <label htmlFor="age" className="block text-sm font-medium  text-gray-700">
+            <div className="flex-1 ">
+              <label
+                htmlFor="age"
+                className="block text-sm font-medium  text-gray-700"
+              >
                 Class Duration
               </label>
               {/* Custom Duration Selector */}
               <div className="flex items-center space-x-4  mt-1">
                 {/* Hours Dropdown */}
                 <div className="relative w-28   ">
-
-
-
                   <select
                     value={values.hours || 0}
-
                     onChange={(e) => {
                       const selectedHours = Number(e.target.value);
                       setFieldValue("hours", selectedHours);
 
                       // Calculate total duration in minutes: hours * 60 + minutes
-                      const selectedMinutes = values.minutes || 0;  // Ensure minutes are a number
+                      const selectedMinutes = values.minutes || 0; // Ensure minutes are a number
                       const totalMinutes = selectedHours * 60 + selectedMinutes;
 
                       setFieldValue("duration", totalMinutes); // Store as number
                     }}
-
                     className="block w-full border border-gray-700 rounded-md shadow-sm px-2 py-2 focus:ring-primary focus:border-primary text-gray-700"
                   >
                     {[...Array(6)].map((_, i) => (
                       <option key={i} value={i}>
                         {i}
-
                       </option>
-
-
                     ))}
                   </select>
-                  <span className="absolute top-1/2  left-16 transform -translate-y-1/2 text-xs text-gray-400 pointer-events-none">
+                  <span className="absolute top-1/2  left-8 transform -translate-y-1/2 text-xs text-gray-400 pointer-events-none">
                     Hour
                   </span>
                 </div>
@@ -236,7 +274,6 @@ const FormComponent = ({
 
                 {/* Minutes Dropdown */}
                 <div className="relative w-28">
-
                   <select
                     value={values.minutes || 0}
                     onChange={(e) => {
@@ -244,7 +281,7 @@ const FormComponent = ({
                       setFieldValue("minutes", selectedMinutes);
 
                       // Calculate total duration in minutes: hours * 60 + minutes
-                      const selectedHours = values.hours || 0;  // Ensure hours are a number
+                      const selectedHours = values.hours || 0; // Ensure hours are a number
                       const totalMinutes = selectedHours * 60 + selectedMinutes;
 
                       setFieldValue("duration", totalMinutes); // Store as number
@@ -254,32 +291,27 @@ const FormComponent = ({
                     {/* Dynamically generate minute options */}
                     {values.hours > 0
                       ? [0, 15, 30, 45, 59].map((minute) => (
-                        <option key={minute} value={minute}>
-                          {minute < 10 ? `0${minute}` : minute}
-                        </option>
-                      ))
+                          <option key={minute} value={minute}>
+                            {minute < 10 ? `0${minute}` : minute}
+                          </option>
+                        ))
                       : [0, 15, 30, 45].map((minute) => (
-                        <option key={minute} value={minute}>
-                          {minute < 10 ? `0${minute}` : minute}
-                        </option>
-                      ))}
+                          <option key={minute} value={minute}>
+                            {minute < 10 ? `0${minute}` : minute}
+                          </option>
+                        ))}
                   </select>
-                  <span className="absolute top-1/2  left-12 transform -translate-y-1/2 text-xs text-gray-400 pointer-events-none">
+                  <span className="absolute top-1/2  left-8 transform -translate-y-1/2 text-xs text-gray-400 pointer-events-none">
                     Minutes
                   </span>
-
                 </div>
               </div>
-
-
 
               {/* Error Messages */}
               {touched.duration && errors.duration && (
                 <p className="text-red-600 text-sm ">{errors.duration}</p>
               )}
             </div>
-
-
           </div>
 
           {/* Subject and Topic Inputs */}
@@ -335,7 +367,7 @@ const FormComponent = ({
             value={values.curriculum}
             onChange={(e) => setFieldValue("curriculum", e.target.value)}
             error={touched.curriculum && errors.curriculum}
-            className={'mb-4 border-blue-800'}
+            className={"mb-4 border-blue-800"}
           />
 
           {/* indoor/outdoor */}
@@ -376,7 +408,7 @@ const FormComponent = ({
               selectedValue={values.difficulty}
               onChange={(e) => setFieldValue("difficulty", e.target.value)}
               error={touched.difficulty && errors.difficulty}
-            // className="flex-1"
+              // className="flex-1"
             />
             <RadioInput
               name="Energy Options"
@@ -384,10 +416,9 @@ const FormComponent = ({
               selectedValue={values.energy}
               onChange={(e) => setFieldValue("energy", e.target.value)}
               error={touched.energy && errors.energy}
-            // className="flex-1"
+              // className="flex-1"
             />
           </div>
-
 
           {/* Additional Information Input */}
           <TextareaInput
@@ -399,7 +430,7 @@ const FormComponent = ({
             charactersTyped={values.additional.length}
             error={touched.additional && errors.additional}
             className="mb-4 border-blue-800"
-            maxLengthClassName='text-right'
+            maxLengthClassName="text-right"
           />
 
           {/* Generate and Clear Buttons */}
@@ -426,7 +457,6 @@ const FormComponent = ({
                 "Generate"
               )}
             </button>
-
           </div>
         </Form>
       )}
