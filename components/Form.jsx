@@ -10,7 +10,7 @@ import RadioInput from "./ui/RadioInput";
 import TextareaInput from "./ui/TextAreaInput";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
-import Select from 'react-select';
+
 
 const FormComponent = ({
   onSubmit,
