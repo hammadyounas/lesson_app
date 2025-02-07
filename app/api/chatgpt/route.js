@@ -50,6 +50,7 @@ export async function POST(req) {
 
 
 
+
 // import { NextResponse } from "next/server";
 
 // // Function to send request to ChatGPT API

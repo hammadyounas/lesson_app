@@ -1,7 +1,7 @@
 const CheckboxInput = ({ options, selectedOptions, onToggle, error, className }) => {
   return (
     <div className="flex flex-col w-full">
-      <label className="flex items-center py-1 mb-2">4 C's Selection</label>
+      <label className="flex items-center py-1 mb-2">4 C's Selection <span className="text-red-600">*</span></label>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
         {options.map((option) => (
           <label
