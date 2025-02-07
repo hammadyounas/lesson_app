@@ -215,7 +215,7 @@ const FormComponent = ({
                 htmlFor="age"
                 className="block text-sm font-medium text-gray-700"
               >
-                Age Range
+                Age Range <span className="text-red-600">*</span>
               </label>
               <input
                 id="age"
@@ -238,7 +238,7 @@ const FormComponent = ({
                 htmlFor="age"
                 className="block text-sm font-medium  text-gray-700"
               >
-                Class Duration
+                Class Duration <span className="text-red-600">*</span>
               </label>
               {/* Custom Duration Selector */}
               <div className="flex items-center space-x-4  mt-1">
@@ -317,7 +317,11 @@ const FormComponent = ({
           {/* Subject and Topic Inputs */}
           <div className="flex flex-col md:flex-row w-full gap-4 mb-4">
             <TextInput
-              label="Subject"
+               label={
+                <>
+                  Subject <span className="text-red-600">*</span>
+                </>
+              }
               id="subject"
               type="text"
               value={values.subject}
@@ -326,7 +330,11 @@ const FormComponent = ({
               className="flex-1 border-blue-800"
             />
             <TextInput
-              label="Topic"
+                label={
+                  <>
+                    Topic <span className="text-red-600">*</span>
+                  </>
+                }
               id="topic"
               type="text"
               value={values.topic}
@@ -361,7 +369,11 @@ const FormComponent = ({
 
           {/* Curriculum Input */}
           <TextInput
-            label="Curriculum"
+            label={
+              <>
+                Curriculum <span className="text-red-600">*</span>
+              </>
+            }
             id="curriculum"
             type="text"
             value={values.curriculum}
@@ -398,12 +410,15 @@ const FormComponent = ({
             error={touched.fourCs && errors.fourCs}
             className="mb-4 border-primary checked:bg-primary"
           />
-
           {/* Difficulty Level & Energy Buttons */}
           <div className="flex lg:flex-col flex-col">
             {/* Difficulty Level */}
             <RadioInput
-              name="Difficulty Level"
+              name={
+                <>
+                  Difficulty Level <span className="text-red-600">*</span>
+                </>
+              }
               options={["Low", "Medium", "High"]}
               selectedValue={values.difficulty}
               onChange={(e) => setFieldValue("difficulty", e.target.value)}
@@ -411,7 +426,11 @@ const FormComponent = ({
               // className="flex-1"
             />
             <RadioInput
-              name="Energy Options"
+              name={
+                <>
+                  Energy Options <span className="text-red-600">*</span>
+                </>
+              }
               options={["Low", "Medium", "High"]}
               selectedValue={values.energy}
               onChange={(e) => setFieldValue("energy", e.target.value)}
